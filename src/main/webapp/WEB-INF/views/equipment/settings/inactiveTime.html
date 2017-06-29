@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head></head>
+
+	<body>
+
+		<div layout:fragment="content" class="row">
+		
+			<form action="#" th:action="@{/equipment/settings/setInactiveTime}" method="post">
+				
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+				
+		        <div class="row panel-row">
+            		<div class="col-md-6 col-md-offset-3 form-class">
+                		<div class="col-md-8 col-md-offset-2">
+                		 	<div class="form-group">
+								<label class="label-control">Inactive Time</label>
+		                        <input type="text" th:value="${time}" name="time" placeholder="Inactive Time" class="form-control" />
+		                    </div>
+                    		<div class="form-group">
+                        		<input type="submit" value="Save Inactive time" class="btn btn-custom"/>
+                    		</div>
+                		</div>
+           	 		</div>
+      			</div>
+		 	</form>
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+	</head>
+
+	<body onload="noPaginatedTable()">
+	
+		<div layout:fragment="content" class="row">
+				
+			<div class="col-md-10 col-md-offset-1 list-space">
+			
+				<h2 th:text="#{label.categories}"></h2>
+			
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+		  
+				<div class="action-row">
+					<div class="action-wrapper">
+						<a th:href="@{/category/add}" title="Add" class="btn btn-action"><span class="fa fa-plus fa-btn"></span></a>
+					</div>
+				</div>
+						                	
+				<div id="module-message">
+					<div th:fragment="fragment-message"><div th:replace="templates/fragments/mdlCustom :: mdlCustom" ></div> </div>
+				</div>
+				
+				<table id="table" class="table table-hover">
+					<thead>
+            			<tr>
+                			<th th:text="#{label.name}"></th>
+                			<th th:text="#{label.state}"></th>
+                			<th class="no-sorting"></th>
+           				</tr>
+        			</thead>
+       				<tbody>
+        				<tr th:each="c : ${categoryList}">
+        					<td>
+		        				<img  width="30" class="img-circle lazy" th:attr="data-original=${c.image.path}" ></img>  <!-- th:src="${c.image.path}" -->
+		        				<span class="strong" th:text="${c.name}"></span>
+			        		</td>
+	    					<td>
+	    						<a th:href="@{/category/activate(id=${c.id},state=false)}"><span th:if="${c.active} == true" class="fa fa-toggle-on fa-btn"></span></a>
+			    				<a th:href="@{/category/activate(id=${c.id},state=true)}"><span th:if="${c.active} == false" class="fa fa-toggle-off fa-btn"></span></a>
+			    			</td>
+			    			<td> <!-- data-toggle="modal" data-target="#confirm-delete"  -->
+			    				<a class="btn btn-mini btn-xs btn-success" th:href="@{/category/edit(id=${c.id})}"><span class="fa fa-pencil fa-btn"></span><span th:text="#{label.edit}"></span></a>
+			    				<a class="btn btn-mini btn-xs btn-danger" th:onclick="${'deleteFirst(' + c.id  +')'}"><span class="fa fa-trash fa-btn"></span><span th:text="#{label.delete}"></span></a>
+			    				<a th:id="'deleteLink'+${c.id}"  id="delete" th:href="@{/category/deleteCascade(id=${c.id})}" style="display:none"></a>
+			    			 </td> 
+						</tr>
+        			</tbody>
+				</table>
+			</div>	
+			<script type="text/javascript" th:src="@{/js/jquery.lazyload.js}"></script>  
+			<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+			<script type="text/javascript" th:src="@{/js/category.delete.js}"></script>
+			<script type="text/javascript" th:src="@{/js/channel.js}"></script>
+		</div>
+	</body>
+</html>

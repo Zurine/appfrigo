@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link th:href="@{/css/multiselect/bootstrap-multiselect.css}" rel="stylesheet" type="text/css"/> 
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="x_data col-md-10 col-md-offset-1">
+
+				<h2 th:text="#{label.stock.mgmt}"></h2> 
+				
+				<div class="row panel-row">
+					
+           			<div class="col-sm-12 col-xs-12 animated fadeInDown">
+                     		
+                  		<div class="box box-solid bg-white-gradient">
+					        <div class="box-body border-radius-none">
+					        	
+					            <div th:replace="templates/fragments/msg :: msg" ></div> 			
+								<div style="text-align:center;margin-top: 3%">
+									<a id="btn-reset" class="btn btn-action" th:href="@{/operator/stock/resetStock(id=${stock.operator})}" ><span class="fa fa-eraser fa-btn"></span><span th:text="#{label.stock.reset}"></span></a>
+									<a id="btn-add" class="btn btn-action" onclick="showAddStock()"><span class="fa fa-plus fa-btn"></span><span th:text="#{label.stock.add}"></span></a>
+								</div>
+							
+								
+								<div id="stock-add" style="display: none">
+									<div class="line-separation"></div>	
+									<form class="form-horizontal" action="#" th:object="${stock}" th:action="@{/operator/stock/updateStock}" method="post">
+										<input type="hidden" th:field="*{operator}" th:value="*{operator}" />
+										<div class="form-group">
+		    								<label class="col-sm-2 control-label"  th:text="#{label.product}"></label>
+		    								<div class="col-sm-4">
+	      										<select class="form-control" th:field="*{products}" th:value="*{products}" multiple="multiple">
+	  												<option th:each="s : ${productList}" th:value="${s.id}" th:text="${s.name}"></option>
+												</select>
+		    								</div>
+		    								<label class="col-sm-2 control-label"  th:text="#{label.product.stock}"></label>
+		    								<div class="col-sm-4">
+		      									<input type="number" th:field="*{stock}" th:value="*{stock}" class="form-control" />
+		    								</div>
+										</div>
+										<div class="row row-space-top">
+					                   		<div class="form-btn col-md-12">
+					                       		<button type="submit" class="btn btn-custom"> <span class="fa fa-save"></span><span th:text="#{label.stock.add}"></span> </button>
+					                   		</div>
+		                   				</div>
+									</form>
+								</div>
+								
+							 	
+					        </div>
+					   	 </div>
+        			</div>
+             	</div>
+               	<div th:replace="templates/fragments/mdl :: mdl" ></div>
+               	<script type="text/javascript" th:src="@{/js/multiselect/bootstrap-multiselect.js}"></script>
+               	<script type="text/javascript" th:src="@{/js/stock.js}"></script>
+       		</div>
+		</div>
+	</body>
+</html>

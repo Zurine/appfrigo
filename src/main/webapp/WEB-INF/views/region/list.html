@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+
+			<div class="col-md-10 col-md-offset-1 list-space">
+				
+				<h2>Region</h2>
+				
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+				
+				<div class="action-row">
+					<div class="action-wrapper">
+						<a th:href="@{/region/add}" title="Add" class="btn btn-action"><span class="fa fa-plus fa-btn"></span></a>
+				 	
+				</div>
+				</div>
+						
+				<table id="table" class="table table-hover">
+					<thead>
+			            <tr>
+                			<th th:text="#{label.name}"></th>
+               				<th th:text="#{label.description}"></th>
+                	 		<th th:text="#{label.state}"></th>
+                			<th class="no-sorting"></th>
+			            </tr>
+        			</thead>
+			        <tbody>
+			        	<tr th:each="r : ${regionList}">
+			        		<td th:text="${r.name}"></td>
+				    		<td th:text="${r.description}"></td>
+			    		  	 	<td>
+	    						<a th:href="@{/region/activate(id=${r.id},state=false)}"><span th:if="${r.active} == true" class="fa fa-toggle-on fa-btn"></span></a>
+			    				<a th:href="@{/region/activate(id=${r.id},state=true)}"><span th:if="${r.active} == false" class="fa fa-toggle-off fa-btn"></span></a>
+			    			</td>
+		    				<td>
+			    				<a class="btn btn-mini btn-xs btn-success" th:href="@{/region/edit(id=${r.id})}"><span class="fa fa-pencil fa-btn"></span><span th:text="#{label.edit}"></span></a>
+			    				<a class="btn btn-mini btn-xs btn-danger" data-toggle="modal" data-target="#confirm-delete" th:onclick="${'loadId(' + r.id  +')'}"><span class="fa fa-trash fa-btn"></span><span th:text="#{label.delete}"></span></a>
+								<a th:id="'deleteLink'+${r.id}"  id="delete" th:href="@{/region/delete(id=${r.id})}" style="display:none"></a>
+			    			</td>  
+						</tr>
+			        </tbody>
+				</table>
+				
+			</div>
+			 <div th:replace="templates/fragments/mdlCustom :: mdlCustom" ></div> 
+			 <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+			<script type="text/javascript" th:src="@{/js/channel.js}"></script>
+		</div>
+
+	</body>
+
+</html>

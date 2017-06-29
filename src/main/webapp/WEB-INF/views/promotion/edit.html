@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head></head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="col-md-8 col-md-offset-2" style="margin-top:6%">
+	
+				<h2>Edit Promotion</h2>
+			
+    			<form action="#" th:object="${promotion}" th:action="@{/promotion/edit}" method="post">
+    				<input type="hidden" th:field="*{id}" th:value="*{id}"></input> 
+    			
+  					<div th:replace="templates/fragments/msg :: msg" ></div> 
+ 				
+			        <div class="row panel-row">
+	            		<div class="col-md-6 col-md-offset-3 form-wrapper">
+	                		<div class="col-md-8 col-md-offset-2">
+             		        	<div class="form-group">
+									<label class="label-control">Productos</label>
+			                        <select th:field="*{productsId}" th:value="*{productsId}"  multiple="multiple" class="form-control"  required="required">
+										<option value="0" >Select Products</option>
+	  									<option th:each="p : ${products}" th:value="${p.id}" th:text="${p.name}"></option>
+									</select>
+			                    </div>
+			       				<div class="form-group">
+									<label class="label-control">Name</label>
+			                        <input type="text" th:field="*{name}" th:value="*{name}" placeholder="Name" class="form-control"  required="required"/>
+			                    </div>
+			       				<div class="form-group">
+									<label class="label-control">Description</label>
+			                        <input type="text" th:field="*{description}" th:value="*{description}" placeholder="Description" class="form-control"  required="required"/>
+			                    </div>
+			                    <div class="form-group">
+									<label class="label-control">Type</label>
+			                        <select th:field="*{type}" th:value="*{type}"  required="required">
+										<option value="0" >Select Type</option>
+	  									<option th:each="t : ${typeList}" th:value="${t.id}" th:text="${t.name}"></option>
+									</select>
+			                    </div>
+			                    
+			                    <div class="form-group">
+									<label class="label-control">Url</label>
+			                        <input type="text" th:field="*{url}" th:value="*{url}" placeholder="Url" class="form-control"  required="required"/>
+			                    </div>
+			                    
+			                  <div class="form-group">
+									<label class="label-control" >Age Conditions</label>
+			                        <select th:field="*{selectedConditions}" multiple="multiple" class="form-control" th:value="*{selectedConditions}"  required="required">
+	  									<option th:each="p : ${listAge}" th:value="${p.id}" th:text="${p.name}"></option>
+									</select>
+			                    </div>
+			                    <div class="form-group">
+									<label class="label-control">Temperature Conditions</label>
+			                        <select th:field="*{selectedConditions}" multiple="multiple" class="form-control" th:value="*{selectedConditions}"  required="required">
+	  									<option th:each="p : ${listTemp}" th:value="${p.id}" th:text="${p.name}"></option>
+									</select>
+			                    </div>
+			                    <div class="form-group">
+									<label class="label-control">Gender Conditions</label>
+			                        <select th:field="*{selectedConditions}" multiple="multiple" class="form-control" th:value="*{selectedConditions}"  required="required">
+	  									<option th:each="p : ${listGender}" th:value="${p.id}" th:text="${p.name}"></option>
+									</select>
+			                    </div>
+			                    
+			                   <div class="form-group">
+									<label class="label-control">Redimible</label>
+			                       <input type="checkbox" th:field="*{redimible}" class="form-control" th:value="*{redimible}"/>
+			                    </div> 
+			
+			                    <div class="form-group">
+									<label class="label-control">Active</label>
+			                       <input type="checkbox" th:field="*{active}" th:value="*{active}" class="form-control"/>
+			                    </div>
+	
+	                    		<div class="form-group">
+	                        		<input type="submit" value="Save Promotion" class="btn btn-custom"/>
+	                    		</div>
+	                		</div>
+	           	 		</div>
+	      			</div>
+		 		</form>
+			</div>
+		</div>
+
+	</body>
+
+</html>

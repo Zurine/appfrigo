@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link th:href="@{/css/switchery/switchery.min.css}" rel="stylesheet" type="text/css"/>   
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+				<div class="x_data col-sm-10 col-sm-offset-1">
+		<!-- 	<div class="x_data col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1"> -->		
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+			
+       			<div class="x_panel">
+       				<div class="x_panel_content">
+       		
+		           		<div class="x_title">
+		                	<h2 th:text="${title}"></h2>
+		                    <div class="clearfix"></div>
+	                 	</div>
+		
+						<div class="x_content">
+					
+							<form class="form-horizontal" action="#" th:object="${distributor}" th:action="@{/distributor/add}" method="post"  accept-charset="UTF-8">
+								<input type="hidden" th:field="*{id}" th:value="*{id}"></input> 
+								<div class="form-group">
+	    							<label class="col-sm-2 control-label"  th:text="#{label.concesion}"></label>
+	   								<div class="col-sm-4">
+	   									<input type="text" th:field="*{concession}" th:value="*{concession}" th:placeholder="#{label.concesion}" class="form-control" />
+	   								</div>
+	   								<label class="col-sm-2 control-label"  th:text="#{label.concesion.number}"></label>
+	   								<div class="col-sm-4">
+	   									<input type="text" th:field="*{numConcession}" th:value="*{numConcession}" th:placeholder="#{label.concesion.number}" class="form-control" />
+	   								</div>
+								</div>
+								
+								<div class="form-group">
+	    							<label class="col-sm-2 control-label"  th:text="#{label.region}"></label>
+	   								<div class="col-sm-10">
+										<select th:field="*{region.id}" class="form-control">
+											<option value="0" th:text="#{label.select.region}"></option>
+		  									<option th:each="r : ${regionList}" th:value="${r.id}" th:text="${r.name}"></option>
+										</select>
+									</div>
+								</div>
+
+			              		<div class="form-group">
+    								<label class="col-sm-2 control-label"  th:text="#{label.active.distributor}"></label>
+    								<div class="col-sm-10">
+      									<input type="checkbox" class="js-switch" th:field="*{active}"></input>
+    								</div>
+								</div>
+								
+								<div class="line-separation"></div>
+								
+								
+									 <div th:id="module-contact"> <!-- th:class="${'detail sub'+ s.item.id}" -->
+				 	 	 			<div th:fragment="fragment-contact">
+								<div class="form-group">
+    								<label class="col-sm-2 control-label"  th:text="#{label.contacts}"></label>
+    								<div class="col-sm-10">
+    									<div class="row" th:each="c,rowStat : ${distributor.contacts}" >
+	    									<div class="col-sm-3">
+		    									<select th:field="${distributor.contacts[__${rowStat.index}__].type}" class="form-control">
+													<option value="0">Email</option>
+			  										<option value="1">Phone</option>
+												</select>
+	    									</div>
+	    								 	<div class="col-sm-6">
+	    										<input type="text" th:field="${distributor.contacts[__${rowStat.index}__].contact}" th:placeholder="#{label.contact}" class="form-control" />
+	    									</div> 
+	    									<div  class="col-sm-1">
+	    										<a class="btn btn-action" id="btn-remove" th:onclick="${'javascript:removeRow(' + rowStat.index  + ')'}" ><span class="fa fa-trash fa-btn"></span></a> 
+	    									</div>
+    									
+    									</div>
+    								<div class="row" style="text-align:center">
+										<a class="btn btn-action" id="btn-add" onclick="addRow()" style="width:125px"><span class="fa fa-plus fa-btn"></span></a> 
+			
+									</div>
+    								</div>
+								</div>
+								</div></div>
+														<input type="hidden" id="row" th:value="*{row}" th:field="*{row}"/> 
+								<div class="line-separation"></div>
+								
+								
+								<div class="form-group">
+									<label class="col-sm-4 control-label"  th:text="#{label.after.distributor}"></label>
+    								<div class="col-sm-8">
+      									  <input type="checkbox" class="js-switch" th:field="*{next}"></input>
+    								</div>
+								</div>
+	                			
+                				<div class="row">
+		                    		<div class="form-btn">
+		                        		<button type="submit" class="btn btn-custom"> <span class="fa fa-save"></span><span th:text="#{label.save.distributor}"></span> </button>
+		                    		</div>
+	                    		</div>
+		 					</form>
+                  		</div>
+					</div>
+				</div>
+			</div>
+			<script type="text/javascript" th:src="@{/js/switchery/switchery.min.js}"></script> 
+			<script type="text/javascript" th:src="@{/js/distributor.add.js}"></script> 
+		</div>
+	</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+	</head>
+
+	<body onload="noPaginatedTable()">
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="col-md-10 col-md-offset-1 list-space">
+			
+				<h2 th:text="#{label.seller}"></h2>
+				
+				<!-- <div th:if="${session.step != null  }"><div th:replace="templates/fragments/assistant :: assistant" ></div></div>  -->
+				 <!-- and session.step == 3 -->
+				
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+	
+				
+				<div class="action-row" th:if="${#authorization.expression('hasRole(''ROLE_SUPERADMIN'')')}">
+					<div class="action-wrapper row">
+						<div class="col-md-6" >
+							<a th:href="@{/seller/add?businessId=0}" title="Add" class="btn btn-action"><span class="fa fa-plus fa-btn"></span></a>
+							<a th:href="@{/seller/upload}" class="btn btn-action"><span class="fa fa-upload fa-btn"></span></a>
+							
+						</div>
+						<div class="col-md-6 btn-list-state">
+					  		<a th:class="${state == 1?'btn btn-primary active':'btn btn-primary'}" th:href="@{/seller/list(state=1)}">Active</a>
+					  		<a th:class="${state == 0?'btn btn-primary active':'btn btn-primary'}" th:href="@{/seller/list(state=0)}">Inactive</a>
+					  		<a th:class="${state == 2?'btn btn-primary active':'btn btn-primary'}" th:href="@{/seller/list(state=2)}">All</a>
+						</div>
+					</div>
+				</div>
+		
+				<table id="table" class="table table-hover">
+					<thead>
+			            <tr>
+              	 			<th th:text="#{label.name}"></th>
+			                <th th:text="#{label.equipment}"></th>
+			                <th th:text="#{label.region}"></th>
+			                 <th class="no-sorting"></th>
+			            </tr>
+        			</thead>
+			        <tbody>
+			        	<tr th:each="s : ${sellerList}">
+			        		<td>
+			        			<a th:href="@{/seller/get(id=${s.id})}">
+			        				<img width="30" onclick="window.open(this.src)" class="img-circle lazy" th:attr="data-original=${s.photo}" ></img>
+			        				<span class="strong" th:text="${s.name + ' ' + s.surname}"></span>
+			        			</a>
+			        		</td>
+			    			<td>
+				    			<span th:if="${s.business!=null and #arrays.length(s.business)!=0}" th:each="b : ${s.business}" th:text="${b.name}"></span>
+				    			<span th:if="${s.business==null or  #arrays.length(s.business)==0}" >-</span>
+				    		</td>
+				    		<td>
+				    			<span th:if="${s.region!=null}" th:text="${s.region.name}"></span>
+				    			<span th:if="${s.region==null}" >-</span>
+				    		</td>
+			    			<td>
+			    				<a class="btn btn-mini btn-xs btn-info" th:href="@{/seller/get(id=${s.id})}"><span class="fa fa-list-alt fa-btn"></span><span th:text="#{label.see}"></span></a>
+			    				<a class="btn btn-mini btn-xs btn-success" th:href="@{/seller/edit(id=${s.id})}"><span class="fa fa-pencil fa-btn"></span><span th:text="#{label.edit}"></span></a>
+			    			</td>
+						</tr>
+			        </tbody>
+				</table>
+				<div th:replace="templates/fragments/mdl :: mdl" ></div> 
+			</div>
+			<script type="text/javascript" th:src="@{/js/jquery.lazyload.js}"></script>  
+			<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+		</div>
+	</body>
+</html>

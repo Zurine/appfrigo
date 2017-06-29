@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link th:href="@{/css/croppie.css}" rel="stylesheet" type="text/css"/> 
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="x_data col-md-8 col-md-offset-2">
+			
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+			
+				<form action="#" th:object="${user}" th:action="@{/settings/profile}" method="post" enctype="multipart/form-data" class="form-horizontal form-label-left">
+			
+					<div class="action-row">
+						<div class="action-wrapper">
+							<a th:href="@{/settings/profile}" title="Profile" class="btn btn-action active"><span class="fa fa-user fa-btn"></span></a>
+							<a th:href="@{/settings/changePassword}" title="Change Password" class="btn btn-action"><span class="fa fa-lock fa-btn"></span></a>
+							<a th:href="@{/settings/support}" title="Support" class="btn btn-action"><span class="fa fa-support fa-btn"></span></a>
+						</div>
+					</div>
+		
+					<div class="row panel-row">
+            			<div class="col-md-12 animated fadeInDown">
+                    		<div class="well profile_view">
+                        		<div class="col-sm-12">
+                        		
+                           			<h4 class="brief"><i th:text="#{label.user}"></i></h4>
+	                                <div class="left col-xs-8">
+                                  		<h2 th:text="${user.name}"></h2>
+
+										<div class="row">
+	   							 			<div class="col-md-4 detail-label" th:text="#{label.name}">: </div>
+	   							 			<div class="col-md-8" style="word-wrap:break-word;"><span th:text="*{name}"></span></div>
+	   							 		</div>
+		   							 		
+	 									<div class="row">
+	   							 			<div class="col-md-4 detail-label" th:text="#{label.email}">: </div>
+	   							 			<div class="col-md-8" th:text="*{email}" style="word-wrap:break-word;"></div>
+	   							 		</div>
+		   							 		
+	   							 		<div class="row">
+	   							 			<div class="col-md-4 detail-label" th:text="#{label.profile}">: </div>
+	   							 			<div class="col-md-8" style="word-wrap:break-word;">  
+	   							 				<span th:text="*{typeDesc}" style="text-transform: capitalize;"></span>
+	   							 			</div>
+	   							 		</div>
+	   							 		
+	   							 		<div class="row" th:if="${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')}">
+	   							 			<div class="col-md-4 detail-label" th:text="#{label.enterprise.current}">: </div>
+	   							 			<div class="col-md-8">
+   							 					<select id="enterprise" class="form-control" onchange="updateEnterprise()" th:if="${#arrays.length(enterpriseList)>1}">  <!--  th:field="*{category.id}" th:value="*{category.id}" -->
+													<option th:each="e : ${enterpriseList}" th:value="${e.id}" th:text="${e.name}"></option>
+												</select>
+												<span th:if="${#arrays.length(enterpriseList)>0}" th:text="${enterpriseList[0].name}"></span>
+	   							 			</div>
+	   							 		</div>
+		   							</div>
+                        
+	                               	<div class="right col-xs-4 text-center">
+			                    		<div class="img-reponsive">
+			                               <div class="image view view-first">
+			                                    <img style="display: block;" th:src="*{image.path}" alt="image" width="200"></img>
+			                                </div>
+                             		 	</div>
+			                    		<div id="profile-basic"></div>
+	                               	</div>
+	                               
+	                               	<div class="action-wrapper">
+	                               		<input type="file" id="file" th:field="*{image.file}" th:value="*{image.file}" onchange="uploadImage()" class="inputfile"/>
+	                               		<label for="file" class="btn btn-mini btn-xs btn-success btn-action"><span class="fa fa-picture-o fa-btn"></span><span th:text="#{label.edit}"></span></label>
+	               						<button type="submit" name="addFile" id="addFile" style="display:none"></button> 
+			    						<a class="btn btn-mini btn-xs btn-danger" onclick="$('#fileDone').click()"><span class="fa fa-floppy-o fa-btn"></span><span th:text="#{label.save.file}"></span></a>
+				                 		<button type="submit" name="fileDone" id="fileDone" onclick="updateFileData()" style="display:none"></button> 
+									</div>
+	                               
+	                               <!-- Image -->		        
+			                    	<input type="hidden" th:value="${crop}" id="crop"></input>
+			                    	<input type="hidden" th:field="*{image.path}" th:value="*{image.path}"  id="image.path"  />
+								   	<input type="hidden" th:field="*{image.zoom}" th:value="*{image.zoom}"  id="image.zoom"  />
+								   	<input type="hidden" th:field="*{image.x}" th:value="*{image.x}"  id="image.x"  />
+								   	<input type="hidden" th:field="*{image.y}" th:value="*{image.y}"  id="image.y"  />
+								   	<input type="hidden" th:field="*{image.w}" th:value="*{image.w}"  id="image.w"  />
+								   	<input type="hidden" th:field="*{image.h}" th:value="*{image.h}"  id="image.h"  />   	
+								   	<input type="hidden" th:field="*{name}" th:value="*{name}"  id="user.name"  />
+								   	<input type="hidden" th:field="*{email}" th:value="*{email}"  id="user.email"  />
+								   	<input type="hidden" th:field="*{typeDesc}" th:value="*{typeDesc}"  id="user.typeDesc"  />
+                        		</div>
+                    		</div>
+            			</div>
+	            	</div>
+	    		</form>
+            	<script type="text/javascript" th:src="@{/js/croppie.js}"></script>
+            	<script type="text/javascript" th:src="@{/js/profile.js}"></script>
+			</div>
+		</div>
+	</body>
+</html>

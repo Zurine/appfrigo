@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link th:href="@{/css/croppie.css}" rel="stylesheet" type="text/css"/>  
+		<link th:href="@{/css/switchery/switchery.min.css}" rel="stylesheet" type="text/css"/>   
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="x_data col-sm-10 col-sm-offset-1">
+		
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+				
+       			<div class="x_panel">
+       				<div class="x_panel_content">
+       		
+		           		<div class="x_title">
+		                	<h2 th:text="${title}"></h2>
+		                    <div class="clearfix"></div>
+		                 </div>
+							
+						
+						<form class="form-horizontal" action="#" th:object="${notification}" th:action="@{/notification/seller/add}" method="post" accept-charset="UTF-8" enctype="multipart/form-data" >
+							<input type="hidden" th:field="*{id}" th:value="*{id}"></input> 
+								
+			                <div class="form-group" style="margin-bottom: 2%">
+			                  <div class="note col-sm-10 col-sm-offset-1" th:text="#{label.notification.info}"></div>
+			                </div>
+								
+							<div class="form-group">
+   								<label class="col-sm-2 control-label"  th:text="#{label.title}"></label>
+   								<div class="col-sm-10">
+									<input type="text" th:field="*{title}" th:placeholder="#{label.title}" class="form-control" />    								
+								</div>
+							</div>
+								
+							<div class="form-group">
+   								<label class="col-sm-2 control-label"  th:text="#{label.message}"></label>
+   								<div class="col-sm-10">
+									 <textarea th:field="*{message}" th:placeholder="#{label.message}" class="form-control"></textarea>   								
+								</div>
+							</div>
+	                    	
+                    					<!-- Image -->
+								<div class="form-group">
+								   	<div class="col-sm-6">
+								   		<div class="thumbnail" id="image-basic">
+			                            	<div class="image view view-first">
+			                                    <img style="display: block;" th:src="*{image.path}"  alt="image" width="180" ></img>
+			                                    <div class="mask">
+			                                        <p th:text="*{image.path}" ></p>
+			                                    </div>
+			                                </div>
+	                             		 </div>
+				                    	<div id="demo-basic"></div>
+									</div>
+								   <div class="col-sm-6 image-file">
+								   	 	<div class="form-group">
+                    		 			 	<input type="file" id="file" th:field="*{image.file}" th:value="*{image.file}" onchange="uploadImage()" class="inputfile col-sm-2"/>
+		                    				<label for="file" class="btn btn-small"><span class="fa fa-pencil"></span></label>
+		                    				<button type="submit" name="addFile" id="addFile" style="display:none"></button> 
+			                    			<button type="submit" name="fileDone" id="save-file" class="btn btn-custom btn-small" onclick="updateFileData()"><span class="fa fa-save"></span></button> 
+			                    		</div>
+							   	 	</div>
+							   	 </div>
+													
+							<div class="form-group">
+								<label class="col-sm-4 control-label"  th:text="#{label.after.notif}"></label>
+   								<div class="col-sm-8">
+     									  <input type="checkbox" class="js-switch" th:field="*{next}"></input>
+   								</div>
+							</div>
+			                
+               				<div class="row">
+	                    		<div class="form-btn">
+	                        		<button type="submit" class="btn btn-custom"><span class="fa fa-save"></span><span th:text="#{label.save.notification}"></span> </button>
+	                    		</div>
+                    		</div>
+                    		<input type="hidden" th:value="${crop}" id="crop"></input>
+							   	<input type="hidden" th:field="*{image.path}" th:value="*{image.path}" id="image.path"></input>
+							   	<input type="hidden" th:field="*{image.zoom}" th:value="*{image.zoom}" id="notification.image.zoom"></input>
+							   	<input type="hidden" th:field="*{image.x}" th:value="*{image.x}" id="image.x"></input>
+							   	<input type="hidden" th:field="*{image.y}" th:value="*{image.y}" id="image.y"></input>
+							   	<input type="hidden" th:field="*{image.w}" th:value="*{image.w}" id="image.w"></input>
+							   	<input type="hidden" th:field="*{image.h}" th:value="*{image.h}" id="image.h"></input>
+			 			</form>
+	                </div>
+				</div>
+			</div>
+			<script type="text/javascript" th:src="@{/js/croppie.js}"></script>
+			<script type="text/javascript" th:src="@{/js/switchery/switchery.min.js}"></script> 
+			<script type="text/javascript" th:src="@{/js/notif.seller.add.js}"></script> 
+		
+		</div>
+	</body>
+</html>

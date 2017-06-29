@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head></head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="x_data col-md-10 col-md-offset-1">
+			
+				<h2 th:text="${product.name + ' Product'}"></h2>
+	
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+				
+				<div class="action-row">
+					<div class="action-wrapper">
+						<a th:href="@{/product/edit(id=${product.id})}" class="btn btn-action"><span class="fa fa-pencil fa-btn"></span></a>
+						<a th:if="${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')}" data-toggle="modal" data-target="#confirm-delete" class="btn btn-action"><span class="fa fa-trash fa-btn"></span></a>
+						<a id="delete" th:href="@{/product/delete(id=${product.id})}" style="display:none"></a> 
+					</div>
+				</div>
+				
+	        	<div class=" row panel-row">
+            		<div class="col-sm-8 col-xs-12 animated fadeInDown">
+            			<div class="profile_view">
+            				<div class="view-header" th:text="${product.name + ' Details'}"></div>
+                    		<div class="view-body row">	
+                    			<div class="col-md-8">
+	                    			<div class="row">
+	   							 		<div class="col-md-4 detail-label" th:text="#{label.description}"> </div>
+	   							 		<div class="col-md-8" th:text="${product.description}"></div>
+	   							 	</div>
+							 		<div class="row">
+	  							 		<div class="col-md-4 detail-label" th:text="#{label.product.price}"></div>
+	  							 		<div class="col-md-8" th:text="${product.price}"></div>
+	  							 	</div>
+	   								
+		 							<div class="row">
+		   							 	<div class="col-md-4 detail-label" th:text="#{label.category}"></div>
+		   							 	<div class="col-md-8" th:if="${product.category!=null || product.category.id!=0}" th:text="${product.category.name}"></div>
+		   							 	<div class="col-md-8" th:if="${product.category==null || product.category.id == 0}"> - </div>
+		   							</div>
+	   							 	
+	   							 	<div class="row">
+	   							 		<div class="col-md-4 detail-label" th:text="#{label.state}"></div>
+	   							 		<div class="col-md-8">
+	   							 			<a th:href="@{/product/activate(id=${product.id},state=false)}"><span th:if="${product.active} == true" class="fa fa-toggle-on fa-btn"></span></a>
+				    						<a th:href="@{/product/activate(id=${product.id},state=true)}"><span th:if="${product.active} == false" class="fa fa-toggle-off fa-btn"></span></a>                
+	   							 		</div>
+	   							 	</div>
+	   							 </div>
+	   							  <div class="col-md-4">
+		   							 <img th:if="${product.url!=null}" th:src="${product.url}" width="120" class="img-responsive" onclick="window.open(this.src)"></img>
+	                                <img th:if="${product.url==null}" th:src="@{/images/SoyFrigo.png}" width="120" class="img-responsive" onclick="window.open(this.src)"></img>
+		   						</div>
+                  			</div>
+                     	</div>
+                     	
+                     	 <div class="profile_view">
+                       		<div class="view-header" th:text="#{label.componets}"></div>
+                       		<div class="view-body">	
+                              	 <table class="table table-striped custab" th:if="${product.composition != null and #arrays.length(product.composition)!=0 }">
+								    <thead>
+								        <tr>
+								            <th th:text="#{label.name}"></th>
+								            <th th:text="#{label.product.amount}"></th>
+								            <th th:text="#{label.product.quantity}"></th>
+								        </tr>
+							    	</thead>
+						            <tr th:each="c : ${product.composition}">
+						                <td th:text="${c.category.name}"></td>
+						                <td th:text="${c.amount}"></td>
+						                <td th:text="${c.quantity}"></td>
+						            </tr>
+   		 						</table>
+                              	<div th:if="${product.composition == null or #arrays.length(product.composition)==0 }" th:text="#{label.component.no}"></div>
+                       		</div>
+                        </div>
+                    </div> 
+                    
+                   	<div class="col-sm-4 col-xs-12">
+                    	<div th:if="${product.data!=null}" class="view-data">
+                    		<div class="view-block block-green" title="Equipments"><span th:text="${product.data.equipments}"></span><i class="fa fa-bicycle"></i></div>
+                    		<div class="view-block block-yellow" title="Pieces" ><span th:text="${#numbers.formatDecimal(product.data.sales, 1, 'COMMA', 0, 'POINT')}"></span><span class="fa fa-eur-text" th:text="${#authentication.principal.currency}"></span></div>
+                    		<div class="view-block block-blue" title="Total"><span th:text="${product.data.amount}"></span><img th:src="@{/images/magnumBlue.png}" class="fa" width="20"></img></div>
+                    	</div>
+                    	<div th:if="${product.data==null}" class="view-data" th:text="#{label.info.product}"></div>
+                    </div>
+	             </div>
+	             <div th:replace="templates/fragments/mdl :: mdl" ></div> 
+	         </div>
+
+		</div>
+	</body>
+</html>

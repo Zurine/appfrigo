@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="templates/home">
+
+<head>
+<link rel="stylesheet"
+	href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css" />
+</head>
+
+<body>
+	<div layout:fragment="content" class="row">
+
+		<div class="col-md-8 col-md-offset-2" style="margin-top: 6%">
+
+			<h2 th:text="#{label.beacons}"></h2>
+
+			<div th:replace="templates/fragments/msg :: msg"></div>
+
+			<div class="action-row">
+				<div class="action-wrapper">
+					<a th:href="@{/beacon/add}" title="Add" class="btn btn-action"
+						th:alt="#{label.add.beacon}"><span class="fa fa-plus fa-btn"></span></a>
+				</div>
+			</div>
+
+			<table id="table" class="table table-hover">
+				<thead>
+					<tr>
+						<th th:text="#{label.name}"></th>
+						<th th:text="#{label.description}"></th>
+						<th th:text="#{label.equipment}"></th>
+						<th th:text="#{label.state}"></th>
+						<th th:text="#{label.edit}"></th>
+						<th th:text="#{label.see}"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="b : ${beaconList}">
+						<td th:text="${b.name}"></td>
+						<td th:text="${b.description}"></td>
+						<td><span th:if="${b.business} != null"
+							th:text="${b.business.name}"></span> <span
+							th:if="${b.business} == null">-</span></td>
+						<td><a th:href="@{/beacon/activate(id=${b.id},state=false)}"><span
+								th:if="${b.active} == true" class="fa fa-toggle-on fa-btn"></span></a>
+							<a th:href="@{/beacon/activate(id=${b.id},state=true)}"><span
+								th:if="${b.active} == false" class="fa fa-toggle-off fa-btn"></span></a>
+						</td>
+						<td><a th:href="@{/beacon/edit(id=${b.id})}"><span
+								class="fa fa-pencil fa-btn"></span></a></td>
+						<td><a th:href="@{/beacon/get(id=${b.id})}"><span
+								class="fa fa-list-alt fa-btn"></span></a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<script
+			src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+		<script
+			src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+		<script type="text/javascript" th:src="@{/js/channel.js}"></script>
+	</div>
+</body>
+</html>

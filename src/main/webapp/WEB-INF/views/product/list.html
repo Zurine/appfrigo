@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+	</head>
+
+	<body onload="noPaginatedTable()">
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="col-md-10 col-md-offset-1 list-space">
+			
+				<h2 th:text="#{label.products}"></h2>
+				
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+				
+				<div class="action-row" th:if="${#authorization.expression('hasRole(''ROLE_SUPERADMIN'')')}">
+					<div class="action-wrapper row">
+						<div class="col-md-6" >
+							<a th:href="@{/product/add}" class="btn btn-action" title="Add Product"><span class="fa fa-plus fa-btn"></span></a>
+						</div>
+						<div class="col-md-6 btn-list-state">
+					  		<a th:class="${state == 1?'btn btn-primary active':'btn btn-primary'}" th:href="@{/product/list(state=1)}" th:text="#{label.state.active}"></a>
+					  		<a th:class="${state == 0?'btn btn-primary active':'btn btn-primary'}" th:href="@{/product/list(state=0)}" th:text="#{label.state.inactive}"></a>
+					  		<a th:class="${state == 2?'btn btn-primary active':'btn btn-primary'}" th:href="@{/product/list(state=2)}" th:text="#{label.state.all}"></a>
+						</div>
+					</div>
+				</div>
+				
+				<div id="module-message">
+					<div th:fragment="fragment-message"><div th:replace="templates/fragments/mdlCustom :: mdlCustom" ></div> </div>
+				</div>
+				
+				<table id="table" class="table table-hover">
+					<thead>
+			            <tr>
+			            	<th th:text="#{label.name}"></th>
+			                <th th:text="#{label.product.price}"></th>
+			                <th th:text="#{label.state}" class="no-sorting"></th>
+			                <th class="no-sorting"></th>
+			            </tr>
+        			</thead>
+			        <tbody>
+			        	<tr th:each="p : ${productList}">
+			        		<td>
+			        			<a th:href="@{/product/get(id=${p.id})}">
+			        				<img width="30" class="img-circle lazy" th:attr="data-original=${p.url}" ></img> 
+			        				<span class="strong" th:text="${p.name}"></span>
+			        			</a>
+			        		</td>
+				    		<td th:text="${p.price}"></td>
+		    				<td>
+	    						<a th:href="@{/product/activate(id=${p.id},state=false)}"><span th:if="${p.active} == true" class="fa fa-toggle-on fa-btn"></span></a>
+			    				<a th:href="@{/product/activate(id=${p.id},state=true)}"><span th:if="${p.active} == false" class="fa fa-toggle-off fa-btn"></span></a>
+			    			</td>
+    						<td>
+ 								<a class="btn btn-mini btn-xs btn-info" th:href="@{/product/get(id=${p.id})}"><span class="fa fa-list-alt fa-btn"></span><span th:text="#{label.see}"></span></a>
+			    				<a class="btn btn-mini btn-xs btn-success" th:href="@{/product/edit(id=${p.id})}"><span class="fa fa-pencil fa-btn"></span><span th:text="#{label.edit}"></span></a>
+								<a class="btn btn-mini btn-xs btn-danger" th:onclick="${'deleteFirst(' + p.id  +')'}"><span class="fa fa-trash fa-btn"></span><span th:text="#{label.delete}"></span></a>
+			    				<a th:id="'deleteLink'+${p.id}"  id="delete" th:href="@{/product/deleteCascade(id=${p.id})}" style="display:none"></a>
+ 								
+ 							</td>
+						</tr>
+			        </tbody>
+				</table>
+				<div th:replace="templates/fragments/mdl :: mdl" ></div> 
+			</div>
+			<script type="text/javascript" th:src="@{/js/jquery.lazyload.js}"></script>  
+			<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+			<script type="text/javascript" th:src="@{/js/product.delete.js}"></script>
+		</div>
+	</body>
+
+</html>

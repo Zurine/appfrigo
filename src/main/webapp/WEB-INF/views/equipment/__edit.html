@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link th:href="@{/css/switchery/switchery.min.css}" rel="stylesheet" type="text/css"/>   
+	</head>
+
+	<body>
+
+		<div layout:fragment="content" class="row">
+			<div class="x_data col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
+		
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+			
+    			<div class="x_panel">
+       				<div class="x_panel_content">
+       		
+		           		<div class="x_title">
+		                	<h2>Edit Equipment</h2>
+		                    <div class="clearfix"></div>
+		                </div>
+			
+						<div class="x_content">
+							<form action="#" th:object="${equipment}" th:action="@{/equipment/edit}" method="post">
+								<input type="hidden" th:field="*{id}" th:value="*{id}"></input> 
+                				<input type="hidden" th:field="*{ciudad}"></input> 
+            					<input type="hidden" th:field="*{latitud}"></input> 
+            					<input type="hidden" th:field="*{longitud}"></input> 
+	                		
+	                			<div class="row">
+	                						                    		
+		                    		<div class="form-group col-md-6">
+										<label class="label-control" th:text="#{label.unilever.id}"></label>
+			                        	<input type="text" th:field="*{unileverId}" th:value="*{unileverId}" th:placeholder="#{label.unilever.id}" class="form-control uppercase" />
+			                   		</div>
+
+	                				<div class="form-group col-md-6">
+										<label class="label-control" th:text="#{label.name}"></label> 
+		                        		<input type="text" th:field="*{name}" th:value="*{name}" th:placeholder="#{label.name}" class="form-control" />
+		                    		</div>
+	                			</div>
+	                			
+	                			<div class="row">
+				                    <div class="form-group col-md-12">
+										<label class="label-control" th:text="#{label.description}"></label>
+				                        <input type="text" th:field="*{desc}" th:value="*{desc}" th:placeholder="#{label.description}" class="form-control" />
+				                    </div>
+	                			</div>
+	                			
+	                			<div class="row">
+	                				<div class="form-group col-md-6">
+										<label class="label-control" th:text="#{label.address}"></label>
+			                        	<input type="text" th:field="*{direccion}" th:value="*{direccion}" name="direccion" th:placeholder="#{label.address}" class="form-control"/> <!--  onfocus="geolocate()"  -->
+			                    	</div>
+
+	                			    <div class="form-group col-md-6">
+										<label class="label-control" th:text="#{label.image}"></label>
+			                        	<input type="text" th:field="*{photo}" th:value="*{photo}" th:placeholder="#{label.image.url}" class="form-control" />
+			                    	</div>
+	                			</div>
+	                			
+	                			<div class="row">
+	                				<div class="form-group col-md-6">
+										<label class="label-control" th:text="#{label.type}"></label>
+			                      		<select th:field="*{type.id}" th:value="*{type.id}" class="form-control">
+											<option value="0" th:text="#{label.select}"></option>
+	  										<option th:each="t : ${typeList}" th:value="${t.id}" th:text="${t.name}"></option>
+										</select>
+			                    	</div>
+	                			
+	                				<div class="form-group col-md-6">
+										<label class="label-control" th:text="#{label.numberPlate}"></label>
+		                        		<input type="text" th:field="*{numberPlate}" th:value="*{numberPlate}" th:placeholder="#{label.numberPlate}" class="form-control uppercase" />
+		                    		</div>
+	                			</div>
+	                			
+	                		  <div class="row">
+			                    	<div class="form-group col-md-3">
+										<label class="label-control" th:text="#{label.type}"></label>
+			                      		<select class="form-control" th:field="*{tax}" th:value="*{tax}">
+											<option value="0" th:text="#{label.select}"></option>
+	  										<option th:each="t : ${taxList}" th:value="${t}" th:text="${t}"></option>
+										</select>
+			                    	</div>
+			                    	<div class="form-group col-md-3">
+										<label class="label-control" th:text="#{label.product.iva}"></label>
+			                        	<input type="text" th:field="*{iva}" th:value="*{iva}" th:placeholder="#{label.product.iva}" class="form-control" />
+			                    	</div>
+			                    	
+			                    	<div class="form-group col-md-3">
+										<label class="label-control" th:text="#{inactive.time}"></label>
+			                        	<input type="text" th:field="*{inactiveTime}" th:value="*{inactiveTime}" th:placeholder="#{inactive.time}" class="form-control" />
+			                    	</div>
+			                    	
+			                    	<div class="form-group col-md-3">
+										<label class="label-control" th:text="#{active}"></label>
+										<input type="checkbox" class="js-switch" th:field="*{active}" th:value="*{active}"></input>
+				                    </div>
+			                    
+			                    </div>
+			                         
+	                			<div class="row">
+	                			  <div class="form-group col-md-6">
+										<label class="label-control" th:text="#{label.operator}"></label>
+				                      	<select th:field="*{operator.id}" th:value="*{operator.id}" class="form-control">
+											<option value="0" th:text="#{label.select}"></option>
+		  									<option th:each="o : ${operatorList}" th:value="${o.id}" th:text="${o.name}"></option>
+										</select>
+									</div>	
+	                				
+	                				  <div class="form-group col-md-6">
+										<label class="label-control" th:text="#{label.channel}"></label>
+				                      	<select th:field="*{channel.id}" th:value="*{channel.id}" class="form-control">
+											<option value="0"  th:text="#{label.select}"></option>
+		  									<option th:each="c : ${channelList}" th:value="${c.id}" th:text="${c.name}"></option>
+										</select>
+				                    </div>
+	                			</div>
+	                			
+	                			<div class="row">
+		                   	 	  <div class="form-group col-md-6">
+										<label class="label-control" th:text="#{label.region}"></label>
+				                      	<select th:field="*{region.id}" th:value="*{region.id}"  class="form-control" onchange="submitData()"> 
+											<option value="0" th:text="#{label.select}"></option>
+		  									<option th:each="r : ${regionList}" th:value="${r.id}" th:text="${r.name}"></option>
+										</select>
+										<button type="submit" name="getDistributor" id="getDistributor" style="display:none"></button>
+			                    	</div>
+			                    
+			                        <div class="form-group col-md-6">
+										<label class="label-control" th:text="#{label.distributor}"></label>
+				                      	<select th:field="*{distributor.id}" th:value="*{distributor.id}"  class="form-control">
+											<option value="0" th:text="#{label.select}"></option>
+		  									<option th:each="c : ${distributorList}" th:value="${c.id}" th:text="${c.concession}"></option>
+										</select>
+				                    </div>
+	                			</div>
+	                				<div class="row">
+		                    		<div class="form-btn">
+		                        		<input type="submit" th:value="#{equipment.save}" class="btn btn-custom"/>
+		                    		</div>
+		                    	</div>
+		 					</form>
+                  		</div>
+					</div>
+				</div>
+			</div>
+	 	 	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;signed_in=true&amp;libraries=places"> </script>
+			<script type="text/javascript" th:src="@{/js/googleMaps.js}"></script> 
+			<script type="text/javascript" th:src="@{/js/businessAdd.js}"></script> 
+			<script type="text/javascript" th:src="@{/js/switchery/switchery.min.js}"></script> 
+		</div>
+	</body>
+</html>

@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2017 by original authors @ fontello.com</metadata>
+<defs>
+<font id="fontello" horiz-adv-x="1000" >
+<font-face font-family="fontello" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="kiosk" unicode="&#xe800;" d="M1206 455l-100 378h-1097v-875h130c0 99 81 180 181 180 99 0 180-81 180-180h434c0 99 81 180 181 180 99 0 180-81 180-180h110v409l-199 88z m-480-7h-599v301h599l0-301 0 0z m125 0v301h191l72-301h-263z m-424 237c0 21-21 47-58 47-31 0-46-26-46-57 0-31 31-47 46-47 16 0 58-5 58 57z m687-602c-68 0-124-56-124-125 0-69 56-125 124-125 69 0 125 56 125 125 0 69-56 125-125 125z m-794 0c-69 0-125-56-125-125 0-69 56-125 125-125s124 56 124 125c0 69-56 125-124 125z m-103 427c21-36 45-26 62-14 10 7 24 18 27 11 3-5 2-42 1-74h142c0 21-1 48-1 52-2 49 35 34 90 30 24-2 84 9 96 16 28 17-4 47-40 41-66-10-76-15-155 25-26 13-91 11-116 0-35-15-62-59-73-51-8 6-18 35-31 64-8 18-23 41-40 32-17-9-15-33-6-50 0 0 29-59 44-82z" horiz-adv-x="1414" />
+</font>
+</defs>
+</svg>

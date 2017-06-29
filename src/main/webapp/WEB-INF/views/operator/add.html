@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>	
+		<link th:href="@{/css/croppie.css}" rel="stylesheet" type="text/css"/>  
+		<link th:href="@{/css/switchery/switchery.min.css}" rel="stylesheet" type="text/css"/>   
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="x_data col-sm-10 col-sm-offset-1">
+		
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+		
+       			<div class="x_panel">
+       				<div class="x_panel_content">
+       		
+		           		<div class="x_title">
+		                	<h2 th:text="${title}"></h2>
+		                    <div class="clearfix"></div>
+		                 </div>
+		
+						<div class="x_content">
+						
+							<form class="form-horizontal" action="#" th:object="${operator}" th:action="@{/operator/add}" method="post"   accept-charset="UTF-8" enctype="multipart/form-data" >
+								<input type="hidden" th:value="*{id}" th:field="*{id}"></input> 
+								
+								<div class="form-group">
+    								<label class="col-sm-2 control-label"  th:text="#{label.cif}"></label>
+    								<div class="col-sm-10">
+      									<input type="text" th:field="*{cif}" th:value="*{cif}" th:placeholder="#{label.cif}" class="form-control" />
+    								</div>
+								</div>
+								
+								<div class="form-group">
+    								<label class="col-sm-2 control-label"  th:text="#{equipment.fiscal}"></label>
+    								<div class="col-sm-10">
+      									  <input type="text" th:field="*{name}" th:value="*{name}" th:placeholder="#{equipment.fiscal}" class="form-control" />
+    								</div>
+								</div>
+								
+	                    		<div class="form-group">
+    							<!-- 	<label class="col-sm-2 control-label"  th:text="#{label.currency}"></label>
+    								<div class="col-sm-4">
+      									 <select th:field="*{currencyId}" th:value="*{currencyId}" class="form-control" >
+	  										<option th:each="c : ${currencies}" th:value="${c.key}" th:text="${c.value}" ></option>
+										</select>
+    								</div> -->
+    								
+    								<label class="col-sm-2 control-label"  th:text="#{label.timezone}"></label>
+    								<div class="col-sm-4">
+      									 <select id="timezone2" th:field="*{zone}" th:value="*{zone}" class="form-control">
+			                         	 	<option value="">Select Timezone</option> 
+	  										<option th:each="t : ${timezoneList}" th:value="${t.name}" th:text="${t.name}" ></option>
+										</select>
+    								</div>
+    								
+									<label class="col-sm-2 control-label">Stock Management</label>
+    								<div class="col-sm-4">
+    									<input type="checkbox" class="js-switch" th:field="*{stock}" th:value="*{stock}"></input>
+    								</div>
+    								
+								</div>
+								<!-- Image -->
+								<div class="form-group">
+								   	<div class="col-sm-6">
+								   		<div class="thumbnail" id="image-basic">
+			                            	<div class="image view view-first">
+			                                    <img style="display: block;" th:src="*{image.path}"  alt="image" width="180" ></img>
+			                                    <div class="mask">
+			                                        <p th:text="*{image.path}" ></p>
+			                                    </div>
+			                                </div>
+	                             		 </div>
+				                    	<div id="demo-basic"></div>
+									</div>
+								   <div class="col-sm-6 image-file">
+								   	 	<div class="form-group">
+                    		 			 	<input type="file" id="file" th:field="*{image.file}" th:value="*{image.file}" onchange="uploadImage()" class="inputfile col-sm-2"/>
+		                    				<label id="edit-file" for="file" class="btn btn-small"><span class="fa fa-pencil"></span></label>
+		                    				<button type="submit" name="addFile" id="addFile" style="display:none"></button> 
+			                    			<button id="save-file" type="submit" name="fileDone" class="btn btn-custom btn-small" onclick="updateFileData()"><span class="fa fa-save"></span></button> 
+			                    	
+			                    		</div>
+							   	 	</div>
+							   	 </div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label"  th:text="#{labe.active.operator}"></label>
+    								<div class="col-sm-10">
+      									  <input type="checkbox" class="js-switch" th:field="*{active}" th:value="*{active}"></input>
+    								</div>
+								</div>
+								<div class="line-separation"  th:if="*{id == 0}"></div>
+								
+								<div class="form-group" th:if="*{id == 0}">
+									<div class="col-sm-12" onclick="showOperatorUser()"><span id="fa-plus-icon" class="fa fa-plus action-fa"></span><span>Add Operator User</span></div>
+								</div>
+								
+								<div id="operator-user" style="display: none" th:if="*{id == 0}">
+								
+									<div class="form-group">
+	    								<label class="col-sm-2 control-label" th:text="#{label.name}"></label>
+	    								<div class="col-sm-4">
+											<input type="text" th:field="*{user.name}" th:value="*{user.name}" th:placeholder="#{label.name}" class="form-control" />    							
+										</div>
+	    								<label class="col-sm-2 control-label" th:text="#{label.surname}"></label>
+	    								<div class="col-sm-4">
+											<input type="text" th:field="*{user.surname}" th:value="*{user.surname}" th:placeholder="#{label.surname}" class="form-control" />    							
+										</div>
+									</div>
+								
+									
+									<div class="form-group">
+	    								<label class="col-sm-2 control-label" th:text="#{label.email}"></label>
+	    								<div class="col-sm-10">
+											<input type="text" th:field="*{user.email}" th:value="*{user.email}" th:placeholder="#{label.email}" class="form-control" />		
+										</div>
+									</div>
+								
+									<div class="form-group">
+	    								<label class="col-sm-2 control-label" th:text="#{label.password}"></label>
+	    								<div class="col-sm-4">
+											<input type="password" th:field="*{user.password}" th:value="*{user.password}" th:placeholder="#{label.password}" class="form-control" />		
+										</div>
+										<label class="col-sm-2 control-label" th:text="#{label.rep.password}"></label>
+	    								<div class="col-sm-4">
+											<input type="password" th:field="*{user.passwordRep}" th:value="*{user.passwordRep}" th:placeholder="#{label.rep.password}" class="form-control" />		
+										</div>
+									</div>
+								
+									<div class="form-group">
+										<label class="col-sm-4 control-label"  th:text="#{label.active.user}"></label>
+	    								<div class="col-sm-8">
+	    									<input type="checkbox" class="js-switch" th:field="*{active}" th:value="*{active}"></input>
+	    								</div>
+									</div>
+									
+								</div>
+								
+								<div class="line-separation"></div>
+								
+								<div class="form-group">
+									<label class="col-sm-4 control-label"  th:text="#{label.after.equipments}"></label>
+    								<div class="col-sm-8">
+      									  <input type="checkbox" class="js-switch" th:field="*{next}"></input>
+    								</div>
+								</div>
+
+                				<div class="row">
+		                    		<div class="form-btn"> <!--  onclick="saveTimezone()" -->
+		                        		<button type="submit" class="btn btn-custom"> <span class="fa fa-save"></span><span>Save Operator</span> </button>
+		                    		</div>
+	                    		</div>
+                  		        <input type="hidden" th:value="${crop}" id="crop"></input>
+							   	<input type="hidden" th:field="*{image.path}" th:value="*{image.path}" id="image.path"></input>
+							   	<input type="hidden" th:field="*{image.zoom}" th:value="*{image.zoom}" id="image.zoom"></input>
+							   	<input type="hidden" th:field="*{image.x}" th:value="*{image.x}" id="image.x"></input>
+							   	<input type="hidden" th:field="*{image.y}" th:value="*{image.y}" id="image.y"></input>
+							   	<input type="hidden" th:field="*{image.w}" th:value="*{image.w}" id="image.w"></input>
+							   	<input type="hidden" th:field="*{image.h}" th:value="*{image.h}" id="image.h"></input>
+			 			
+			 				</form>
+	                  	</div>
+					</div>
+				</div>
+			</div>
+			<script type="text/javascript" th:src="@{/js/switchery/switchery.min.js}"></script> 
+			<script type="text/javascript" th:src="@{/js/croppie.js}"></script>
+			<script type="text/javascript" th:src="@{/js/operator.add.js}"></script> 
+		</div>
+	</body>
+</html>

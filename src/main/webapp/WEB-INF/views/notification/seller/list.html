@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+	</head>
+
+	<body onload="paginatedTable()">
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="col-md-10 col-md-offset-1 list-space">
+			
+				<h2 th:text="#{label.notifications}"></h2>
+				
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+						
+				<div class="action-row">
+					<div class="action-wrapper">
+						<a th:href="@{/notification/seller/add}" title="Add" class="btn btn-action"><span class="fa fa-plus fa-btn"></span></a>
+					</div>
+				</div>
+				
+				<table id="table" class="table table-hover">
+					<thead>
+	            		<tr>
+	                		<th th:text="#{label.title}"></th>
+	                		<th class="no-sorting"></th>
+	            		</tr>
+	        		</thead>
+			        <tbody>
+			        	<tr th:each="n : ${notificationList}">
+				    		<td><span class="strong" th:text="${n.title}"></span></td>
+	    		 			<td>
+	    		 				<a class="btn btn-mini btn-xs btn-info" th:href="@{/notification/seller/get(id=${n.id})}"><span class="fa fa-list-alt fa-btn"></span><span th:text="#{label.see}"></span></a>
+			    				<a class="btn btn-mini btn-xs btn-success" th:href="@{/notification/seller/edit(id=${n.id})}"><span class="fa fa-pencil fa-btn"></span><span th:text="#{label.edit}"></span></a>
+			    				<a class="btn btn-mini btn-xs btn-warning" th:href="@{/notification/seller/send(id=${n.id})}"><span class="fa fa-send fa-btn"></span><span th:text="#{label.send}"></span></a>
+			    				<a class="btn btn-mini btn-xs btn-danger" data-toggle="modal" data-target="#confirm-delete" th:onclick="${'loadId(' + n.id  +')'}"><span class="fa fa-trash fa-btn"></span><span th:text="#{label.delete}"></span></a>
+								<a th:id="'deleteLink'+${n.id}"  id="delete" th:href="@{/notification/seller/delete(id=${n.id})}" style="display:none"></a>
+			    			
+			    			</td>
+						</tr>
+			        </tbody>
+				</table>
+				<div th:replace="templates/fragments/mdl :: mdl" ></div> 
+			</div>
+			<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+		</div>
+
+	</body>
+
+</html>

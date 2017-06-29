@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link th:href="@{/css/multiselect/bootstrap-multiselect.css}" rel="stylesheet" type="text/css"/>
+		<link th:href="@{/css/switchery/switchery.min.css}" rel="stylesheet" type="text/css"/>   
+		<link th:href="@{/css/datepicker/bootstrap-datetimepicker.min.css}" rel="stylesheet" type="text/css"/>   
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="x_data col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
+		
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+		
+       			<div class="x_panel">
+       				<div class="x_panel_content">
+       		
+		           		<div class="x_title">
+		                	<h2 th:text="#{label.create.promotion}"></h2>
+		                    <div class="clearfix"></div>
+		                 </div>
+		
+						<div class="x_content" th:fragment="codeDiv">
+						
+							<form id="promotion" action="#" th:object="${promotion}" th:action="@{/equipment/promotion/add}" method="post">
+								<input type="hidden" th:field="*{business.id}" th:value="*{business.id}"></input> 
+								<input type="hidden" id="timeZone" th:field="*{timeZone}"></input> 
+								
+								<div id="module_code" ><input type="hidden" th:field="*{promotion.redimible}" th:value="*{promotion.redimible}"></input> </div>
+								
+	                    		<div class="row">
+		                			<div class="form-group col-md-6">
+										<label class="label-control" th:text="#{label.beacon}"></label>
+			                         	<select th:field="*{beacon.id}" class="form-control" >
+	  										<option th:each="b : ${beaconList}" th:value="${b.id}" th:text="${b.name}"></option>
+										</select>
+				                    </div>
+			                    	<div class="form-group col-md-6">
+										<label class="label-control" th:text="#{label.promotion}"></label>
+								     	<select th:field="*{promotion.id}" class="form-control" onchange="getCode()">
+	  										<option th:each="p : ${promotionList}" th:value="${p.id}" th:text="${p.name}"></option>
+										</select>
+			                   	 	</div>
+				                </div>
+     
+				                
+				         		<div class="row">
+			         		        <div class="form-group col-md-6"  >
+										<label th:if="*{promotion.redimible == true}"  class="label-control" th:text="#{label.code}"></label>
+				                        <input type="text" th:if="*{promotion.redimible == true}" style="display:none" th:field="*{code}" th:placeholder="#{label.code}" class="form-control" />
+		                    		</div>
+			                      	<div class="form-group col-md-6">
+										<label class="label-control" th:text="#{label.promotion.max}"></label>
+			                        	<input type="text" th:field="*{max}" th:placeholder="#{label.promotion.max}" class="form-control" />
+			                    	</div>
+				         		</div>
+				         		
+				         		<div class="row">
+			         		        <div class="form-group col-md-6" >
+										<label class="label-control" th:text="#{label.promotion.max.user.day}"></label>
+		                        		<input type="text" th:field="*{maxPerUserDay}" th:placeholder="#{label.promotion.max.user.day}" class="form-control" />
+		                    		</div>
+			                      	<div class="form-group col-md-6">
+										<label class="label-control" th:text="#{label.promotion.max.user}"></label>
+		                        		<input type="text" th:field="*{maxPerUser}" th:placeholder="#{label.promotion.max.user}" class="form-control" />
+			                    	</div>
+				         		</div>
+
+	                    		<div class="row">
+	                    		     <div class="form-group col-md-6">
+		                                <div class="input-append date form_datetime">
+								       		<input type="text" class="form-control has-feedback-left" id="fechaIni" th:field="*{fechaIni}" th:placeholder="#{label.date.start}" aria-describedby="inputSuccess2Status"/>
+			                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+			                                <span id="inputSuccess2Status" class="sr-only">(success)</span>
+										</div>
+			                        </div>
+            		           	
+         							<div class="form-group col-md-6">
+         								<div class="input-append date form_datetime">
+			                                <input type="text" class="form-control has-feedback-left" id="fechaFin" th:field="*{fechaFin}" th:placeholder="#{label.date.end}" aria-describedby="inputSuccess2Status"/>
+			                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+			                                <span id="inputSuccess2Status" class="sr-only">(success)</span>
+		                                </div>
+			                        </div>
+	                    		</div>
+	                    		<div id="timeGroup">
+		                    		<div class="row">
+	                   					<div class="form-group col-md-4">
+			                                <input type="text" class="form-control has-feedback-left" id="hora-inicio_0" name="hora-inicio_0" th:placeholder="#{label.time.start}"/> <!-- has-feedback-left aria-describedby="inputSuccess2Status" -->
+			                                <span class="fa fa-clock-o form-control-feedback left" aria-hidden="true"></span>
+	                       			 	</div>
+	                       			 	
+	                       			 	<div class="form-group col-md-4">
+			                                <input type="text" class="form-control has-feedback-left" id="hora-fin_0" name="hora-fin_0" th:placeholder="#{label.time.end}"/>
+			                                <span class="fa fa-clock-o form-control-feedback left" aria-hidden="true"></span>
+	                       			 	</div>
+	                       			 	
+	                       			 	<div class="form-group col-md-4">
+	                       			 	 	<a onclick="addMore();" th:value="#{label.time.more}"></a> 
+	                       			 	</div>
+		                    		</div>
+	                    		</div>
+	                    		<div class="row">
+	                				<div class="form-group col-md-6">
+										<label class="label-control" th:text="#{active}"></label>
+										<input type="checkbox" class="js-switch" th:field="*{active}"></input>
+			                   	 	</div>
+	                			</div> 
+       		                	<div class="row">
+		                    		<div class="form-btn">
+		                        		<a class="btn btn-custom" onclick="validate()" th:text="#{label.save.promotion}"></a>
+			                       		<input type="submit" id="submitForm" style="display:none"/>
+		                    		</div>
+	                    		</div>
+	                    		
+	                    	
+			 				</form>
+	                  	</div>
+					</div>
+				</div>
+			</div>
+			<script type="text/javascript" th:src="@{/js/switchery/switchery.min.js}"></script> 
+			<script type="text/javascript" th:src="@{/js/multiselect/bootstrap-multiselect.js}"></script>
+			<script type="text/javascript" th:src="@{/js/datepicker/daterangepicker.js}"></script>
+			<script type="text/javascript" th:src="@{/js/datepicker/bootstrap-datetimepicker.min.js}"></script>
+			<script type="text/javascript" th:src="@{/js/promotion.js}"></script>
+		</div>
+	</body>
+
+</html>

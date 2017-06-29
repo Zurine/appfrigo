@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>	
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+		<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+	 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBI2heIIbKpb6w9_1JjTDHcok5zsrVwhwM"></script>
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="col-md-10 col-md-offset-1 list-space">
+				
+				<h2 th:text="${seller.name}" ></h2> 
+		
+				<div th:if="${errormsg} !=null" class="error-wrapper col-md-6 col-md-offset-3">
+					<p th:text="${errormsg}"></p>
+				</div>
+					
+				<div th:if="${infomsg} !=null" class="info-wrapper col-md-6 col-md-offset-3">
+					<p th:text="${infomsg}"></p>
+				</div>
+					
+				<div class=" row panel-row">
+           			<div class="col-md-6 detail-wrapper">
+               			<div class="col-md-10 col-md-offset-1">
+ 							<div class="row">
+ 								<div class="col-md-2 detail-label">Equipment: </div>
+ 							 	<div class="col-md-4"  th:text="${business.name}" ></div>
+ 							 	<div class="col-md-2 detail-label">Date: </div>
+ 							 	<div class="col-md-3"  th:text="${locations.date}" ></div>
+ 							 </div>
+  							 <div class="row">
+  							 	<div class="col-md-2 detail-label">Takes: </div>
+  							 	<div class="col-md-2">
+  							 		<span th:if="${locations.boxState == 0}"><span class="fa fa-spinner fa-btn"></span></span>
+					    			<span th:if="${locations.boxState == 1}"><span class="fa fa-thumbs-o-down fa-btn"></span></span>
+					    			<span th:if="${locations.boxState == 2}"><span class="fa fa-thumbs-o-up fa-btn"></span></span>
+  							 	</div> 
+  							 	<div class="col-md-8">
+  							 		<span th:text="${locations.totalUser}"></span><span>(User)</span><span>/</span><span th:text="${locations.totalSystem}"></span><span>(System)</span>
+  							 	</div>
+  							 </div>
+ 						</div>
+                  	</div>
+               	</div>
+ 				
+				<input type="hidden" th:value="${locationData}" id="locationData"></input>
+             
+				<div style="margin-top:3%;">
+					<div class="row">
+						<div class="col-md-8 row-space">
+							<div id="map" style="height:400px;width:100%"></div>
+						</div>
+				 		<div class="col-md-4 row-space">
+							<div id="time-table">
+								<table id="table" class="table table-hover" style="margin-left: 3%">
+									<thead>
+						            	<tr>
+						                	<th>Mark</th>
+						                	<th>Date</th>
+						                	<th>Time (h)</th>
+				                			<th>Pieces</th>
+				                			<th>Total</th>
+						            	</tr>
+			        				</thead>
+						        	<tbody>
+						        		<tr th:each="l : ${locations.tracking}" >
+						        			<td><strong><span th:text="${l.label}"></span></strong></td> 
+						        			<td><span th:text="${l.date}"></span></td>  <!-- -<span th:text="${#dates.format(l.endDate, 'MM/dd hh:mm')}"></span> -->
+						        			<td><span th:text="${l.time}"></span></td>
+						        			<td th:text="${l.amount}"></td>
+						        			<td th:text="${#numbers.formatDecimal(l.value, 1,2)}"></td>  
+										</tr>
+						        	</tbody>
+								</table>
+							</div>
+						</div>
+					</div> 
+				</div>
+            </div>
+            <script type="text/javascript" th:src="@{/js/workPath.js}"></script>
+        </div>
+	</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head></head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="x_data col-md-10 col-md-offset-1">
+			
+				<h2 th:text="${seller.name +' '+seller.surname  + ' MSM'}"></h2>
+			
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+				
+				<div class="action-row">
+					<div class="action-wrapper">
+						<a th:href="@{/seller/edit(id=${seller.id})}" class="btn btn-action"><span class="fa fa-pencil fa-btn"></span></a>
+						<a th:href="@{/user/editSellerPass(id=${seller.id})}" class="btn btn-action"><span class="fa fa-lock fa-btn"></span></a>
+						<a data-toggle="modal" data-target="#confirm-delete" class="btn btn-action"><span class="fa fa-trash fa-btn"></span></a>
+						<a id="delete" th:href="@{/seller/delete(id=${seller.id})}" style="display:none"></a> 
+					</div>
+				</div>
+				
+	        	<div class=" row panel-row">
+            		
+            		<div class="col-sm-8 col-xs-12 animated fadeInDown">
+            		
+            		
+            		<div class="profile_view">
+            			<div class="view-header" th:text="${seller.name + ' Details'}"></div>
+                   		<div class="view-body row">	
+                   			<div class="col-md-8">
+                   				<div class="row">
+  							 			<div class="col-md-4 detail-label" th:text="#{label.name}"> </div>
+  							 			<div class="col-md-8" th:text="${seller.name}"></div>
+  							 		</div>
+						 		<div class="row">
+						 			<div class="col-md-4 detail-label" th:text="#{label.surname}">: </div>
+						 			<div class="col-md-8" th:text="${seller.surname}"></div>
+  							 		</div>
+ 								 <div class="row">
+  							 			<div class="col-md-4 detail-label" th:text="#{label.email}">: </div>
+						 			<div class="col-md-8" th:text="${seller.user.email}"></div>
+   							 	</div>
+  							 	<div class="row">
+   							 	 	<div class="col-md-4 detail-label" th:text="#{label.gps.state}"></div>
+   							 		<div class="col-md-8">
+	   							 		<span th:if="${seller.gps == true}" class="fa fa-toggle-on fa-btn"></span>
+			    						<span th:if="${seller.gps == false}" class="fa fa-toggle-off fa-btn"></span> 
+			    					</div>
+   							 	</div>
+   							 </div>
+   							 <div class="col-md-4">
+	   							 <img th:if="${seller.photo!=null}" th:src="${seller.photo}" width="45" class="img-responsive" onclick="window.open(this.src)"></img>
+                                <img th:if="${seller.photo==null}" src="http://appfrigo.blob.core.windows.net/products/c08e3092-022f-49ea-b61f-f774ec1d1769.png" width="45" class="img-responsive" onclick="window.open(this.src)"></img>
+	   						</div>
+                 		</div>
+                     </div>
+                     		
+                   	<div class="profile_view">
+                      	<div class="view-header" th:text="#{label.msm.equipment}"></div>
+                       	<div class="view-body">
+                       		 <table class="table table-striped custab" th:if="${seller.business!= null and #arrays.length(seller.business)!=0 }">
+							    <thead>
+							        <tr>
+							            <th th:text="#{label.name}"></th>
+							            <th class="text-center" th:text="#{label.actions}"></th>
+							        </tr>
+						    	</thead>
+					            <tr th:each="b : ${seller.business}">
+					                <td th:text="${b.name}"></td>
+					                <td class="text-center">
+					                	<a class="btn btn-mini btn-xs btn-info" th:href="@{/equipment/get(id=${b.id})}"><span class="fa fa-list-alt fa-btn"></span><span th:text="#{label.see}"></span></a>
+			    						<a class="btn btn-mini btn-xs btn-success" th:href="@{/equipment/edit(id=${b.id})}"><span class="fa fa-pencil fa-btn "></span><span th:text="#{label.edit}"></span></a>
+			    					</td>
+					            </tr>
+ 		 					</table>	
+                            <div th:if="${seller.business == null or #arrays.length(seller.business)==0}" th:text="#{label.equip.no.seller}"></div>
+                       	</div>
+                    </div> 
+	             </div>
+	             <div class="col-sm-4 col-xs-12">
+                   	<div th:if="${seller.data!=null}" class="view-data">
+                   		<div class="view-block block-green" title="Equipments"><span th:text="${seller.data.equipments}"></span><i class="fa fa-bicycle"></i></div>
+                   		<div class="view-block block-yellow" title="Pieces" ><span th:text="${#numbers.formatDecimal(seller.data.sales, 1, 'COMMA', 0, 'POINT')}"></span><span class="fa fa-eur-text" th:text="${#authentication.principal.currency}"></span></div>
+                   		<div class="view-block block-blue" title="Total"><span th:text="${seller.data.amount}"></span><img th:src="@{/images/magnumBlue.png}" class="fa" width="20"></img></div>
+                   	</div>
+                   	<div th:if="${seller.data==null}" class="view-data" th:text="#{label.info.seller}">
+                   	</div>
+                   </div>
+	             </div>
+                 <div th:replace="templates/fragments/mdl :: mdl" ></div> 
+                 <script type="text/javascript" th:src="@{/js/icheck/icheck.min.js}"></script>
+	         </div>
+		</div>
+	</body>
+</html>

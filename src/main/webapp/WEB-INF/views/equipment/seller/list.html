@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+	</head>
+
+	<body onload="noPaginatedTable()">
+
+		<div layout:fragment="content" class="row">
+		
+			<div class="col-md-10 col-md-offset-1 list-space">
+				
+				<h2 th:text="#{label.seller}"></h2>
+			
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+				
+				<div class="action-row" th:if="${#authorization.expression('hasRole(''ROLE_SUPERADMIN'')')}">
+					<div class="action-wrapper">
+						<a th:href="@{/equipment/seller/add(id=${businessId})}" title="Add" class="btn btn-action"><span class="fa fa-plus fa-btn"></span></a>
+					 
+					</div>
+				</div>
+
+				<input type="hidden" th:value="${businessId}" id="businessId"></input>
+	
+				<table id="table" class="table table-hover">
+					<thead>
+			            <tr>
+			            	<th th:text="#{label.name}"></th>
+			                <th th:text="#{label.email}"></th>
+			                <th class="no-sorting"></th>
+			            </tr>
+        			</thead>
+			        <tbody>
+			        	<tr th:each="s : ${sellerList}">
+			        		<td>
+			        			<img width="30" onclick="window.open(this.src)" class="img-circle lazy" th:attr="data-original=${s.photo}" ></img>
+			        			<span th:text="${s.name}"></span><span>&nbsp;</span><span th:if="${s.surname != null}" th:text="${s.surname}"></span>
+			        	 	</td>
+				    	 	<td th:text="${s.user.email}"></td>    
+				    	 	<td><a class="btn btn-mini btn-xs btn-info" th:href="@{/seller/get(id=${s.id})}"><span class="fa fa-list-alt fa-btn"></span><span th:text="#{label.see}"></span></a></td> 
+				    	</tr>
+			        </tbody>
+				</table>
+			</div>
+			<script type="text/javascript" th:src="@{/js/jquery.lazyload.js}"></script>  
+			<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+		</div>
+	</body>
+</html>

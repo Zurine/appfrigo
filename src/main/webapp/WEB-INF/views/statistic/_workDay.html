@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>	
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+		<link th:href="@{/css/multiselect/bootstrap-multiselect.css}" rel="stylesheet" type="text/css"/>   
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="col-md-10 col-md-offset-1">
+				
+				<h2 th:text="${seller.name}"></h2>
+				
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+		
+			  <form id="form-path" action="#" th:object="${search}" th:action="@{/statistic/getWorkDay}" method="post">
+             		<input type="hidden" th:field="*{id}" th:value="*{id}"></input>
+             	
+             	<div class="row">
+             		<div class="col-md-3">
+             		 	<select th:field="*{equipment}" th:value="*{equipment}" class="form-control">
+							<option th:each="b : ${businessList}" th:value="${b.id}" th:text="${b.name}"></option>
+						</select>
+             		</div>
+             		<div class="col-md-3">
+                              <input type="text" class="form-control has-feedback-left" id="startDate" th:field="*{startDate}" th:value="*{startDate}" placeholder="Start Date" aria-describedby="inputSuccess2Status"/>
+                              <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                              <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                      </div>
+                      <div class="col-md-3">
+                      	<input type="text" class="form-control has-feedback-left" id="endDate" th:field="*{endDate}" th:value="*{endDate}" placeholder="End Date" aria-describedby="inputSuccess2Status"/>
+                    <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                            	<span id="inputSuccess2Status" class="sr-only">(success)</span>
+             	 		</div>  
+             	 		  <div class="col-md-3">
+             	 		  <a class="btn btn-custom" onclick="submitData()"> <!--  onclick="submitData()" -->
+	                        			<i class="fa fa-search" aria-hidden="true"></i>
+	                        		</a>
+             	 		  </div>          
+             	</div>
+ 				
+ 				</form>  
+ 				
+ 				<div id="module-statistics" style="margin-top:3%">
+					<div id="list-statistics" th:fragment="resultsList"> 	
+						<table id="table" class="table table-hover">
+							<thead>
+					            <tr>
+					                <th>Start Time</th>
+					                <th>Work time</th>
+					                <th>Value</th>
+					                <th>Pieces</th>
+					                <th>Cash State</th>
+					                <th>Path</th>
+					            </tr>
+		        			</thead>
+					        <tbody>
+					        	<tr th:each="wd,rowStat : ${wk}">
+									<td><span th:text="${#dates.format(wd.date,'yyyy/MM/dd HH:mm')}"></span></td> <!-- .split(' ')[0] -->
+						    		<td><span th:text="${wd.time}"></span></td>
+						    		<td th:text="${#numbers.formatDecimal(wd.value, 1,2)}"></td>
+						    		<td th:text="${wd.amount}"></td>
+						    		<td>
+						    			<span th:if="${wd.time == '-'}"><span class="fa fa-spinner fa-btn"></span></span>
+						    			<span th:if="${wd.totalUser == wd.totalSystem and wd.time != '-'}"><span class="fa fa-thumbs-o-down fa-btn"></span></span>
+						    			<span th:if="${wd.totalUser == wd.totalSystem and wd.time != '-'}"><span class="fa fa-thumbs-o-up fa-btn"></span></span>
+						    		</td>
+						    		<td> <!-- th:onclick="'javascript:submitWorkDay(\'' + ${wd.id} + '\');'" -->
+						    			<a th:href="@{/statistic/getPath(id=${wd.id},userId=${seller.id})}"><span class="fa fa-map-marker fa-btn"></span></a>
+						    			<a th:if="${wd.latitud == 0 and wd.longitud == 0}">-</a>
+						    		</td> 
+								</tr>
+						<!-- 		<tr th:if="${total != null}" style=" background-color: #B9DDF2;">
+					        		<td>TOTAL</td>
+					        		<td></td>
+						    		<td th:text="${total.value}"></td>
+						    		<td th:text="${total.time}"></td>
+									<td></td>
+									<td></td>
+								</tr> -->
+					        </tbody>
+						</table>
+					</div>
+				</div>
+            </div>
+		<script type="text/javascript" th:src="@{/js/datepicker/daterangepicker.js}"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+			<script type="text/javascript" th:src="@{/js/multiselect/bootstrap-multiselect.js}"></script>
+			<script type="text/javascript" th:src="@{/js/workDay.js}"></script>
+		</div>
+
+	</body>
+
+</html>

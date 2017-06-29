@@ -1,0 +1,49 @@
+<html  xmlns:th="http://www.thymeleaf.org" >
+	<head></head>
+ 	<body>
+ 		<!-- Content Wrapper. Contains page content -->
+    	<div th:fragment="content" id="content" class="content-wrapper" role="main">
+   			
+ 
+    	<!-- Content Header (Page header) -->
+    	<!-- <section class="content-header">
+      <h1>
+        500 Error Page
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Examples</a></li>
+        <li class="active">500 error</li>
+      </ol>
+    </section> -->
+
+    	<!-- Main content -->
+    	<section class="content">
+    		<div class="se-pre-con"></div>
+		    <ol class="breadcrumb breadcrumb-arrow"  th:if="${breadCrumb != null}">
+		    	<li><a th:href="@{/home}"><i class="fa fa-home"></i></a></li>
+				<li th:each="b : ${breadCrumb.steps}" th:class="${b.data == null? 'active':''}">
+					<a th:href="@{${b.data}}" th:if="${b.data != null}"  th:text="${b.label}"></a>
+					<span th:if="${b.data == null}"  th:text="${b.label}"></span>
+				</li>
+			</ol>
+			<div id="content" layout:fragment="content" >
+	    			<!-- ============================================================================ -->
+		        	<!-- This content is only used for static prototyping purposes (natural templates)-->
+		        	<!-- and is therefore entirely optional, as this markup fragment will be included -->
+		        	<!-- from "fragments/header.html" at runtime.                                     -->
+		        	<!-- ============================================================================ -->
+			        <h1>Static content for prototyping purposes only</h1>
+			        <p>
+			          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+			          Praesent scelerisque neque neque, ac elementum quam dignissim interdum.
+			          Phasellus et placerat elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+			          Praesent scelerisque neque neque, ac elementum quam dignissim interdum.
+			          Phasellus et placerat elit.
+			        </p>
+			</div>
+    	</section>
+   	 	<!-- /.content -->
+   	 	</div>
+ 	</body>
+</html>

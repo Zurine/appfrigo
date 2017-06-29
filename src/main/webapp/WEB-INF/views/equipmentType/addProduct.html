@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link th:href="@{/css/multiselect/bootstrap-multiselect.css}" rel="stylesheet" type="text/css"/>    
+	</head>
+
+	<body>
+		<div layout:fragment="content" class="row">
+		
+				<div class="x_data col-sm-10 col-sm-offset-1">
+		
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+			
+       			<div class="x_panel">
+       				<div class="x_panel_content">
+       		
+		           		<div class="x_title">
+		                	<h2>Add Producto</h2>
+		                    <div class="clearfix"></div>
+		                </div>
+			
+						<div class="x_content">
+						
+							<form action="#" th:object="${product}" th:action="@{/equipmentType/addProduct}" method="post">
+	                    		<input type="hidden" id="listSimple" th:field="*{stringSimple}" th:value="*{stringSimple}"/>
+	                    		<input type="hidden" id="listCompound" th:field="*{stringCompound}" th:value="*{stringCompound}"/>
+	                    		<input type="hidden" th:field="*{business}" th:value="*{business}"/>
+	                    	
+	                    		<div class="form-group" th:if="*{products == null or #arrays.length(products)==0 }">
+	   								<label class="col-sm-2 control-label">Simple </label>
+	   								<div class="col-sm-4 flat-div">
+										<input name="type" type="radio" th:field="*{type}" th:value="0" class="flat"/> 
+									</div>
+									<label class="col-sm-2 control-label">Composed </label>
+	   								<div class="col-sm-4 flat-div">
+										<input name="type" type="radio" th:field="*{type}" th:value="1" class="flat"/> 
+									</div>
+								</div>
+								<div th:if="*{products != null and #arrays.length(products)>0 }">
+	                    			<input type="hidden" th:field="*{type}" th:value="*{type}"></input> 
+	                    		</div>
+	                    		
+	                			<div class="form-group simple-data col-md-12">
+									<label class="col-sm-2 control-label"  th:text="#{label.product}"></label>
+									<div class="col-sm-10">
+				                       	<select id="product-select" th:field="*{products}" onchange="updatePrice(this)" multiple="multiple"  class="form-control">
+		                       		  		<optgroup th:each="c : ${productList}" th:label="${c.name}" onclick="updatePriceCategory(this)">   
+			                      	   	  		<option th:each="p : ${c.products}" th:value="${p.id}" th:text="${p.name}"> <!--  th:onclick="${'javascript:callComposed(this)'}"  -->
+			                      	   	  		</option> 
+			                      	   	  	</optgroup>
+										</select>
+									</div>
+			                    </div>
+				                
+			                	<div class="form-group compound-data">
+    								<label class="col-sm-2 control-label"  th:text="#{label.product}"></label>
+    								<div class="col-sm-10">
+      									 <select id="product-select" th:if="*{update == false}" th:field="*{products}" th:value="*{products}" onchange="getComponentsType(this)" class="form-control">
+										 	<option value="0" th:text="#{label.select.product}"></option>
+	  										<option th:each="p : ${compoundList}" th:value="${p.id}" th:text="${p.name}" ></option>
+										</select>
+										<div  th:if="*{update == true}" th:text="*{product.name}" class="control-text"></div>
+   									</div>
+								</div>
+								
+								<div id="module-compound">
+									<div th:fragment="compound-fragment" > 	 
+										<div class="form-group compound-data">
+											 <div th:each="c,rowStat  : ${product.composition}"> 
+					                   			 <label class="col-sm-2 control-label"><span th:text="${c.category.name}"></span> :</label>
+					                   			 <div class="col-sm-4">
+					                   			 	<select class="form-control select-component" th:field="${product.components[__${rowStat.index}__]}" th:value="${product.components[__${rowStat.index}__]}" multiple="multiple"> 
+			  											<option th:each="p : ${c.productMinis}" th:value="${p.id}" th:text="${p.name}"></option>
+													</select>
+												</div>
+												<div id="no-products" th:if="${product.composition ==  null}" style="display: none">
+													<p th:text="#{label.products.no.products}"></p>
+												</div>
+											</div>
+										</div>
+									</div>
+				                </div>
+				             
+	                			<div class="form-group col-md-12">
+	                				<label class="col-sm-2 control-label"  th:text="#{label.product.price}"></label>
+									<div class="col-sm-10">
+			                      	 	<input type="text" th:field="*{price}" th:placeholder="#{label.product.price}" class="form-control" />
+			                      	 </div>
+			                    </div>
+				               
+	                    		  <div class="row">
+		                    		<div class="form-btn">
+		                        		<button type="submit" class="btn btn-custom" > <span class="fa fa-save"></span><span th:text="#{label.save.product}"></span> </button>
+		                    		</div>
+	                    		</div>
+	                    		
+		 					</form>
+                  		</div>
+					</div>
+				</div>
+			</div>
+			<script type="text/javascript" th:src="@{/js/multiselect/bootstrap-multiselect.js}"></script>
+			<script type="text/javascript" th:src="@{/js/icheck/icheck.min.js}"></script>
+			<script type="text/javascript" th:src="@{/js/product.equip.add.js}"></script>
+		</div>
+	</body>
+</html>

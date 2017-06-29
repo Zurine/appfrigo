@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link th:href="@{/css/multiselect/bootstrap-multiselect.css}" rel="stylesheet" type="text/css"/> 
+		<link th:href="@{/css/switchery/switchery.min.css}" rel="stylesheet" type="text/css"/>      
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="x_data col-sm-10 col-sm-offset-1">
+		
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+			
+       			<div class="x_panel">
+       				<div class="x_panel_content">
+       		
+		           		<div class="x_title">
+		                	<h2 th:text="${title}"></h2>
+		                    <div class="clearfix"></div>
+		                 </div>
+			
+						<div class="x_content">
+					
+							<form class="form-horizontal" action="#" th:object="${user}" th:action="@{/user/add}" method="post">
+								
+								<input type="hidden" th:field="*{id}" th:value="*{id}"></input> 
+								<div class="form-group">
+    								<label class="col-sm-2 control-label" th:text="#{label.user.type}"></label>
+    								<div class="col-sm-4">
+      									<select th:field="*{type}" th:value="*{type}" class="form-control" onchange="getBusiness()">
+		  									<option th:each="t : ${types}" th:value="${t.key}" th:text="${t.value}" ></option>
+										</select>
+    								</div>
+  									<div id="module-business">
+	    								<div th:fragment="fragment-business">
+    										<label class="col-sm-2 control-label"  th:text="#{label.equipment}"></label>
+		    								<div class="col-sm-4">
+		      									<select th:field="${user.businessIds}" th:value="${user.businessIds}" class="form-control" multiple="multiple">
+				  									<option th:each="t : ${list}" th:value="${t.id}" th:text="${t.name}"></option>
+												</select>
+		    								</div>
+    									</div>
+    								</div>
+								</div>
+				
+								<div class="form-group">
+    								<label class="col-sm-2 control-label" th:text="#{label.name}"></label>
+    								<div class="col-sm-4">
+										<input type="text" th:field="*{name}" th:value="*{name}" th:placeholder="#{label.name}" class="form-control" />    							
+									</div>
+    								<label class="col-sm-2 control-label" th:text="#{label.surname}"></label>
+    								<div class="col-sm-4">
+										<input type="text" th:field="*{surname}" th:value="*{surname}" th:placeholder="#{label.surname}" class="form-control" />    							
+									</div>
+								</div>
+								<div class="form-group">
+    								<label class="col-sm-2 control-label" th:text="#{label.phone}"></label>
+    								<div class="col-sm-4">
+										<input type="text" th:field="*{phone}" th:value="*{phone}" th:placeholder="#{label.phone}" class="form-control" />		
+									</div>
+								</div>
+								
+								<div class="line-separation"></div>
+								
+								<div class="form-group">
+    								<label class="col-sm-2 control-label" th:text="#{label.email}"></label>
+    								<div class="col-sm-10">
+										<input type="text" th:field="*{email}" th:value="*{email}" th:placeholder="#{label.email}" class="form-control" />		
+									</div>
+								</div>
+								
+								<div class="form-group" th:if="*{id == 0}">
+    								<label class="col-sm-2 control-label" th:text="#{label.password}"></label>
+    								<div class="col-sm-4">
+										<input type="password" th:field="*{password}" th:value="*{password}" th:placeholder="#{label.password}" class="form-control" />		
+									</div>
+									<label class="col-sm-2 control-label" th:text="#{label.rep.password}"></label>
+    								<div class="col-sm-4">
+										<input type="password" th:field="*{passwordRep}" th:value="*{passwordRep}" th:placeholder="#{label.rep.password}" class="form-control" />		
+									</div>
+								</div>
+								
+								<div class="form-group">
+									<label class="col-sm-4 control-label"  th:text="#{label.active.user}"></label>
+    								<div class="col-sm-8">
+    									<input type="checkbox" class="js-switch" th:field="*{active}" th:value="*{active}"></input>
+    								</div>
+								</div>
+
+                			 	<div class="row">
+		                    		<div class="form-btn">
+		                        		<button type="submit" class="btn btn-custom"> <span class="fa fa-save"></span><span th:text="#{label.save.user}"></span> </button>
+		                    		</div>
+		                    	</div>
+		 					</form>
+                  		</div>
+					</div>
+				</div>
+			</div>
+			<script type="text/javascript" th:src="@{/js/multiselect/bootstrap-multiselect.js}"></script>
+			<script type="text/javascript" th:src="@{/js/switchery/switchery.min.js}"></script> 
+			<script type="text/javascript" th:src="@{/js/user.add.js}"></script>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,63 @@
+<html xmlns:th="http://www.thymeleaf.org" >
+  
+	<head>
+		<!-- <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/> -->
+		<meta id="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=1" name="viewport"/>
+	 	
+	 	<link rel="shortcut icon" type="image/png" th:hre="@{/images/favicon.ico}"/>
+	 	<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
+			
+		<!--[if !IE]><!-->
+<!-- 		<link th:href="@{/css/redIndex.css}" href="/css/redIndex.css"  rel="stylesheet" type="text/css"/>
+			<link th:href="@{/css/colorIndex.css}" href="/css/colorIndex.css"  rel="stylesheet" type="text/css"/>
+ 		 -->	<!--<![endif]-->
+ 		
+ 	<!-- 	<link th:href="@{/css/colorIndexIE.css}" href="/css/colorIndexIE.css"  rel="stylesheet" type="text/css"/>
+ 		 -->	
+		<link th:href="@{/css/style.css}" href="/css/style.css"  rel="stylesheet" type="text/css"/>
+	
+	<link href="https://fonts.googleapis.com/css?family=Permanent+Marker" rel="stylesheet"/>
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.5.3/less.min.js"></script>
+	 	
+	 	
+		<title>I'm Wall's</title> 
+	</head>
+
+  	<body>
+   		<!--/* Standard layout can be mixed with Layout Dialect */-->
+  		<div class="container">
+		  
+		 	 <div id="content" layout:fragment="content">
+       			<!-- ============================================================================ -->
+		        <!-- This content is only used for static prototyping purposes (natural templates)-->
+		        <!-- and is therefore entirely optional, as this markup fragment will be included -->
+		        <!-- from "fragments/header.html" at runtime.                                     -->
+		        <!-- ============================================================================ -->
+		        <h1>Static content for prototyping purposes only</h1>
+		        <p>
+		          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+		          Praesent scelerisque neque neque, ac elementum quam dignissim interdum.
+		          Phasellus et placerat elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+		          Praesent scelerisque neque neque, ac elementum quam dignissim interdum.
+		          Phasellus et placerat elit.
+		        </p>
+    			</div>
+	
+ 
+	   		
+		    	
+    	  
+		</div>
+ <div th:replace="templates/fragments/footer :: footer">&copy; 2014 The Static Templates</div> 
+  
+
+
+  </body>
+</html>

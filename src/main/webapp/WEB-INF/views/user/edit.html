@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link th:href="@{/css/switchery/switchery.min.css}" rel="stylesheet" type="text/css"/>  
+		<link th:href="@{/css/multiselect/bootstrap-multiselect.css}" rel="stylesheet" type="text/css"/>    
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content">
+		
+			<div class="x_data col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
+		
+       			<div class="x_panel">
+       				<div class="x_panel_content">
+	       		
+		           		<div class="x_title">
+		                	<h2 th:text="#{label.edit.user}"></h2>
+		                    <div class="clearfix"></div>
+		                </div>
+		
+						<div class="x_content">
+							<form action="#" th:object="${user}" th:action="@{/user/edit}" method="post">
+							
+							<input type="hidden" th:field="*{email}" th:value="*{email}"></input> 
+							<input type="hidden" th:field="*{id}" th:value="*{id}"></input> 
+				
+							<div th:replace="templates/fragments/msg :: msg" ></div> 
+									
+							    
+		                   	<div class="row">
+						   		<div class="form-group col-md-12">
+									<label class="label-control">Email</label>
+									<p th:text="*{email}"></p>
+		                    	</div>
+		                    </div>
+		                    
+	                    	<div class="row">
+								<div class="form-group col-md-6">
+									<label class="label-control" th:text="#{label.user.type}"></label>
+			                        <select th:field="*{type}" th:value="*{type}" class="form-control" >
+	  									<option th:each="t : ${types}" th:value="${t.key}" th:text="${t.value}" ></option>
+									</select>
+								</div>
+								<button type="submit" name="getCombo" id="getCombo" style="display:none"></button>
+								
+								<div class="form-group col-md-6">
+									<label class="label-control" th:text="#{label.equipment}"></label>
+			                        <select th:field="*{businessIds}" th:value="*{businessIds}" class="form-control" multiple="multiple">
+	  									<option th:each="t : ${list}" th:value="${t.id}" th:text="${t.name}"></option>
+									</select>
+								</div>
+							</div>
+								
+							<div class="row"> 
+								<div class="form-group col-md-6">
+									<label class="label-control" th:text="#{label.name}"></label>
+		                       	 	<input type="text" th:field="*{name}" th:value="*{name}" th:placeholder="#{label.name}" class="form-control"/>
+		                      	</div>
+		                      	<div class="form-group col-md-6">
+									<label class="label-control" th:text="#{label.surname}"></label>
+		                       	 	<input type="text" th:field="*{surname}" th:value="*{surname}" th:placeholder="#{label.surname}" class="form-control"/>
+		                      	</div>
+							</div>
+					
+			                    
+		                    <div class="row">
+                				<div class="form-group col-md-12">
+									<label class="label-control" th:text="#{active}"></label>
+		                       		<input type="checkbox" class="js-switch" th:field="*{active}" th:value="*{active}"></input>
+		                   	 	</div>
+                			</div>
+							
+							<div class="row">
+		                   		<div class="form-btn">
+		                       		<input type="submit" value="Save User" class="btn btn-custom"/>
+		                   		</div>
+							</div>
+                        </form>
+                  	</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" th:src="@{/js/icheck/icheck.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/user.edit.js}"></script>
+		<script type="text/javascript" th:src="@{/js/switchery/switchery.min.js}"></script> 
+		<script type="text/javascript" th:src="@{/js/multiselect/bootstrap-multiselect.js}"></script>
+	</div>
+</body>
+</html>

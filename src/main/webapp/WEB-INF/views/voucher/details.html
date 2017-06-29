@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head></head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="x_data col-md-8 col-md-offset-2">
+			
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+			
+				<div class="action-row">
+					<div class="action-wrapper">
+						<a th:href="@{/voucher/edit(id=${voucher.id})}" class="btn btn-action"><span class="fa fa-pencil fa-btn"></span></a>
+						<a th:href="@{/voucher/retail/add(id=${voucher.id})}" class="btn btn-action"><span class="fa fa-building fa-btn"></span></a>
+						<a th:href="@{/voucher/send(id=${voucher.id})}" class="btn btn-action"><span class="fa fa-send fa-btn"></span></a>
+						<a th:href="@{/voucher/code/add(id=${voucher.id})}" class="btn btn-action"><span class="fa fa-upload fa-btn"></span></a>
+					</div>
+				</div>
+				
+	        	<div class=" row panel-row">
+            		
+            		<div class="col-md-8 col-sm-10 col-xs-12 animated fadeInDown col-md-offset-2 col-sm-offset-1">
+                    	<div class="well profile_view">
+                        	<div class="col-sm-12">
+                            	<h4 class="brief"><i>Voucher</i></h4>
+                                <div class="left col-xs-8">
+                                	<h2 th:text="${voucher.shortName}"></h2>
+                               		<div class="row">
+   							 			<div class="col-md-4 detail-label">Title: </div>
+   							 			<div class="col-md-8" th:text="${voucher.name}"></div>
+   							 		</div>
+                                	<div class="row">
+   							 			<div class="col-md-4 detail-label">Description: </div>
+   							 			<div class="col-md-8" th:text="${voucher.description}"></div>
+   							 		</div>
+  							 		 <div class="row">
+   							 			<div class="col-md-4 detail-label">Description : </div>
+   							 			<div class="col-md-8" th:text="${voucher.description2}"></div>
+   							 		</div>
+   							 		 <div class="row">
+   							 			<div class="col-md-4 detail-label">Description 3: </div>
+   							 			<div class="col-md-8" th:text="${voucher.description3}"></div>
+   							 		</div>
+							 		<div class="row">
+   							 			<div class="col-md-4 detail-label">Start date: </div>
+   							 			<div class="col-md-8" th:text="${voucher.startDate}"></div>
+   							 		</div>
+	 								<div class="row">
+   							 			<div class="col-md-4 detail-label">End date: </div>
+   							 			<div class="col-md-8" th:text="${voucher.endDate}"></div>
+   							 		</div>
+	   							 	<div class="row">
+   							 			<div class="col-md-4 detail-label">Code: </div>
+   							 			<div class="col-md-8" th:text="${voucher.code}"></div>
+   							 		</div>
+   							 		<div class="row" th:if="${voucher.retail!=null}" >
+	   							 		<div class="col-md-4 detail-label" th:text="#{label.retails}"></div>  
+	   							 		<div class="col-md-8">
+                                        	<div th:each="r : ${voucher.retail}">
+                                        		<div th:each="l : ${r.locations}">
+                                               		<span style="display:inline-block;margin-right:1%" th:text="${l.name}"></span>
+                                               	</div>
+                                         	</div>
+	   							 		</div>
+	   							 	</div>
+                               </div>
+                               <div class="right col-xs-4 text-center">
+                                   <img th:src="${voucher.image.path}" alt="" class="img-responsive"></img>
+                               </div>
+                           </div>
+                            <div class="col-xs-12 bottom text-center">
+                      			<div class="col-xs-12 col-sm-6 col-md-4 emphasis">
+                              	 <span>State</span> 
+                               </div>
+                                <div class="col-xs-12 col-sm-6 col-md-4 emphasis">
+									<input th:if="${voucher.active == true}" type="checkbox" class="flat" checked="checked" disabled="disabled"/>
+                              	 	<input th:if="${voucher.active == false}" type="checkbox" class="flat" disabled="disabled"/>                              	 	
+                               </div>
+                           </div>
+                        </div>
+                        
+                        <div class="well profile_view">
+                        	<div class="col-sm-12">
+                            	<h4 class="brief"><i>Condiciones de Asignación</i></h4>
+                                <div class="left col-xs-12">
+                                	<div th:each="d : ${details}">
+                                		<div class="row">
+	   							 			<div class="col-md-2 detail-label" th:text="${d.label}">: </div>
+	   							 			<div class="col-md-6" th:text="${d.data}"></div>
+	   							 			<div class="col-md-4" th:text="${d.date}"></div>
+   							 			</div>
+                                	</div>
+                           		</div>
+                       		</div>
+                    	</div> 
+                    </div>
+                </div>
+              	<script type="text/javascript" th:src="@{/js/icheck/icheck.min.js}"></script>
+        	</div>
+		</div>
+	</body>
+</html>

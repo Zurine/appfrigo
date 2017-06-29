@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link th:href="@{/css/switchery/switchery.min.css}" rel="stylesheet" type="text/css"/>   
+		<script type="text/javascript" th:src="@{/js/switchery/switchery.min.js}"></script> 
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="col-md-6 col-md-offset-3" style="margin-top:6%">
+		
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+		
+       			<div class="x_panel">
+       				<div class="col-md-10 col-md-offset-1">
+       		
+		           		<div class="x_title">
+		                	<h2 th:text="#{label.create.beacon}"></h2>
+		                    <div class="clearfix"></div>
+		                 </div>
+		
+						<div class="x_content">
+						
+							<form action="#" th:object="${beacon}" th:action="@{/beacon/add}" method="post">
+					
+	                    		<div class="row">
+		                			<div class="form-group col-md-12">
+										<label class="label-control" th:text="#{label.name}"></label>
+				                        <input type="text" th:field="*{name}" th:placeholder="#{label.name}" class="form-control" />
+				                    </div>
+				                </div>
+				                
+				                <div class="row">
+		                			<div class="form-group col-md-12">
+										<label class="label-control" th:text="#{label.description}"></label>
+				                        <input type="text" th:field="*{description}" th:placeholder="#{label.description}" class="form-control" />
+				                    </div>
+				                </div>
+				                
+				                <div class="row">
+		                			<div class="form-group col-md-12">
+										<label class="label-control" th:text="#{label.beacon.major}"></label>
+				                        <input type="text" th:field="*{major}" th:placeholder="#{label.beacon.major}" class="form-control" />
+				                    </div>
+				                </div>
+				                
+				                <div class="row">
+		                			<div class="form-group col-md-12">
+										<label class="label-control" th:text="#{label.beacon.minor}"></label>
+				                        <input type="text" th:field="*{minor}" th:placeholder="#{label.beacon.minor}" class="form-control" />
+				                    </div>
+				                </div>
+				                
+				                <div class="row">
+		                			<div class="form-group col-md-12">
+										<label class="label-control" th:text="#{label.beacon.uid}"></label>
+				                        <input type="text" th:field="*{uid}" th:placeholder="#{label.beacon.uid}" class="form-control" />
+				                    </div>
+				                </div>
+				                
+				                <div class="row">
+		                			<div class="form-group col-md-12">
+										<label class="label-control" th:text="#{label.location}"></label>
+				                        <input type="text" th:field="*{localizacion}" th:placeholder="#{label.location}" class="form-control" />
+				                    </div>
+				                </div> 
+				                
+				              	<div class="row">
+		                			<div class="form-group col-md-12">
+										<label class="label-control" th:text="#{label.equipment}"></label>
+			                            <select th:field="*{business.id}" class="form-control">
+		  									<option th:each="b : ${businessList}" th:value="${b.id}" th:text="${b.name}"></option>
+										</select>
+				                    </div>
+				                </div> 
+				                
+			                  	<div class="row">
+	                				<div class="form-group col-md-6">
+										<label class="label-control" th:text="#{active}"></label>
+										<input type="checkbox" class="js-switch" th:field="*{active}"></input>
+			                   	 	</div>
+	                			</div> 
+				                
+	                    		<div class="form-group">
+	                        		<input type="submit" th:value="#{label.save.beacon}" class="btn btn-custom"/>
+	                    		</div>
+			 				</form>
+	                  	</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

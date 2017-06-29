@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+				
+			<div class="x_data col-md-8 col-md-offset-2">
+			
+				<h2 th:text="#{label.voucher}"></h2>
+			
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+		
+				<div class="action-row">
+					<div class="action-wrapper">
+						<a th:href="@{/voucher/add}" title="Add" class="btn btn-action"><span class="fa fa-plus fa-btn"></span></a>
+						 
+					</div>
+				</div>
+		
+				<table id="table" class="table table-hover">
+					<thead>
+            			<tr>
+                			<th th:text="#{label.image}"></th>
+                			<th th:text="#{label.name}"></th>
+                			<th th:text="#{label.date.start}"></th>
+                			<th th:text="#{label.date.end}"></th>
+                			<th th:text="#{label.state}"></th>
+                			<th th:text="#{label.see}"></th>
+           				</tr>
+        			</thead>
+       				<tbody>
+        				<tr th:each="v : ${voucherList}">
+        					<td><img th:src="${v.image.path}" width="50"></img></td>
+	    					<td th:text="${v.name}"></td>
+	    					<td th:text="${v.startDate}"></td>
+	    					<td th:text="${v.endDate}"></td>
+	    					<td>
+	    						<a th:href="@{/voucher/activate(id=${v.id},state=false)}"><span th:if="${v.active} == true" class="fa fa-toggle-on fa-btn"></span></a>
+			    				<a th:href="@{/voucher/activate(id=${v.id},state=true)}"><span th:if="${v.active} == false" class="fa fa-toggle-off fa-btn"></span></a>
+			    			</td>
+			    			<td><a th:href="@{/voucher/get(id=${v.id})}"><span class="fa fa-list-alt fa-btn"></span></a></td>
+						</tr>
+        			</tbody>
+				</table>
+			</div>
+			<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+			<script type="text/javascript" th:src="@{/js/voucher.js}"></script>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" >
+			
+			<div th:replace="templates/fragments/navigation :: navigation"></div>
+			<!-- Informacion -->
+			<div class="detail-container row">
+			
+				<div class="row">
+						<div style="text-align: center">
+					    <object th:data="${url}" type="application/pdf" width="1500" height="1000">
+					        alt : <a th:href="${url}"><span th:text="${url}"></span></a>
+					    </object>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</body>
+
+</html>

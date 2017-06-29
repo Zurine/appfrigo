@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link th:href="@{/css/switchery/switchery.min.css}" rel="stylesheet" type="text/css"/>   
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="x_data col-sm-10 col-sm-offset-1">
+				
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+			
+       			<div class="x_panel">
+       				<div class="x_panel_content">
+       		
+		           		<div class="x_title">
+		                	<h2 th:text="#{label.create.sale}"></h2>
+		                    <div class="clearfix"></div>
+	                 	</div>
+		
+						<div class="x_content">
+					
+							<form class="form-horizontal" action="#" th:action="@{/sales/add}" method="post" th:object="${sales}" >
+                    		
+                    			 <div th:id="module-seller"> <!-- th:class="${'detail sub'+ s.item.id}" -->
+				 	 	 			<div th:fragment="fragment-seller">
+                    		
+		                    			<div class="form-group">
+		    								<label class="col-sm-2 control-label"  th:text="#{label.equipment}"></label>
+		    								<div class="col-sm-4">
+		      									<select th:field="${sales.businessId}" class="form-control" onchange="getSeller()">
+				  									<option th:each="e : ${equipmentList}" th:value="${e.id}" th:text="${e.name}"></option>
+												</select>
+		    								</div>
+		    								<label class="col-sm-2 control-label"  th:text="#{label.date}"></label>
+		    								<div class="col-sm-4">
+			  									 <input type="text" class="form-control has-feedback-left" id="date" th:field="${sales.date}" th:placeholder="#{label.date}" aria-describedby="inputSuccess2Status"/>
+				                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+				                                <span id="inputSuccess2Status" class="sr-only">(success)</span> 
+		    								</div>
+										</div>
+
+				                    	<div class="form-group">
+    										<label class="col-sm-2 control-label"  th:text="#{label.seller}"></label>
+		    								<div class="col-sm-4">
+		      									<select th:field="${sales.sellerId}" class="form-control">
+		  											<option th:each="s : ${sellerList}" th:value="${s.id}" th:text="${s.name + ' ' + s.surname}"></option>
+												</select>
+		    								</div>
+										</div>
+				             
+				              			<div th:class="${'div-' + rowStat.index + ' ' + 'product_row '}" th:each="i,rowStat  : ${sales.item}"> <!-- th:if="${sales.item!=null}"  -->
+				              		
+				              				<div class="form-group">
+	    										<label class="col-sm-2 control-label"  th:text="#{label.product}"></label>
+			    								<div class="col-sm-3">
+			      									<select th:id="${'select-' + rowStat.index}" class="form-control products_select" th:field="${sales.item[__${rowStat.index}__].productId}" th:onchange="${'javascript:callComposed(' + rowStat.index  + ')'}" > 
+														<option value="0" >Select Product</option>
+		  												<option th:each="p : ${productList}" th:value="${p.id}" th:text="${p.name}" th:attr="data-compound=${p.compound},data-generic=${p.id}"></option>
+													</select>
+			    								</div>
+			    								<label class="col-sm-1 control-label"  th:text="#{label.product.amount}"></label>
+			    								<div class="col-sm-2">
+			      									<input type="number" th:placeholder="#{label.product.amount}" th:field="${sales.item[__${rowStat.index}__].amount}" class="form-control" />
+			    								</div>
+			    								<label class="col-sm-1 control-label"  th:text="#{label.gift}"></label>
+			    								<div class="col-sm-1">
+		      									  <input type="checkbox" class="js-switch" th:field="${sales.item[__${rowStat.index}__].gift}" th:value="${sales.item[__${rowStat.index}__].gift}"  ></input> <!-- th:field="*{active}" th:value="*{active}" --> 
+			    								</div>
+			    								<div class="col-sm-2">
+													<a class="btn btn-action" id="btn-see"  th:onclick="${'javascript:callComposed(' + rowStat.index  + ')'}" style="display:none"><span class="fa fa-list-alt fa-btn"></span></a> 
+													<a class="btn btn-action" id="btn-remove" th:onclick="${'javascript:clickRemoveBtn(' + rowStat.index  + ')'}" ><span class="fa fa-trash fa-btn"></span></a> 
+									    		</div>
+											</div>
+											
+											<div class="form-group components">
+												<div class="col-sm-2"></div>
+												<div th:each="c,rowStat2  : ${sales.item[__${rowStat.index}__].compositionList}"> 												
+				    								<div class="col-sm-4">
+														<select class="form-control select-component" th:field="${sales.item[__${rowStat.index}__].components}" th:value="${sales.item[__${rowStat.index}__].components}"> 
+		  													<option th:each="p : ${c.productMinis}" th:value="${p.id}" th:text="${p.name}"></option>
+														</select> 
+													</div>
+												</div>
+											</div>
+								  		</div>
+								  	</div>  
+								 </div>
+								
+								 
+								<div class="row" style="text-align:center">
+									<a class="btn btn-action" id="btn-add" style="width:125px"><span class="fa fa-plus fa-btn"></span></a> 
+								</div>
+							<!-- 	<button type="submit" name="addRow" id="addRow" style="display:none"></button> -->
+							<!-- 	<button type="submit" name="getComposed" id="getComposed" style="display:none"></button> -->
+				            	<input type="hidden" id="productId" th:value="*{productId}" th:field="*{productId}"/>
+				            	<input type="hidden" id="row" th:value="*{row}" th:field="*{row}"/> 
+				            	
+				            	
+				            	 <div class="row">
+		                    		<div class="form-btn">
+		                        		<button type="submit" class="btn btn-custom" onclick="validate()"> <span class="fa fa-save"></span><span th:text="#{label.save.sale}"></span> </button>
+		                    		</div>
+	                    		</div>
+                				<!-- <div class="row">
+		                    		<div class="form-btn col-md-12">
+		                        		<a class="btn btn-custom" onclick="validate()" th:value="#{label.save.sale}">Save Sale</a>
+			                       		<input type="submit" id="submitForm" style="display:none"/>
+		                    		</div>
+	                    		</div> -->
+		 					</form>
+                  		</div>
+					</div>
+				</div>
+			</div>
+			<script type="text/javascript" th:src="@{/js/datepicker/daterangepicker.js}"></script> 
+			<script type="text/javascript" th:src="@{/js/switchery/switchery.min.js}"></script> 
+			<script type="text/javascript" th:src="@{/js/sales.add.js}"></script> 
+		</div>
+	</body>
+</html>

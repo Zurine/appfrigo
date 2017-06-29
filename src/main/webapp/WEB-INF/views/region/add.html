@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link th:href="@{/css/switchery/switchery.min.css}" rel="stylesheet" type="text/css"/>   
+		<script type="text/javascript" th:src="@{/js/switchery/switchery.min.js}"></script> 
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="x_data col-sm-10 col-sm-offset-1">
+		
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+			
+       			<div class="x_panel">
+       				<div class="x_panel_content">
+       		
+	           		<div class="x_title">
+	                	<h2 th:text="${title}"></h2>
+	                    <div class="clearfix"></div>
+	                 </div>
+		
+					<div class="x_content">
+					
+						<form class="form-horizontal" action="#" th:object="${region}" th:action="@{/region/add}" method="post"  accept-charset="UTF-8">
+							
+							<input type="hidden" th:field="*{id}" th:value="*{id}"></input> 
+				
+							<div class="form-group">
+    							<label class="col-sm-2 control-label"  th:text="#{label.name}"></label>
+   								<div class="col-sm-10">
+   									<input type="text" th:field="*{name}" th:value="*{name}" th:placeholder="#{label.name}" class="form-control" />
+   								</div>
+							</div>
+							
+							<div class="form-group">
+    							<label class="col-sm-2 control-label"  th:text="#{label.description}"></label>
+   								<div class="col-sm-10">
+  									<input type="text" th:field="*{description}" th:value="*{description}" th:placeholder="#{label.name}" class="form-control" />
+   								</div>
+							</div>
+							
+							<div class="form-group">
+    							<label class="col-sm-2 control-label"  th:text="#{label.active.region}"></label>
+   								<div class="col-sm-10">
+     								<input type="checkbox" class="js-switch" th:field="*{active}"></input>
+   								</div>
+							</div>
+								
+							<div class="line-separation"></div>
+								
+							<div class="form-group">
+								<label class="col-sm-4 control-label"  th:text="#{label.after.region}"></label>
+   								<div class="col-sm-8">
+     								<input type="checkbox" class="js-switch" th:field="*{next}"></input>
+   								</div>
+							</div>
+				         
+               				<div class="row">
+	                    		<div class="form-btn">
+             				    	<button type="submit" class="btn btn-custom"> <span class="fa fa-save"></span><span th:text="#{label.save.region}"></span> </button>
+	                    		</div>
+                    		</div>
+				
+		 				</form>
+                  	</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	</body>
+
+</html>

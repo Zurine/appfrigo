@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head></head>
+
+	<body>
+		<div layout:fragment="content" class="row">
+		
+			<div class="x_data col-md-10 col-md-offset-1">
+			
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+			
+				<h2 th:text="${notification.title}"></h2>
+                
+				<div class="action-row">
+					<div class="action-wrapper">
+						<a th:href="@{/notification/seller/edit(id=${notification.id})}" class="btn btn-action" th:alt="#{label.edit.notification}"><span class="fa fa-pencil fa-btn"></span></a>
+						<a th:href="@{/notification/seller/send(id=${notification.id})}" class="btn btn-action" th:alt="#{label.edit.notification}"><span class="fa fa-send fa-btn"></span></a>
+						<a data-toggle="modal" data-target="#confirm-delete" class="btn btn-action"><span class="fa fa-trash fa-btn"></span></a>
+						<a id="delete" th:href="@{/notification/seller/delete(id=${notification.id})}" style="display:none"></a>
+					</div>
+				</div>
+				
+				<div class="row panel-row">
+            		
+            		<div class="col-sm-12 animated fadeInDown">
+                    	<div class="profile_view">
+                    		<div class="view-header" th:text="${notification.title + ' Details'}"></div>
+                    		<div class="view-body">	
+                    			<div class="col-md-8">
+	                    			<div class="row">
+	  							 		<div class="col-md-4 detail-label" th:text="#{label.title}"> </div>
+   							 			<div class="col-md-8" th:text="${notification.title}"></div>
+	   							 	</div>
+	   							 	 <div class="row">
+	  							 		<div class="col-md-4 detail-label" th:text="#{label.message}">: </div>
+							 			<div class="col-md-8" th:text="${notification.message}"></div>
+	   							 	</div>
+   							 	</div>
+   							 	 <div class="col-md-4">
+	   							 	<img th:src="${notification.photo}" width="100" style="margin-bottom: 2%"></img>
+	   							 </div>
+                    		</div>
+                        </div>
+                        
+                        <div class="profile_view">
+                       		<div class="view-header" th:text="#{label.equipments}"></div>
+                       		<div class="view-body">	
+
+                              	 <table class="table table-striped custab" th:if="${notification.users!= null and #arrays.length(notification.users)!=0 }">
+								    <thead>
+								        <tr>
+								            <th th:text="#{label.name}"></th>
+								            <th th:text="#{label.date}"></th>
+								           <!--  <th class="text-center" th:text="#{label.actions}"></th> -->
+								        </tr>
+							    	</thead>
+						            <tr th:each="u : ${notification.users}">
+						                <td><img th:src="${u.user.photo}" width="30" style="margin-bottom: 2%"></img><span th:text="${u.user.name}"></span></td>
+						                <td th:text="${u.date}"></td>
+						            </tr>
+   		 						</table>
+                              	 <div th:if="${notification.users == null or #arrays.length(notification.users)==0 }" th:text="#{label.notif.no.send}"></div>
+                       		</div>
+                        </div>
+                    </div> 
+	             </div>
+	             <div th:replace="templates/fragments/mdl :: mdl" ></div> 
+	         </div>
+		</div>
+	</body>
+</html>

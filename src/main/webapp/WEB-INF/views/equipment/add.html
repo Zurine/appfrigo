@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link th:href="@{/css/switchery/switchery.min.css}" rel="stylesheet" type="text/css"/>   
+	</head>
+
+	<body>
+
+		<div layout:fragment="content" class="row">
+			<div class="x_data col-sm-10 col-sm-offset-1">
+
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+			
+       			<div class="x_panel">
+       				<div class="x_panel_content">
+       		
+		           		<div class="x_title">
+		                	<h2 th:text="${title}"></h2>
+		                    <div class="clearfix"></div>
+		                </div>
+		
+						<div class="x_content">
+							<form class="form-horizontal" action="#" th:object="${equipment}" th:action="@{/equipment/add}" method="post">
+	               				<input type="hidden" th:field="*{ciudad}" th:value="*{ciudad}"></input> 
+	           					<input type="hidden" th:field="*{latitud}" th:value="*{latitud}"></input> 
+	           					<input type="hidden" th:field="*{longitud}" th:value="*{longitud}"></input> 
+	           					<input type="hidden" th:field="*{id}" th:value="*{id}"></input> 
+	                	
+             					<div class="form-group">
+  									<label class="col-sm-2 control-label"  th:text="#{label.name}"></label>
+									<div class="col-sm-4">
+   										<input type="text" th:field="*{name}" th:value="*{name}" th:placeholder="#{label.name}" class="form-control" />
+ 									</div>
+ 									<label class="col-sm-2 control-label"  th:text="#{label.unilever.id}"></label>
+ 										<div class="col-sm-4">
+    									<input type="text" th:field="*{unileverId}" th:value="*{unileverId}" th:placeholder="#{label.unilever.id}" class="form-control" />
+  									</div>
+								</div>
+								
+								<div class="form-group">
+    								<label class="col-sm-2 control-label"  th:text="#{label.description}"></label>
+    								<div class="col-sm-10">
+      									  <textarea th:field="*{desc}" th:value="*{desc}" th:placeholder="#{label.description}" class="form-control"></textarea>
+    								</div>
+								</div>
+	           
+	                			<!-- 	<div class="form-group col-md-6">
+										<label class="label-control" th:text="#{label.type}"></label>
+			                      		<select th:field="*{type.id}"  class="form-control">
+											<option value="0" th:text="#{label.select}"></option>
+	  										<option th:each="t : ${typeList}" th:value="${t.id}" th:text="${t.name}"></option>
+										</select>
+			                    	</div> -->
+
+			                    <div class="line-separation"></div>
+			                    <div class="form-group">
+    								<label class="col-sm-2 control-label"  th:text="#{label.address}"></label>
+    								<div class="col-sm-10">
+      									 <input type="text" th:field="*{direccion}" th:value="*{direccion}" th:placeholder="#{label.address}" class="form-control" />
+    								</div>
+								</div>
+									<div class="form-group">
+    								<label class="col-sm-2 control-label"  th:text="#{label.tax.type}"></label>
+    								<div class="col-sm-4">
+    									<div th:if="${#arrays.length(taxList)  &gt; 1}">
+	    									<select class="form-control" th:field="*{tax.id}" th:value="*{tax.id}">
+		  										<option th:each="t : ${taxList}" th:value="${t.id}" th:text="${t.name}"></option>
+											</select>
+    									</div>
+    									<div th:if="${#arrays.length(taxList) == 1}">
+    										<div th:text="${taxList[0].name}" style="margin-top: 2%;"></div>
+    										<input type="hidden" th:field="*{tax.id}" th:value="*{tax.id}"></input>
+    									</div>
+    								</div>
+    								<label class="col-sm-2 control-label"  th:text="#{label.tax.value}"></label>
+    								<div class="col-sm-4">
+      									 <input type="text" th:field="*{iva}" th:placeholder="#{label.product.iva}" class="form-control" />
+    								</div>
+								</div>
+				
+								<div class="line-separation"></div>
+								<div class="form-group">
+									<label  class="col-sm-2 control-label" th:text="#{label.equipment.type}"></label>
+									<div class="col-sm-2" th:each="t : ${typeList}">
+										<div class="row">
+											<i th:if="${t.name == 'Bike - Trike'}" class="fa fa-bicycle" style="font-size: 45px;"></i>
+				              				<i th:if="${t.name == 'Scooter'}" class="fa fa-truck" style="font-size: 45px;"></i>
+				              				<i th:if="${t.name == 'Kiosk - Trailer'}" class="fa zu-kiosk" style="font-size: 32px;margin-right:3%"></i>
+				              				<i th:if="${t.name == 'Push Cart'}" class="fa fa-shopping-cart" style="font-size: 45px;"></i>
+										 	<input name="type" type="radio" th:field="*{type.id}" th:value="${t.id}" class="flat"/> 
+									 	</div>
+									 	<div class="row" th:text="${t.name}"></div>
+									</div>
+								</div>
+								<div class="form-group">
+    								<label class="col-sm-2 control-label"  th:text="#{label.channel}"></label>
+    								<div class="col-sm-4">
+      									 <select th:field="*{channel.id}"  class="form-control" th:value="*{channel.id}">
+											<option value="0"  th:text="#{label.select}"></option>
+		  									<option th:each="c : ${channelList}" th:value="${c.id}" th:text="${c.name}"></option>
+										</select>
+    								</div>
+    								<label class="col-sm-2 control-label"  th:text="#{label.operator}"></label>
+    								<div class="col-sm-4">
+      									 	<select th:field="*{operator.id}"  class="form-control">
+											<option value="0" th:text="#{label.select}"></option>
+		  									<option th:each="o : ${operatorList}" th:value="${o.id}" th:text="${o.name}"></option>
+										</select>
+    								</div>
+								</div>
+								<div class="form-group">
+    								<label class="col-sm-2 control-label"  th:text="#{label.region}"></label>
+    								<div class="col-sm-4">
+      									<select th:field="*{region.id}"  class="form-control" onchange="getDistributor()" th:value="*{region.id}"> 
+											<option value="0" th:text="#{label.select}"></option>
+		  									<option th:each="r : ${regionList}" th:value="${r.id}" th:text="${r.name}"></option>
+										</select>
+									<!-- 	<button type="submit" name="getDistributor" id="getDistributor" style="display:none"></button> -->
+    								</div>
+    								<div id="module-distributor">
+	    								<div th:fragment="fragment-distributor">
+	    									<label class="col-sm-2 control-label"  th:text="#{label.distributor}"></label>
+		    								<div class="col-sm-4">
+		      									 	<select th:field="${equipment.distributor.id}"  class="form-control" th:value="${equipment.distributor.id}"> 
+													<option value="0" th:text="#{label.select}"></option>
+				  									<option th:each="c : ${distributorList}" th:value="${c.id}" th:text="${c.concession}"></option>
+												</select>
+		    								</div>
+	    								</div>
+    								</div>
+								</div>
+	                			
+	                			<!-- 	<div class="col-md-6">
+	                					<div class="form-group col-md-6">
+										<label class="label-control" th:text="#{label.image}"></label>
+			                        	<input type="text" th:field="*{photo}" th:placeholder="#{label.image.url}" class="form-control" />
+			                    	</div> -->
+	                	
+								<div class="form-group">
+    								<label class="col-sm-2 control-label"  th:text="#{label.numberPlate}"></label>
+    								<div class="col-sm-4">
+      									<input type="text" th:field="*{numberPlate}" th:value="*{numberPlate}" th:placeholder="#{label.numberPlate}" class="form-control uppercase" />
+    								</div>
+    								<label class="col-sm-2 control-label"  th:text="#{inactive.time}"></label>
+    								<div class="col-sm-4">
+     									<input type="text" th:field="*{inactiveTime}" th:placeholder="#{inactive.time}" class="form-control" />
+    								</div>
+								</div>
+								
+			                    <div class="form-group">
+									<label class="col-sm-2 control-label"  th:text="#{label.active.equipment}"></label>
+    								<div class="col-sm-10">
+      									  <input type="checkbox" class="js-switch" th:field="*{active}" th:value="*{active}"></input>
+    								</div>
+								</div>
+
+			                    <div class="line-separation"></div>
+								
+								<div class="form-group">
+									<label class="col-sm-4 control-label"  th:text="#{label.after.msm}"></label>
+    								<div class="col-sm-8">
+      									  <input type="checkbox" class="js-switch" th:field="*{next}"></input>
+    								</div>
+								</div>
+								
+		                       <div class="form-group" th:if="*{id == 0}">
+									<label class="col-sm-4 control-label" th:text="#{label.default.products}"></label>
+    								<div class="col-sm-8">
+      									  <input type="checkbox" class="js-switch" th:field="*{addProducts}"></input>
+    								</div>
+								</div>  
+			                         
+								<div class="row">
+		                    		<div class="form-btn">
+		                        		<button type="submit" class="btn btn-custom"> <span class="fa fa-save"></span><span th:text="#{equipment.save}"></span> </button>
+		                    		</div>
+		                    	</div>
+		 					</form>
+                  		</div>
+					</div>
+				</div>
+			</div>
+		 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBI2heIIbKpb6w9_1JjTDHcok5zsrVwhwM&amp;libraries=places"></script>
+			<script type="text/javascript" th:src="@{/js/googleMaps.js}"></script> 
+			<script type="text/javascript" th:src="@{/js/icheck/icheck.min.js}"></script>
+			<script type="text/javascript" th:src="@{/js/switchery/switchery.min.js}"></script> 
+			<script type="text/javascript" th:src="@{/js/business.add.js}"></script> 
+		</div>
+	</body>
+</html>

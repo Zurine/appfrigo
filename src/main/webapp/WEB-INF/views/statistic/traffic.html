@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>	
+		<link th:href="@{/css/multiselect/bootstrap-multiselect.css}" rel="stylesheet" type="text/css"/>  
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/> 
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="x_data col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
+				
+				<div class="x_panel">
+       				<div class="x_panel_content">
+       		
+	           			<div class="x_title">
+	                		<h2>Statistics</h2>
+	                    	<div class="clearfix"></div>
+	                	</div>
+		
+						<div id="table-panel">
+						
+							<div class="x_content">
+								<form id="traffic" action="#" th:object="${search}" th:action="@{/statistic/traffic}" method="post" class="form-horizontal form-label-left">
+				
+									<div th:replace="templates/fragments/msg :: msg" ></div> 
+								
+									 <div class="form-row" style="margin-bottom: 2%">
+								 	     <div class="radio-inline">
+			                                <label><input type="radio" class="flat"  th:field="*{gpType}" th:value="0"/> Monthly </label>
+		                                </div>
+		                                 <div class="radio-inline">
+		                                	<label><input type="radio" class="flat"  th:field="*{gpType}" th:value="1"/> Weekly </label>
+		                                </div>
+		                        	 	<div class="radio-inline">
+			                                <label><input type="radio" class="flat"  th:field="*{gpType}" th:value="2" /> Daily </label>
+		                                </div>
+		                                <div class="radio-inline">
+			                                <label><input type="radio" class="flat"  th:field="*{gpType}" th:value="3"/> Hourly </label>
+		                               	</div>
+		                        	</div>
+    							
+		                        	<div class="form-row" style="margin-bottom: 2%">
+				                        <div class="form-group col-md-6">
+					                        <select th:field="*{equipment}" class="form-control" multiple="multiple">
+			  									<option th:each="b : ${equipmentList}" th:value="${b.id}" th:text="${b.name}"></option>
+											</select>
+				                        </div>
+		
+				                        <div class="form-group col-md-6">
+					                        <select th:field="*{channel}" class="form-control" multiple="multiple">
+			  									<option th:each="c : ${channelList}" th:value="${c.id}" th:text="${c.name}"></option>
+											</select>
+				                        </div>
+		                        	</div>
+                        	
+		                        	<div class="form-row" style="margin-bottom: 2%">
+				                        <div class="form-group col-md-6">
+					                        <select th:field="*{region}" class="form-control" multiple="multiple">
+			  									<option th:each="r : ${regionList}" th:value="${r.id}" th:text="${r.name}"></option>
+											</select>
+				                        </div>
+		 
+				                        <div class="form-group col-md-6">
+					                        <select th:field="*{equipmentType}" class="form-control" multiple="multiple">
+			  									<option th:each="t : ${typeList}" th:value="${t.id}" th:text="${t.name}"></option>
+											</select>
+				                        </div>
+		                        	</div>
+	                        	
+		                        	<div class="form-row" style="margin-bottom: 2%">
+				                        <div class="form-group col-md-6">
+			                                <input type="text" class="form-control has-feedback-left" id="startDate" th:field="*{startDate}" placeholder="Start Date" 
+			                                 	required="required" aria-describedby="inputSuccess2Status"/>
+			                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+			                                <span id="inputSuccess2Status" class="sr-only">(success)</span>
+				                        </div>
+				                        <div class="form-group col-md-6">
+				                        	<input type="text" class="form-control has-feedback-left" id="endDate" th:field="*{endDate}" placeholder="End Date" 
+				                        	 	required="required" aria-describedby="inputSuccess2Status"/>
+						                    <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+		                                	<span id="inputSuccess2Status" class="sr-only">(success)</span>
+				               	 		</div>
+		                        	</div>
+                        			
+                        			<div class="row">
+                        				<div class="form-btn">
+			                        		<a class="btn btn-custom" onclick="submitData()" >Search</a>
+			                        	</div>
+                        			</div>
+			                        
+                       	 		</form>
+                  			</div>
+			
+							<div id="csv" th:fragment="csvList"><input id="url" type="hidden"  th:value="${url}"></input></div>
+			
+			 				<div id="module-statistics" style="margin-top:3%">
+								<div id="list-statistics" th:fragment="resultsList" th:if="${traffic} !=null"> 	
+								
+									<div id="fileGenerator" th:if="${salesList != '[]'}" style="text-align:center;margin-bottom: 2%;display:none">
+										<a class="btn btn-secondary"  th:href="@{/statistic/getTrafficCSV}">Donwload CSV</a>	
+										<a class="btn btn-secondary"  th:href="@{/statistic/getTrafficPDF}">Donwload PDF</a>
+									</div>
+									
+									<div style="width: 100%;text-align: center;margin-bottom: 2%">
+										<a class="btn btn-custom" onclick="loadGraphics()">See Graphic</a>	
+									</div>
+								
+									<input type="hidden" id="graphicData" th:value="${graphics}"></input>
+									<input type="hidden" id="label" th:value="${label}"></input>
+								
+									<table id="table" class="table table-hover">
+										<thead>
+								            <tr>
+								                <th>Business</th>
+								                <th>Date</th>
+								                <th>Unities</th>
+								                <th>Total</th>
+								                <th>People</th>
+								                <th>Rate</th>
+								            </tr>
+					        			</thead>
+								        <tbody>
+								        	<tr th:each="t : ${traffic}">
+								        		<td th:text="${t.business.name}" style="font-weight: bold"></td>
+								        		<td><span th:text="${t.label}"></span></td>
+								        		<td><span th:text="${t.unities}"></span><span>u.</span></td>
+									    		<td><span th:text="${t.total}"></span><span>&euro;</span></td>
+									    		<td><span th:text="${t.people}"></span><span></span></td>
+									    		<td th:text="${t.rate}"></td>
+											</tr>
+								        </tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						
+						<div id="graphics-panel" style="display:none"> 
+							<div style="width: 100%;text-align: center;margin-bottom: 2%">
+								<a class="btn btn-custom" onclick="backTable()">Back to Table</a>	
+							</div>
+	                	 	<div class="clearfix"></div>
+	                	 	<div class="x_content">
+	                    		<canvas id="canvas000"></canvas>
+	                		</div>
+	                		<div id="js-legend" class="chart-legend"></div>
+	            		</div>
+           			</div>
+				</div>
+			</div>
+        	<script type="text/javascript" th:src="@{/js/icheck/icheck.min.js}"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script> 
+			<script type="text/javascript" th:src="@{/js/datepicker/daterangepicker.js}"></script>
+			<script type="text/javascript" th:src="@{/js/multiselect/bootstrap-multiselect.js}"></script>
+			<script type="text/javascript" th:src="@{/js/chartjs/chart.min.js}"></script>
+			<script type="text/javascript" th:src="@{/js/traffic.js}"></script>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link th:href="@{/css/progress/bootstrap-progressbar-3.3.4.min.css}" rel="stylesheet" type="text/css"/> 
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" >
+			<input type="hidden" id="voucherById" th:value="${voucherById}"></input>
+			<input type="hidden" id="voucherByRetail" th:value="${voucherByRetail}"></input>
+			<input type="hidden" id="voucherByRange" th:value="${voucherByRange}"></input>
+			<input type="hidden" id="userByGender" th:value="${userByGender}"></input>
+			<input type="hidden" id="userByStudy" th:value="${userByStudy}"></input>	
+			<input type="hidden" id="promotionById" th:value="${promotionById}"></input>	
+			<input type="hidden" id="promotionByType" th:value="${promotionByType}"></input>	
+			<input type="hidden" id="answer1" th:value="${answer1}"></input>	
+			<input type="hidden" id="answer2" th:value="${answer2}"></input>	
+			
+			<input type="hidden" id="voucherByGender" th:value="${voucherByGender}"></input>	
+			<input type="hidden" id="voucherByStudy" th:value="${voucherByStudy}"></input>	
+			<input type="hidden" id="voucherByBuyer" th:value="${voucherByBuyer}"></input>	
+			
+			<input type="hidden" id="promotionByGender" th:value="${promotionByGender}"></input>	
+			<input type="hidden" id="promotionByStudy" th:value="${promotionByStudy}"></input>	
+			<input type="hidden" id="promotionByBuyer" th:value="${promotionByBuyer}"></input>	
+			
+			<div class="row tile_count">
+        		<div class="animated flipInY col-md-2 col-sm-4 col-xs-4 tile_stats_count" onclick="showVoucher(this)">
+            		<!-- <div class="left"></div> -->
+		            <div class="right dash_count selected_count">
+		              <span class="count_top"><i class="fa fa-bicycle"></i> Exchanged Vouchers</span>
+		              <div class="count" th:text="${home.exchangedVouchers}" ></div>
+		              <!-- <span class="count_bottom"><i class="green">4% </i> From last Week</span> -->
+		            </div>
+          		</div>
+	          	<div class="animated flipInY col-md-2 col-sm-4 col-xs-4 tile_stats_count" onclick="showUser(this)">
+		            <!-- <div class="left"></div> -->
+		            <div class="right dash_count">
+		              <span class="count_top"><i class="fa fa-user"></i> Users</span>
+		              <div class="count" th:text="${home.totalUsers}"></div>
+		             <!-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> From last Week</span> --> 
+		            </div>
+	          	</div>
+	          	<div class="animated flipInY col-md-2 col-sm-4 col-xs-4 tile_stats_count" onclick="showPromotion(this)">
+		            <div class="right dash_count">
+		              <span class="count_top"><i class="fa fa-user"></i> Exchanged Promotions</span>
+		              <div class="count green" th:text="${home.exchangedPromos}"></div>
+		              <!-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span> -->
+		            </div>
+	          	</div>
+          		<div class="animated flipInY col-md-2 col-sm-4 col-xs-4 tile_stats_count" onclick="showAnswer(this)">  
+		            <div class="right dash_count">
+		              <span class="count_top"><i class="fa fa-user"></i> Anwers</span>
+		              <div class="count green" th:text="${home.assessmentsTotal}"></div>
+		              <!-- <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> From last Week</span> -->
+		            </div>
+          		</div>
+          		<div class="animated flipInY col-md-2 col-sm-4 col-xs-4 tile_stats_count">
+		            <div class="right dash_count">
+		              <span class="count_top"><i class="fa fa-user"></i> Movement</span>
+		                <div class="count green" th:text="${homemovement}"></div>
+		         <!-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span> -->     
+		            </div>
+          		</div>
+        	</div>
+        
+        	<div id="voucherRow">
+        		<div class="row"  >
+	        		<div class="col-md-4 col-sm-4 col-xs-12">
+	            		<div class="x_panel tile fixed_height_320">
+	              			<div class="x_title">
+	                			<h2>Exchanged Vouchers</h2>
+	                			<div class="clearfix"></div>
+	              			</div> 
+		              		<div class="x_content">
+		                 		<div class="x_content">
+			                    	<canvas id="chart_v1"></canvas>
+		                		</div>
+		              		</div>
+	            		</div>
+	          		</div>
+			
+					<div class="col-md-4 col-sm-4 col-xs-12">
+		            	<div class="x_panel tile fixed_height_320">
+		              		<div class="x_title">
+		                		<h2>Exchanged Vouchers By Retail</h2>
+		                		<div class="clearfix"></div>
+		              		</div>
+		              		<div class="x_content">
+		                 		<div class="x_content">
+			                    	<canvas id="chart_v2"></canvas>
+		                		</div>
+		              		</div>
+		            	</div>
+		          	</div>
+
+					<div class="col-md-4 col-sm-4 col-xs-12">
+		            	<div class="x_panel tile fixed_height_320">
+		              		<div class="x_title">
+		                		<h2>Exchanged Vouchers By Hour Range</h2>
+		                		<div class="clearfix"></div>
+		              		</div>
+		              		<div class="x_content">
+		                 		<div class="x_content">
+			                    	<canvas id="chart_v3"></canvas>
+		                		</div>
+		              		</div>
+		            	</div>
+		          	</div>
+        		</div>
+        		
+        		<div class="row"  >
+	        		<div class="col-md-4 col-sm-4 col-xs-12">
+	            		<div class="x_panel tile fixed_height_320">
+	              			<div class="x_title">
+	                			<h2>Exchanged Vouchers By Gender</h2>
+	                			<div class="clearfix"></div>
+	              			</div> 
+		              		<div class="x_content">
+		                 		<div class="x_content">
+			                    	<canvas id="chart_v4"></canvas>
+		                		</div>
+		              		</div>
+	            		</div>
+	          		</div>
+			
+					<div class="col-md-4 col-sm-4 col-xs-12">
+		            	<div class="x_panel tile fixed_height_320">
+		              		<div class="x_title">
+		                		<h2>Exchanged Vouchers By Studies</h2>
+		                		<div class="clearfix"></div>
+		              		</div>
+		              		<div class="x_content">
+		                 		<div class="x_content">
+			                    	<canvas id="chart_v5"></canvas>
+		                		</div>
+		              		</div>
+		            	</div>
+		          	</div>
+
+					<div class="col-md-4 col-sm-4 col-xs-12">
+		            	<div class="x_panel tile fixed_height_320">
+		              		<div class="x_title">
+		                		<h2>Exchanged Vouchers By buyer</h2>
+		                		<div class="clearfix"></div>
+		              		</div>
+		              		<div class="x_content">
+		                 		<div class="x_content">
+			                    	<canvas id="chart_v6"></canvas>
+		                		</div>
+		              		</div>
+		            	</div>
+		          	</div>
+        		</div>
+        	</div>
+			
+			<div class="row" id="userRow" style="display:none">
+        		<div class="col-md-4 col-sm-4 col-xs-12">
+            		<div class="x_panel tile fixed_height_320">
+	              		<div class="x_title">
+	                		<h2>Users</h2>
+	                		<div class="clearfix"></div>
+	              		</div>
+              			<div class="x_content">
+                			<h4>Users</h4>
+                 			<div class="x_content">
+                    			<div class="row">
+			                    	<div class="col-xs-2">
+			                        	<span>Active User</span>
+			                      	</div>
+			                      	<div class="col-xs-8">
+			                        	<div class="progress progress_sm">
+			                          		<div class="progress-bar bg-green" role="progressbar" th:attr="data-transitiongoal=${home.activeUser}" style="width: 89%;" aria-valuenow="88"></div>
+			                        	</div>
+			                      	</div>
+			                      	<div class="col-xs-2 more_info">
+			                        	<span th:text="${home.activeUser}"> </span><span>%</span>
+			                      	</div>
+                    			</div>
+                    			<div class="row">
+			                    	<div class="col-xs-2">
+			                        	<span>Buyers</span>
+			                      	</div>
+			                      	<div class="col-xs-8">
+			                        	<div class="progress progress_sm">
+			                          		<div class="progress-bar bg-green" role="progressbar"  th:attr="data-transitiongoal=${home.userBuyer}"   style="width: 89%;" aria-valuenow="88"></div>
+			                        	</div>
+			                      	</div>
+			                      	<div class="col-xs-2 more_info">
+			                        	<span th:text="${home.userBuyer}"> </span><span>%</span>
+			                      	</div>
+                    			</div>
+                    			<div class="row">
+			                    	<div class="col-xs-2">
+			                        	<span>New Users</span>
+			                      	</div>
+			                      	<div class="col-xs-8">
+			                        	<div class="progress progress_sm">
+			                          		<div class="progress-bar bg-green" role="progressbar"  th:attr="data-transitiongoal=${home.newUser}"   style="width:89%;" aria-valuenow="88"></div>
+			                        	</div>
+			                      	</div>
+			                      	<div class="col-xs-2 more_info">
+			                        	<span th:text="${home.newUser}"> </span><span>%</span>
+			                      	</div>
+                    			</div>
+                			</div>
+              			</div>
+            		</div>
+          		</div>
+			
+			<div class="col-md-4 col-sm-4 col-xs-12">
+            	<div class="x_panel tile fixed_height_320">
+              		<div class="x_title">
+                		<h2>Users Gender</h2>
+                		<div class="clearfix"></div>
+              		</div>
+              		<div class="x_content">
+                 		<div class="x_content">
+	                    	<canvas id="chart_u1"></canvas>
+                		</div>
+              		</div>
+            	</div>
+          	</div>
+
+			<div class="col-md-4 col-sm-4 col-xs-12">
+            	<div class="x_panel tile fixed_height_320">
+              		<div class="x_title">
+                		<h2>Users Studies</h2>
+                		<div class="clearfix"></div>
+              		</div>
+              		<div class="x_content">
+                 		<div class="x_content">
+	                    	<canvas id="chart_u2"></canvas>
+                		</div>
+              		</div>
+            	</div>
+          	</div>
+        </div>
+        
+        <div id="promoRow" style="display:none">
+        
+        	<div class="row">
+         		<div class="col-md-4 col-sm-4 col-xs-12">
+           			<div class="x_panel tile fixed_height_320">
+             			<div class="x_title">
+               				<h2>Exchanged Promotions</h2>
+               				<div class="clearfix"></div>
+            			</div>
+	              		<div class="x_content">
+	                 		<div class="x_content">
+		                    	<canvas id="chart_p1"></canvas>
+	                		</div>
+	              		</div>
+           			</div>
+        		</div>
+			
+				<div class="col-md-4 col-sm-4 col-xs-12">
+	            	<div class="x_panel tile fixed_height_320">
+	              		<div class="x_title">
+	                		<h2>Exchanged Promotions By Type</h2>
+	                		<div class="clearfix"></div>
+	              		</div>
+	              		<div class="x_content">
+	                 		<div class="x_content">
+		                    	<canvas id="chart_p2"></canvas>
+	                		</div>
+	              		</div>
+	            	</div>
+	          	</div>
+        	</div>
+        	
+        	<div class="row">
+        		<div class="col-md-4 col-sm-4 col-xs-12">
+            		<div class="x_panel tile fixed_height_320">
+              			<div class="x_title">
+                			<h2>Exchanged Promotions By Gender</h2>
+                			<div class="clearfix"></div>
+              			</div> 
+	              		<div class="x_content">
+	                 		<div class="x_content">
+		                    	<canvas id="chart_p3"></canvas>
+	                		</div>
+	              		</div>
+            		</div>
+          		</div>
+			
+				<div class="col-md-4 col-sm-4 col-xs-12">
+	            	<div class="x_panel tile fixed_height_320">
+	              		<div class="x_title">
+	                		<h2>Exchanged Promotions By Studies</h2>
+	                		<div class="clearfix"></div>
+	              		</div>
+	              		<div class="x_content">
+	                 		<div class="x_content">
+		                    	<canvas id="chart_p4"></canvas>
+	                		</div>
+	              		</div>
+	            	</div>
+	          	</div>
+
+				<div class="col-md-4 col-sm-4 col-xs-12">
+	            	<div class="x_panel tile fixed_height_320">
+	              		<div class="x_title">
+	                		<h2>Exchanged Promotions By buyer</h2>
+	                		<div class="clearfix"></div>
+	              		</div>
+	              		<div class="x_content">
+	                 		<div class="x_content">
+		                    	<canvas id="chart_p5"></canvas>
+	                		</div>
+	              		</div>
+	            	</div>
+	          	</div>
+       		</div>
+         
+         </div>
+    
+			<div class="row" id="answerRow" style="display:none">
+        		<div class="col-md-4 col-sm-4 col-xs-12">
+            		<div class="x_panel tile fixed_height_320">
+	              		<div class="x_title">
+	                		<h2>Responses</h2>
+	                		<div class="clearfix"></div>
+	              		</div>
+              			<div class="x_content">
+                			<h4>Users</h4>
+                 			<div class="x_content">
+	                    		<div class="row">
+			                      <div class="col-xs-2">
+			                        <span>Anwers Per Vouchers</span>
+			                      </div>
+			                      <div class="col-xs-8">
+			                        <div class="progress progress_sm">
+			                          <div class="progress-bar bg-green" role="progressbar" th:attr="data-transitiongoal=${home.answers}" style="width: 89%;" aria-valuenow="88"></div>
+			                        </div>
+			                      </div>
+			                      <div class="col-xs-2 more_info">
+			                        <span th:text="${home.answers}"> </span><span>%</span>
+			                      </div>
+                    			</div>
+                			</div>
+              			</div>
+            		</div>
+          		</div>
+			
+				<div class="col-md-4 col-sm-4 col-xs-12">
+	            	<div class="x_panel tile fixed_height_320">
+	              		<div class="x_title">
+	                		<h2>First Answers</h2>
+	                		<div class="clearfix"></div>
+	              		</div>
+	              		<div class="x_content">
+	                		<h4>Exchanged Vouchers By Retail</h4>
+	                 		<div class="x_content">
+		                    	<canvas id="chart_a1"></canvas>
+	                		</div>
+	              		</div>
+	            	</div>
+	          	</div>
+          	
+         		<div class="col-md-4 col-sm-4 col-xs-12">
+	            	<div class="x_panel tile fixed_height_320">
+	              		<div class="x_title">
+	                		<h2>Second Answer</h2>
+	                		<div class="clearfix"></div>
+	              		</div>
+	              		<div class="x_content">
+	                		<h4>Exchanged Vouchers By Retail</h4>
+	                 		<div class="x_content">
+		                    	<canvas id="chart_a2"></canvas>
+	                		</div>
+	              		</div>
+	            	</div>
+          		</div>
+          	</div>
+					
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.0.0/Chart.js"></script>
+		<!-- 	<script type="text/javascript" th:src="@{/js/progress/bootstrap-progressbar.min.js}"></script> -->
+			<script type="text/javascript" th:src="@{/js/home2.js}"></script>
+	     
+                <!-- /top tiles -->
+		</div>
+
+	</body>
+
+</html>

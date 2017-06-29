@@ -1,0 +1,125 @@
+<html  xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" >
+	<head></head>
+ 	<body>
+    <div th:fragment="menu" id="menu"> 
+   	
+		<!-- Left side column. contains the logo and sidebar -->
+  		<aside class="main-sidebar">
+    		<!-- sidebar: style can be found in sidebar.less -->
+    		<section class="sidebar">
+    		
+     			<!-- Sidebar user panel -->
+			    <div class="user-panel">
+			        <div class="pull-left image">
+			        	<img th:src="${#authentication.principal.image}"  class="img-circle" alt="User Image"/>
+			        </div>
+			        <div class="pull-left info">
+			        	<p sec:authentication="name"></p>
+			          	<a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+			        </div>
+		    	</div>
+      
+     			<!-- sidebar menu: : style can be found in sidebar.less -->
+    			<ul class="sidebar-menu">
+       		  		<li class="header">MAIN NAVIGATION</li>
+			        <li id="li-home">
+			        	<a th:href="@{/home}">
+			            	<i class="fa fa-dashboard"></i> <span>Total Dashboard</span>
+			          	</a>
+			        </li>
+			         <li class="treeview">
+		        		<a th:if="${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')}">
+			            	<i class="fa fa-product-hunt"></i>
+			            	<span th:text="#{label.products}"></span>
+				            <span class="pull-right-container">
+			              		<i class="fa fa-angle-left pull-right"></i>
+				            </span>
+			          	</a>
+			           	<ul class="treeview-menu">
+				            <li id="li-product"><a th:href="@{/product/list(state=1)}"><i class="fa fa-circle-o"></i> Products</a></li>
+				            <li id="li-category"><a th:href="@{/category/list(state=1)}"><i class="fa fa-circle-o"></i> Categories</a></li>
+			        	</ul>
+			        </li>
+
+			        <li class="treeview">
+		        		<a th:if="${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')}">
+			            	<i class="fa fa-bicycle"></i>
+			            	<span th:text="#{label.equipment.mgmt}"></span>
+				            <span class="pull-right-container">
+			              		<i class="fa fa-angle-left pull-right"></i>
+				            </span>
+			          	</a>
+			           	<ul class="treeview-menu">
+				            <li id="li-operator"><a th:href="@{/operator/list(state=1)}"><i class="fa fa-circle-o"></i> Operator</a></li>
+				            <li id="li-equipment"><a th:href="@{/equipment/list(state=1)}"><i class="fa fa-circle-o"></i> Equipment</a></li>
+				            <li id="li-seller"><a th:href="@{/seller/list(state=1)}"><i class="fa fa-circle-o"></i> MSM</a></li>
+			        	</ul>
+			        </li>
+			        <li id="li-sales" th:if="${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')') or #authorization.expression('hasAnyRole(''ROLE_OPERATOR'')') or #authorization.expression('hasAnyRole(''ROLE_BUSINESS'')')}">
+			        	<a th:href="@{/sales/add}">
+			            	<i class="fa fa-shopping-cart"></i> <span>Sales Recording </span>
+			          	</a>
+       	 			</li>
+			        
+			        <li id="li-settings" th:if="${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')}" class="header">STATISTICS</li>
+	                <li id="li-statistic">
+			        	<a th:href="@{/statistic/sales}">
+			            	<i class="fa fa-line-chart"></i> <span>Statistics</span>
+			          	</a>
+       	 			</li>
+       	 		 <li id="li-tracking">
+			        	<a th:href="@{/tracking/list}">
+			            	<i class="fa fa-map-marker"></i> <span>Tracking</span>
+			          	</a>
+       	 			</li>  
+			       <li id="li-notification" th:if="${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')') }">
+			        	<a th:href="@{/notification/seller/list}">
+			            	<i class="fa fa-envelope"></i> <span>Notifications </span>
+			          	</a>
+       	 			</li>  
+       	 			 <li id="li-ticket" th:if="${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')') or #authorization.expression('hasAnyRole(''ROLE_OPERATOR'')') or #authorization.expression('hasAnyRole(''ROLE_BUSINESS'')')}">
+			        	<a th:href="@{/ticket/list}">
+			            	<i class="fa fa-ticket"></i> <span>Ticketing </span>
+			          	</a>
+       	 			</li>  
+       	 				 <li id="li-operator-stock" th:if="${#authorization.expression('hasAnyRole(''ROLE_OPERATOR'')')}">
+			        	<a th:href="@{/operator/stock/list?operatorId=0}">
+			            	<i class="fa fa-cubes"></i> <span>Stock </span>
+			          	</a>
+       	 			</li>  
+       	 		<!--	 <li id="li-tickets" th:if="${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')') or #authorization.expression('hasAnyRole(''ROLE_OPERATOR'')') or #authorization.expression('hasAnyRole(''ROLE_BUSINESS'')')}">
+			        	<a th:href="@{/promotion/list}">
+			            	<i class="fa fa-ticket"></i> <span>Promotion </span>
+			          	</a>
+       	 			</li>  -->
+       	 	<!-- 		 <li id="li-notification" th:if="${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')') or #authorization.expression('hasAnyRole(''ROLE_OPERATOR'')') or #authorization.expression('hasAnyRole(''ROLE_BUSINESS'')')}">
+			        	<a th:href="@{/notification/app/list}">
+			            	<i class="fa fa-alert"></i> <span>Notifications </span>
+			          	</a>
+       	 			</li> -->
+       	 		
+
+        			<li id="li-settings" th:if="${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')}" class="header">SETTINGS</li>
+      				<li class="treeview" th:if="${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')}">
+			        	<a>
+			            	<i class="fa fa-briefcase "></i>
+			            	<span>Masters</span>
+				            <span class="pull-right-container">
+				            	<i class="fa fa-angle-left pull-right"></i>
+				            </span>
+			          	</a>
+			           <ul class="treeview-menu">
+				            <li id="li-channel"><a th:href="@{/channel/list}"><i class="fa fa-circle-o"></i> Channel</a></li>
+				            <li id="li-region"><a th:href="@{/region/list}"><i class="fa fa-circle-o"></i> Region</a></li>
+				            <li id="li-distributor"><a th:href="@{/distributor/list}"><i class="fa fa-circle-o"></i> Distributor</a></li>
+			                <li id="li-equipmentType"><a th:href="@{/equipmentType/list}"><i class="fa fa-circle-o"></i> Equipment Type</a></li>
+				        </ul>
+			        </li>
+        			<li id="li-user" th:if="${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')')}"><a th:href="@{/user/list(state=1)}"><i class="fa fa-user"></i> <span>User Access</span></a></li>
+      			</ul>
+    		</section>
+    <!-- /.sidebar -->
+  </aside>	
+     </div>
+  </body>
+</html>

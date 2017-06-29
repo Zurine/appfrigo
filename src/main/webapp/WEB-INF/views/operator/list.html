@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+	</head>
+
+	<body onload="noPaginatedTable()">
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="col-md-10 col-md-offset-1 list-space">
+			
+				<h2 th:text="#{label.operators}"></h2>
+				
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+				
+				<div class="action-row" th:if="${#authorization.expression('hasRole(''ROLE_SUPERADMIN'')')}">
+					<div class="action-wrapper row">
+						<div class="col-md-6" >
+							<a th:href="@{/operator/add}" title="Add Operator" class="btn btn-action"><span class="fa fa-plus fa-btn"></span></a>
+						</div>
+						<div class="col-md-6 btn-list-state">
+						  	<a th:class="${state == 1?'btn btn-primary active':'btn btn-primary'}" th:href="@{/operator/list(state=1)}">Active</a>
+						  	<a th:class="${state == 0?'btn btn-primary active':'btn btn-primary'}" th:href="@{/operator/list(state=0)}">Inactive</a>
+						  	<a th:class="${state == 2?'btn btn-primary active':'btn btn-primary'}" th:href="@{/operator/list(state=2)}">All</a>
+						</div>
+					</div>
+				</div>
+		
+				<table id="table" class="table table-hover">
+					<thead>
+			            <tr>
+              	 			<th th:text="#{label.name}"></th>
+			                <th th:text="#{label.state}" class="no-sorting"></th>
+	                    	<th class="no-sorting"></th>
+			            </tr>
+        			</thead>
+			        <tbody>
+			        	<tr th:each="o : ${operatorList}">
+			        		<td>
+			        			<a th:href="@{/operator/get(id=${o.id})}">
+			        			<img width="30" class="img-circle lazy" th:attr="data-original=${o.url}" ></img> 
+			        			<!--  <img th:if="${o.url!=null}" th:src="${o.url}" width="30" class="img-circle" onclick="window.open(this.src)"></img>
+	                                <img th:if="${o.url==null}" th:src="@{/images/SoyFrigo.png}" width="30" class="img-circle" onclick="window.open(this.src)"></img>
+			        				-->	<span class="strong" th:text="${o.name}"></span>
+			        			</a>
+			        		</td>
+		    			 	<td>
+	    						<a th:href="@{/operator/activate(id=${o.id},state=false)}"><span th:if="${o.active} == true" class="fa fa-toggle-on fa-btn"></span></a>
+			    				<a th:href="@{/operator/activate(id=${o.id},state=true)}"><span th:if="${o.active} == false" class="fa fa-toggle-off fa-btn"></span></a>
+			    			</td> 
+			    			<td>
+			    				<a class="btn btn-mini btn-xs btn-info" th:href="@{/operator/get(id=${o.id})}"><span class="fa fa-list-alt fa-btn"></span><span th:text="#{label.see}"></span></a>
+			    				<a class="btn btn-mini btn-xs btn-success" th:href="@{/operator/edit(id=${o.id})}"><span class="fa fa-pencil fa-btn"></span><span th:text="#{label.edit}"></span></a>
+			    				<a class="btn btn-mini btn-xs btn-danger" data-toggle="modal" data-target="#confirm-delete" th:onclick="${'loadId(' + o.id  +')'}"><span class="fa fa-trash fa-btn"></span><span th:text="#{label.delete}"></span></a>
+								<a th:id="'deleteLink'+${o.id}"  id="delete" th:href="@{/operator/delete(id=${o.id})}" style="display:none"></a>
+			    			</td>
+						</tr>
+			        </tbody>
+				</table>
+				<div th:replace="templates/fragments/mdl :: mdl" ></div> 
+			</div>
+			<script type="text/javascript" th:src="@{/js/jquery.lazyload.js}"></script>  
+			<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+		</div>
+	</body>
+</html>

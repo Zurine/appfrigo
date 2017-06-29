@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>	
+		<link th:href="@{/css/multiselect/bootstrap-multiselect.css}" rel="stylesheet" type="text/css"/>   
+	 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBI2heIIbKpb6w9_1JjTDHcok5zsrVwhwM"></script>
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="col-md-10 col-md-offset-1 list-space">
+				
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+
+				<div class="x_panel">
+		   			<div class="x_panel_content">
+		   				<div class="x_title">
+		                	<h2>Sales Map</h2>
+		                    <div class="clearfix"></div>
+	                 	</div>
+		   			
+						<div class="x_content">
+							<form action="#" th:object="${search}" th:action="@{/statistic/getSalesMap}" method="post">
+		              	
+		                       	<div class="form-row">
+			                        <div class="form-group col-md-6">
+		                                <input type="text" class="form-control has-feedback-left" id="startDate" th:field="*{startDate}" th:value="*{startDate}" placeholder="Start Date" aria-describedby="inputSuccess2Status"/>
+		                       	 		<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+			                        </div>
+			                        <div class="form-group col-md-6">
+		                        	 	<input type="text" class="form-control has-feedback-left" id="endDate" th:field="*{endDate}" th:value="*{endDate}" placeholder="End Date" aria-describedby="inputSuccess2Status"/>
+		                  					<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+			               	 		</div>
+		                       	</div>
+		                       	
+		                       	<div class="form-row">
+			                        <div class="form-group col-md-6">
+			                        	<select th:field="*{equipment}" th:value="*{equipment}" class="form-control" multiple="multiple">
+		                      	   	  		<option th:each="e : ${equipmentList}" th:value="${e.id}" th:text="${e.name}"></option> 
+										</select>
+			                        </div>
+		
+			                        <div class="form-group col-md-6">
+				                        <select th:field="*{product}" th:value="*{product}" class="form-control" multiple="multiple">
+		                      	   	  		<option th:each="p : ${productList}" th:value="${p.id}" th:text="${p.name}"></option> 
+										</select>
+			                        </div>
+		                       	</div>
+		                        	
+		                       	<div class="row">
+		                       	   <div class="form-btn col-md-12">
+		                        		<a class="btn btn-custom" onclick="submitData()">
+		                        			<i class="fa fa-search" aria-hidden="true"></i>
+		                        			<span th:text="#{label.search}"></span>
+		                        		</a>
+		                       		</div>
+		                       	</div>
+		                    </form>
+		                </div>
+					</div>
+				</div>
+		
+		<div class="row">
+			<div class="col-md-4 col-md-offset-4">
+				<div class="radio-inline">
+		        	<label><input id="info-type1" name="info-type" type="radio" class="flat" value="0" th:text="#{label.value.currency}+' ' + ${#authentication.principal.currency}"/> </label>
+	              </div>
+		 	    <div class="radio-inline">
+	            	<label><input id="info-type2" name="info-type" type="radio" class="flat" value="1" th:text="#{label.value.pieces}" /> </label>
+	            </div>
+            </div>
+		</div>
+
+		<div id="module-statistics" style="margin-top:3%">
+			<div th:fragment="resultsList">  	
+				<input type="hidden" th:value="${salesMap}" id="salesMap"></input>
+            		<div class="row">
+						<div class="col-md-12 row-space">
+							<div id="map" style="height:450px;width:100%"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+            </div>
+              <script type="text/javascript" th:src="@{/js/icheck/icheck.min.js}"></script>
+          	<script type="text/javascript" th:src="@{/js/datepicker/daterangepicker.js}"></script>
+			<script type="text/javascript" th:src="@{/js/multiselect/bootstrap-multiselect.js}"></script>
+            <script type="text/javascript" th:src="@{/js/stat.map.js}"></script>
+        </div>
+	</body>
+</html>

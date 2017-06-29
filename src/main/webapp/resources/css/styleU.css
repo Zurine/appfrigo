@@ -1,0 +1,152 @@
+/***Common***/
+
+@font-face {
+	font-family: 'HussarPrintA';
+	src: url('../fonts/HussarPrintA.eot');
+	src: url('../fonts/HussarPrintA.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/HussarPrintA.woff') format('woff'),
+		url('../fonts/HussarPrintA.ttf')  format('truetype');
+	font-weight: bold;
+	font-style: normal;
+}
+
+html, body, .container { 
+	height: 100%; 
+	margin: 0; 
+	padding: 0; 
+/*	background-color: #3F48CC;*/
+	font-family: 'HussarPrintA';
+}
+
+body > .container {
+	height: auto;
+	min-height: 100%; 
+	/*width: 100%;*/
+	/*max-width: 1250px;*/
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.wrapper {
+  background: #FA5882;
+  background: -webkit-linear-gradient(top left, #FA5882 0%, #F7819F 100%);
+  background: linear-gradient(to bottom right, #FA5882 0%, #F7819F 100%);
+  position: absolute;
+  top:0;
+  left: 0;
+  width: 100%;
+  height:100%;
+  overflow: hidden;
+}
+
+
+
+
+#content {
+	padding-bottom: 3em; 
+}
+
+#footer {
+	clear: both; 
+	position: relative;
+	z-index: 10; 
+	height: 3em; 
+	margin-top: -3em; 
+}
+
+#footer a{
+	text-transform: none!important;
+	text-decoration: none!important;
+}
+
+
+.centered{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#footer { 
+	background-color: white; 
+	color: white;
+ 	font-size: 12px;
+	text-align: center; 
+	line-height: 3em;
+}
+
+#footer a, #footer span{ 
+	margin-left: 1%;
+	margin-right: 1%;
+	color:#010099;
+}
+
+
+
+/****Legal Advise******/
+
+.term-container{
+	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+	color:#ffffff;
+	font-size:14px;
+	font-weight: 10px;
+	text-align: justify;
+    text-justify: inter-word;
+}
+
+
+/*************RED BUTTON*****************/
+.btn-custom { 
+  color: #FFFFFF; 
+  background-color: #FF3333; 
+  border-color: #FF3333; 
+  font-weight: bold;
+} 
+ 
+.btn-custom:hover, 
+.btn-custom:focus, 
+.btn-custom:active, 
+.btn-custom.active, 
+.open .dropdown-toggle.btn-custom { 
+  color: #FFFFFF; 
+  background-color: #F09096; 
+  border-color: #FF3333; 
+} 
+ 
+.btn-custom:active, 
+.btn-custom.active, 
+.open .dropdown-toggle.btn-custom { 
+  background-image: none; 
+} 
+ 
+.btn-custom.disabled, 
+.btn-custom[disabled], 
+fieldset[disabled] .btn-custom, 
+.btn-custom.disabled:hover, 
+.btn-custom[disabled]:hover, 
+fieldset[disabled] .btn-custom:hover, 
+.btn-custom.disabled:focus, 
+.btn-custom[disabled]:focus, 
+fieldset[disabled] .btn-custom:focus, 
+.btn-custom.disabled:active, 
+.btn-custom[disabled]:active, 
+fieldset[disabled] .btn-custom:active, 
+.btn-custom.disabled.active, 
+.btn-custom[disabled].active, 
+fieldset[disabled] .btn-custom.active { 
+  background-color: #FF3333; 
+  border-color: #FF3333; 
+} 
+ 
+.btn-custom .badge { 
+  color: #FF3333; 
+  background-color: #FFFFFF; 
+}
+
+/*************RED BUTTON*****************/
+
+.lead{
+	font-size: 14px;
+}
+
+.pull-right {
+    float: none !important;
+}

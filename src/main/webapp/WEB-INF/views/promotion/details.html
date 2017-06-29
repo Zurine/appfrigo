@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head></head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="x_data col-md-8 col-md-offset-2">
+			
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+			
+				<div class="action-row">
+					<div class="action-wrapper">
+						<a th:href="@{/promotion/edit(id=${promotion.id})}" class="btn btn-action"><span class="fa fa-pencil fa-btn"></span></a>
+					</div>
+				</div>
+				
+	        	<div class=" row panel-row">
+            		
+            		<div class="col-md-6 col-sm-6 col-xs-12 animated fadeInDown col-md-offset-3">
+                    	<div class="well profile_view">
+                        	<div class="col-sm-12">
+                            	<h4 class="brief"><i>Promotion</i></h4>
+                                <div class="left col-xs-7">
+                                	<h2 th:text="${promotion.name}"></h2>
+                                	<div class="row">
+   							 			<div class="col-md-4 detail-label" th:text="#{label.name}"> </div>
+   							 			<div class="col-md-8" th:text="${promotion.name}"></div>
+   							 		</div>
+							 		<div class="row">
+							 			<div class="col-md-4 detail-label" th:text="#{label.description}">: </div>
+							 			<div class="col-md-8" th:text="${promotion.description}"></div>
+   							 		</div>
+   							 		
+ 							 		<div class="row">
+	   							 		<div class="col-md-4 detail-label">Products: </div>
+	   							 		<div class="col-md-8">
+	  							 			 <div th:if="${promotion.products!=null}">
+                                       			<div th:each="p : ${promotion.products}">
+		                                        	<!-- <a href="Details" class="link-action" title="Details"> -->
+		                                               	<span style="display:inline-block;margin-right:1%" th:text="${p.name}"></span>
+		                                           <!--      <span class="fa fa-caret-square-o-right fa-btn" style="display:inline-block"></span> 
+		                                            </a> -->
+                                         		</div>
+                                     		</div>
+		                                    <div th:if="${promotion.products==null}" class="row">
+												No Products
+											</div>
+   							 			</div>
+ 							 		</div>
+ 							 		 
+	   							 	<div class="row">
+	   							 		<div class="col-md-4 detail-label">Type: </div>
+	   							 		<div class="col-md-8">
+	   							 			<p th:if="${promotion.type == 1}">Web</p>
+	   							 			<p th:if="${promotion.type == 2}">Image</p>
+	   							 			<p th:if="${promotion.type == 3}">Video</p>
+	   							 		</div>
+   							 		</div>
+ 							 		
+ 							 		<div class="row">
+   							 		<div class="col-md-4 detail-label">Destination: </div>
+   							 		<div class="col-md-8"><span th:text="${promotion.url}"></span></div>
+   							 	</div>
+ 							 	<div class="row">
+   							 		<div class="col-md-4 detail-label">Redimible: </div>
+   							 		<div class="col-md-8" th:text="${promotion.redimible}"></div>
+   							 	</div>
+   							 	
+  							 	<div class="row">
+   							 		<div class="col-md-4 detail-label">Conditions: </div>
+   							 		<div class="col-md-8">
+	  							 		<div th:if="${promotion.conditions!=null}">
+	                                       	<div th:each="c : ${promotion.conditions}">
+                                               	<span style="display:inline-block;margin-right:1%" th:text="${c.name}"></span>
+	                                         </div>
+	                                     </div>
+   							 		</div>
+   							 	</div>
+ 							</div>
+                               <div class="right col-xs-5 text-center">
+                               	<div th:if="${promotion.type == 1 || promotion.type  == 3}">
+                              		<a th:href="${promotion.url}" target="_blank"><span class="fa fa-caret-square-o-right fa-btn"></span></a>
+                               	</div>
+                                <div th:if="${promotion.type == 2}">
+                              		<img th:src="${promotion.url}" alt="" class="img-responsive"></img>
+                               	</div>
+                               </div>
+                        </div>
+                    </div> 
+	             </div>
+	         </div>
+		</div>
+		</div>
+	</body>
+</html>

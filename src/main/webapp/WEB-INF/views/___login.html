@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/default">
+
+	<head>
+	<!-- <link th:href="@{/css/loginU.css}" href="css/loginU.css" rel="stylesheet" type="text/css"/> -->   
+	</head>
+
+	<body>
+		<div layout:fragment="content">
+
+			<div class="wrapper">
+				<div class="container">
+					<h1>I'm Wall's</h1>
+					<div th:if="${errormsg} !=null" class="error-wrapper col-md-6 col-md-offset-3">
+						<p th:text="${errormsg}"></p>
+					</div>
+		
+					<form action="#" th:action="@{/auth/login}" th:object="${loginBean}" method="post">  
+						<input type="hidden" th:field="*{timezone}" th:value="*{timezone}" />
+						<input type="hidden" th:field="*{language}" th:value="*{language}" />
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+						<input type="text" placeholder="Email" th:field="*{username}" required="required" 
+							title="Email pattern does not match" pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+						<span th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Email Error</span>
+						<input type="password" placeholder="Password" th:field="*{password}" required="required" />
+						<span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</span>
+						<button type="submit" id="login-button" class="btn-login">Login</button>
+					</form>
+				<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+				<script type="text/javascript" th:src="@{/js/datepicker/moment.min.js}"></script>
+				<script type="text/javascript" th:src="@{/js/default.js}"></script> 
+	</div>
+	
+	<ul class="bg-bubbles">
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+</div>
+
+		
+		
+		
+	
+		</div>
+
+	</body>
+
+</html>

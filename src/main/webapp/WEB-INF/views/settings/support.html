@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+		<div class="x_data col-md-8 col-md-offset-2">
+			
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+				 
+				<div class="action-row">
+				<div class="action-wrapper">
+							<a th:href="@{/settings/profile}" title="Profile" class="btn btn-action "><span class="fa fa-user fa-btn"></span></a>
+							<a th:href="@{/settings/changePassword}" title="Change Password" class="btn btn-action"><span class="fa fa-lock fa-btn"></span></a>
+							<a th:href="@{/settings/support}" title="Support" class="btn btn-action active"><span class="fa fa-support fa-btn"></span></a>
+						</div>
+
+				</div>
+					
+					
+				<div class="x_panel">
+       				<div class="x_panel_content">
+       		
+		
+					<div class="x_content">
+				<div class="div-horizontal" >
+					
+					<div class="x_title">
+	                	<h2>Get help with I'm Walls</h2>
+	                    <div class="clearfix"></div>
+	                 </div>
+		                 
+	                <div class="form-group">
+ 						<label class="col-sm-12 control-label">Need help with the Backoffice? Or need help with I'm Walls Vendor app?</label>
+						
+					</div>
+						
+					<div class="form-group">
+						<div class="col-sm-12">
+						 	<span class="fa fa-envelope"></span>Write us to <a href="mailto:support@socialmediatechnologies.es">support@socialmediatechnologies.es</a>
+						</div>
+					</div>
+							
+					<div class="form-group">
+						<div class="col-sm-12">
+							<span class="fa fa-phone"></span>Call us to <a href="tel:+34 911 285 325">+34 911 285 325</a>
+						</div>
+					</div>
+		 	</div>
+		 		</div>
+				</div>
+					</div>
+			</div>
+		</div>
+	</body>
+</html>

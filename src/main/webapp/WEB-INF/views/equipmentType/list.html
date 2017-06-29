@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+				
+			<div class="col-md-10 col-md-offset-1 list-space">
+			
+				<h2>Equipment Type</h2>
+			
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+		
+				<table id="table" class="table table-hover">
+					<thead>
+            			<tr>
+            				<th class="no-sorting"></th>
+                			<th th:text="#{label.name}"></th>
+                			<th class="no-sorting">See Products</th> 
+           				</tr>
+        			</thead>
+       				<tbody>
+        				<tr th:each="e : ${equipmentList}">
+        					<td><i th:class="${'fa ' + e.icon}" style="font-size: 30px;"></i></td>
+	    					<td th:text="${e.name}"></td>
+			    			<td>
+			    				<a class="btn btn-mini btn-xs btn-info" th:href="@{/equipmentType/products(id=${e.id})}"><span class="fa fa-list-alt fa-btn"></span><span th:text="#{label.see}"></span></a>
+			    			</td>
+						</tr>
+        			</tbody>
+				</table>
+			</div>
+			
+	  	   <div th:replace="templates/fragments/mdlCustom :: mdlCustom" ></div> 
+			
+			<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+			<script type="text/javascript" th:src="@{/js/channel.js}"></script>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+	</head>
+
+	<body onload="noPaginatedTable()">
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="col-md-10 col-md-offset-1 list-space">
+			
+				<h2>Users Management</h2>
+			
+				<div class="action-row">
+					<div class="action-wrapper row">
+						<div class="col-md-6" >
+							<a th:href="@{/user/add}" title="Add" class="btn btn-action"><span class="fa fa-plus fa-btn"></span></a>
+						</div>
+						<div class="col-md-6 btn-list-state">
+					  		<a th:class="${state == 1?'btn btn-primary active':'btn btn-primary'}" th:href="@{/user/list(state=1)}">Active</a>
+					  		<a th:class="${state == 0?'btn btn-primary active':'btn btn-primary'}" th:href="@{/user/list(state=0)}">Inactive</a>
+					  		<a th:class="${state == 2?'btn btn-primary active':'btn btn-primary'}" th:href="@{/user/list(state=2)}">All</a>
+						</div>
+					</div>
+				</div>
+			
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+				
+				<table id="table" class="table table-hover">
+					<thead>
+			            <tr>
+			            	<th class="no-sorting"></th>
+			                <th th:text="#{label.name}"></th>
+			                <th th:text="#{label.email}"></th>
+			                <th th:text="#{label.type}"></th>
+			                <th th:text="#{label.access}"></th>
+			                <th th:text="#{label.state}" class="no-sorting"></th> 
+							<th class="no-sorting"></th>
+			            </tr>
+        			</thead>
+			        <tbody>
+			        	<tr th:each="u : ${userList}">
+			        		<td><img width="30" class="img-circle lazy" th:attr="data-original=${u.url}"></img></td>
+			    			<td><span class="strong" th:text="${u.name +' ' + u.surname}"></span> </td>
+				    		<td th:text="${u.email}"></td>
+				    		<td th:text="${u.typeDesc}"></td>
+			    			<td>
+			    				<span th:if="${u.items != null}" th:each="b : ${u.items}"> 
+			    					<span th:text="${b.name}"></span> -
+		    					 </span>
+		    					 <span th:if="${u.items == null}"> - </span>
+			    			</td>
+				    	 	<td>
+	    						<a th:href="@{/user/activate(id=${u.id},state=false)}"><span th:if="${u.active} == true" class="fa fa-toggle-on fa-btn"></span></a>
+			    				<a th:href="@{/user/activate(id=${u.id},state=true)}"><span th:if="${u.active} == false" class="fa fa-toggle-off fa-btn"></span></a>
+			    			</td>
+			    			<td>	
+			    				<a class="btn btn-mini btn-xs btn-info" th:href="@{/user/get(id=${u.id})}"><span class="fa fa-list-alt fa-btn"></span><span th:text="#{label.see}"></span></a>
+			    				<a class="btn btn-mini btn-xs btn-success" th:href="@{/user/edit(id=${u.id})}"><span class="fa fa-pencil fa-btn"></span><span th:text="#{label.edit}"></span></a>
+			    			</td>
+						</tr>
+			        </tbody>
+				</table>
+			</div>	
+			<script type="text/javascript" th:src="@{/js/jquery.lazyload.js}"></script>  
+			<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+		</div>
+	</body>
+</html>

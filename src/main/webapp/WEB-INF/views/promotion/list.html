@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="col-md-10 col-md-offset-1 list-space">
+			
+				<h2 th:text="#{label.promotions}"></h2>
+				
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+				
+				<div class="action-row">
+					<div class="action-wrapper">
+						<a th:href="@{/promotion/add}" title="Add" class="btn btn-action"><span class="fa fa-plus fa-btn"></span></a>
+					</div>
+				</div>
+				
+				<table id="table" class="table table-hover">
+					<thead>
+	            		<tr>
+	                		<th th:text="#{label.name}"></th>
+	                		<th th:text="#{label.description}" class="no-sorting"></th>
+	                		<th th:text="#{label.type}"></th>
+	                		<th>Welcome</th>
+	                		<th th:text="#{label.state}" class="no-sorting"></th>
+	                		<th class="no-sorting"></th>
+	            		</tr>
+	        		</thead>
+		        	<tbody>
+			        	<tr th:each="p : ${promotionList}">
+				    		<td th:text="${p.name}"></td>
+				    		<td th:text="${p.description}" class="long-text-inline"></td>
+				    		<td>
+				    			<span th:if="${p.type} == 1">Web</span>
+				    			<span th:if="${p.type} == 2">Image</span>
+				    			<span th:if="${p.type} == 3">Video</span>
+				    		</td>
+				    		<td><a th:href="@{/promotion/setWelcome(id=${p.id})}" th:if="${p.active} == true">
+				    			<span class="fa fa-star fa-btn"  th:if="${p.welcome} == true"></span>
+				    			<span class="fa fa-star-o fa-btn"  th:if="${p.welcome} == false"></span>
+				    		</a></td>
+				    		<td>
+		    					<a th:href="@{/promotion/desactivate(id=${p.id})}"><span th:if="${p.active} == true" class="fa fa-toggle-on fa-btn"></span></a>
+				    			<a th:href="@{/promotion/activate(id=${p.id})}"><span th:if="${p.active} == false" class="fa fa-toggle-off fa-btn"></span></a>
+				    		</td>
+				    		<td>
+				    			<a class="btn btn-mini btn-xs btn-info" th:href="@{/promotion/get(id=${p.id})}"><span class="fa fa-list-alt fa-btn"></span><span th:text="#{label.see}"></span></a>
+			    				<a th:if="${#authorization.expression('hasRole(''ROLE_SUPERADMIN'')')}" class="btn btn-mini btn-xs btn-success" th:href="@{/promotion/edit(id=${p.id})}"><span class="fa fa-pencil fa-btn"></span><span th:text="#{label.edit}"></span></a>
+				    		</td>
+						</tr>
+		        	</tbody>
+				</table> 
+			</div>
+		</div>
+	</body>
+</html>

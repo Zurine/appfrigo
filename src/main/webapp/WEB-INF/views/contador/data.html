@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>	
+		<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+		<script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+		<script type="text/javascript" th:src="@{/js/contador.js}"></script>
+		<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content">
+		
+			<div class="col-md-8 col-md-offset-2" style="margin-top:6%">
+				
+				<h2>Contador</h2>
+		
+    			<form id="contador" action="#" th:object="${contadorSearch}" th:action="@{/contador/search}" method="post">
+ 				
+					<div th:if="${errormsg} !=null" class="error-wrapper col-md-6 col-md-offset-3">
+						<p th:text="${errormsg}"></p>
+					</div>
+					
+					<div th:if="${infomsg} !=null" class="info-wrapper col-md-6 col-md-offset-3">
+						<p th:text="${infomsg}"></p>
+					</div>
+ 				
+					<div class="row panel-row">
+                		<div class="col-md-8 col-md-offset-2 panel-search">
+   
+                    		<div class="form-row">
+		                        <div class="form-group col-md-6">
+		                             <div class="input-group date" id="startDate">
+		                   				<input type="text" class="form-control"  th:field="*{startDate}" placeholder="Start Date" />  <!-- pattern="dd/MM/yyyy" -->
+					                    <span class="input-group-addon">
+					                        <span class="glyphicon glyphicon-calendar"></span>
+					                    </span>
+		                			</div>
+		                        </div>
+		                        <div class="form-group col-md-6">
+		                           <div class="input-group date" id="endDate">
+		                   				<input type="text" class="form-control" th:field="*{endDate}" placeholder="End Date" />  <!-- pattern="dd/MM/yyyy" -->
+					                    <span class="input-group-addon">
+					                        <span class="glyphicon glyphicon-calendar"></span>
+					                    </span>
+		                			</div>
+		               	 		</div>
+                        	</div>
+
+	                        <div class="form-action">
+	                        	<a onclick="submitData()"  class="btn btn-custom">Search</a>
+	                       	 <!-- <input type="submit" id="search" value="Search" class="btn btn-custom col-md-4 col-md-offset-4"/> -->
+	                        </div>
+                    	</div>
+                	</div>
+                
+ 				</form>
+ 				
+ 				<div id="module-contador" style="margin-top:3%">
+					<div id="list-contador" th:fragment="resultsList" style="display:none"> 	
+						<table id="table" class="table table-hover">
+							<thead>
+					            <tr>
+					                <th>Contador</th>
+				                    <th>Date</th>
+					                <th>People</th>
+					                <th>Sold</th>
+					            </tr>
+		        			</thead>
+					        <tbody>
+					        	<tr th:each="c : ${contadorList}">
+					        		<td th:text="${c.description}"></td>
+					        		<td th:text="${c.date}"></td>
+						    		<td th:text="${c.people}"></td>
+						    		<td th:text="${c.sold}"></td>
+								</tr>
+							 	<tr th:if="${total != null}" style=" background-color: #7878FF;">
+					        		<td>TOTAL</td>
+					        		<td></td>
+						    		<td th:text="${total.people}"></td>
+						    		<td th:text="${total.sold}"></td>
+								</tr>  
+					        </tbody>
+						</table>
+					</div>
+				</div>
+            </div>
+		</div>
+
+	</body>
+
+</html>

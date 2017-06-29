@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>	
+	 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/> 
+	 	<link th:href="@{/css/switchery/switchery.min.css}" rel="stylesheet" type="text/css"/>   
+		<link th:href="@{/css/multiselect/bootstrap-multiselect.css}" rel="stylesheet" type="text/css"/>   
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+		<div class="x_data col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1">
+		
+			<div class="x_title">
+             	<h2 th:text="#{label.statistics}"></h2>
+                <div class="clearfix"></div>
+            </div>
+			<div th:replace="templates/fragments/msg :: msg" ></div> 
+			
+			<div id="module-statistics" style="margin-top:3%">
+			
+				<div id="list-statistics" th:fragment="resultsList" > 	 <!-- style="display:none" -->
+
+				<div id="fileGenerator" th:if="${salesList != '[]'}" style="text-align:right;margin-bottom: 2%;"> <!-- display:none -->
+					<a class="btn btn-action" th:href="@{/statistic/getSalesCSV}"  th:title="#{label.csv}"><span class="fa fa-file-excel-o" aria-hidden="true"></span></a>	
+					<a class="btn btn-action" onclick="getPdf()" th:title="#{label.pdf}"><span class="fa fa-file-pdf-o" aria-hidden="true"></span></a>	
+				</div>
+
+				<div id="file-module">
+					<div th:fragment="file-fragment" >  
+						<input id="url" type="hidden" th:value="${url}"/>
+					</div>
+				</div>
+				
+				<input type="hidden" th:value="${type}"></input> 
+					
+				<table id="table" class="table table-hover"> <!--  table-custom -->
+						<thead>
+				            <tr>
+				               <!-- BOTH INFO -->	
+				            	<th class="no-sorting">Rank.</th>
+				                <th><span th:if="${type == 7}" th:text="#{label.operator}"></span><span th:if="${type == 1}" th:text="#{label.seller}"></span><span th:if="${type == 0}" th:text="#{label.equipment}"></span></th>
+			                	<!-- BOTH INFO -->	
+				                <th th:text="#{label.total}"></th>
+		                		<!-- OPERATOR INFO -->
+		                		<th>Total Pieces</th> <!--  th:if="${type == 8}" -->
+				                <!-- BOTH INFO -->	
+				                <th th:text="#{label.gif}"></th>
+				                <!-- NO OPERATOR INFO -->
+				                <th th:text="#{label.workDay}"  th:if="${type != 7 and type != 6}"></th>
+				                <!-- NO OPERATOR INFO -->
+				                <th th:text="#{label.daily.unity}"  th:if="${type != 7}"></th>
+				                <!-- NO OPERATOR INFO -->
+				                <th th:text="#{label.daily.value}"  th:if="${type != 7}"></th>
+				                <!-- NO OPERATOR INFO -->
+				                <th th:text="#{label.daily.hour}"  th:if="${type != 7 and type != 6}"></th>
+				                <!-- NO OPERATOR INFO -->
+				                <th class="no-sorting"  th:if="${type != 6 and type != 7}"></th>
+								<!-- <th th:if="${type == 1}" th:text="#{label.path}"></th>
+				                <th th:text="#{label.see}"></th> -->
+				            </tr>
+	        			</thead>
+	        			 
+			        	<th:block  th:each="s,rowStat : ${salesList}">
+			        		<tr>
+				        		<!-- BOTH INFO -->	
+				        		<td th:text="${rowStat.index+1}"></td> <!-- class="block-header" -->
+				        		<!-- BOTH INFO -->	
+				        		<td th:onclick="'javascript:showProducts(\'' + ${s.item.id }  + '\',\'' + ${type} +  '\');'" th:text="${s.item.name}" style="font-weight: bold"></td> <!--  class="block-label"  -->
+				        		<!-- BOTH INFO -->	
+					    		<td class="numberTd"><span th:text="${#numbers.formatDecimal(s.total, 1, 2)}"></span><span th:text="${#authentication.principal.currency}"></span></td>  <!-- block-total -->
+					    		<!-- OPERATOR INFO -->
+					    		<td class="numberTd" ><span th:text="${s.totalAmount}"></span></td> <!-- block-amount --> <!--  th:if="${type == 8}" -->
+				    			<!-- BOTH INFO -->	 
+					    		<td class="numberTd "><span th:text="${s.totalGifs}"></span></td> <!-- block-gift -->
+				    		    <!-- NO OPERATOR INFO -->
+					    		<td class="numberTd " th:if="${type != 7 and type != 6}"><span th:text="${s.workDay}"></span></td> <!-- block-amount -->
+					    		<!-- NO OPERATOR INFO -->
+					    		<td class="numberTd " th:if="${type != 7}"><span th:text="${s.dailyAmount}"></span></td> <!-- block-label -->
+					    		<!-- NO OPERATOR INFO -->
+					    		<td class="numberTd" th:if="${type != 7}"><span th:text="${s.dailyTotal}"></span></td> <!-- block-total -->
+				    			<!-- NO OPERATOR INFO -->
+					    		<td class="numberTd" th:if="${type != 7 and type != 6}"><span th:text="${s.dailyHours}"></span><span th:if="${type != 7}" >h</span></td> <!-- block-gift -->
+					    		<!-- NO OPERATOR INFO -->
+					    		<td class=" centerTd" th:if="${type != 6 and type != 7 }">
+					    		<!-- 	<span th:if="${type == 1}" th:title="#{label.path}"><a th:href="@{/statistic/workDay(id=${s.item.id})}" style="cursor: pointer"><span class="fa fa-map-marker fa-btn"></span></a></span><span class="vertical-line"></span> -->
+								<!-- BOTH INFO -->	
+									<a class="btn btn-mini btn-xs btn-info" th:title="#{label.products}"  th:onclick="'javascript:showProducts(\'' + ${s.item.id }  + '\',\'' + ${type} +  '\');'"><span th:id="${'plus'+ s.item.id}" class="fa fa-plus-square fa-btn"></span><span th:text="#{label.see}"></span></a>
+								</td> <!-- block-total -->
+							</tr>
+							<!--  th:if="${products!=null and #arrays.length(products)!=0}"  -->
+						
+				 	 	 	<tr th:id="'module-products'+ ${s.item.id }" style="display: none;"  role="row" th:if="${type != 7}"> <!-- th:class="${'detail sub'+ s.item.id}" -->
+				 	 	 	<th:block th:fragment="productsList"> <!--  th:if="${products!=nul}" -->
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td colspan="8">
+								 	<table class="table table-sub table-hover">
+										<thead>
+								            <tr>
+								                <th th:text="#{label.products}"></th>
+								                <th th:text="#{label.product.price}"></th>
+								                <th th:text="#{label.product.amount}"></th>
+								                <th th:text="#{label.total}"></th>
+								            </tr>
+        								</thead>
+										<tbody>
+											<tr th:each="p : ${products}">
+												<td th:text="${p.name}" style="font-weight: bold"></td>
+												<td class="numberTd"><span th:text="${p.price}"></span><span th:text="${#authentication.principal.currency}"></span></td>
+												<td class="numberTd"><span th:text="${p.amount}"></span></td>
+												<td class="numberTd" style="font-weight: bold"><span th:text="${#numbers.formatDecimal(p.price * p.amount, 1, 2)}"></span><span th:text="${#authentication.principal.currency}"></span></td>
+											</tr>
+										</tbody>
+									</table> 
+								</td>
+								<td style="display:none"></td>
+								<td style="display:none"></td>
+								<td style="display:none"></td>
+								<td style="display:none"></td>
+								<td style="display:none"></td>
+								</th:block>
+							</tr>  
+						</th:block>
+					
+				</table>
+			</div>
+		</div>
+			
+		<div class="x_panel">
+   			<div class="x_panel_content">
+				<div class="x_content">
+					<form id="sales" action="#" th:object="${search}" th:action="@{/statistic/salesSearch}" method="post" class="form-horizontal form-label-left">
+					
+							<input type="hidden" id="search-id" th:field="*{id}" th:value="*{id}"></input> 
+							<div class="form-row">
+							   <div class="radio-inline">
+	                                <label><input type="radio" class="flat" th:field="*{gpType}" th:value="7" th:text="#{label.operator}"/> </label>
+                                </div>
+						 	    <div class="radio-inline">
+	                               <label><input type="radio" class="flat"  th:field="*{gpType}" th:value="0" th:text="#{label.equipment}"/>  </label>
+                                </div>
+                                 <div class="radio-inline">
+                                  	<label><input type="radio" class="flat" th:field="*{gpType}" th:value="1" th:text="#{label.seller}"/> </label>
+                                </div>
+                               	<div class="radio-inline">
+	                                <label><input type="radio" class="flat" th:field="*{gpType}" th:value="2" th:text="#{label.channel}" /> </label>
+                                </div>
+                                <div class="radio-inline">
+	                                <label><input type="radio" class="flat" th:field="*{gpType}" th:value="3" th:text="#{label.region}"/> </label>
+                               	</div>
+                                <div class="radio-inline">
+	                                <label><input type="radio" class="flat" th:field="*{gpType}" th:value="4" th:text="#{label.distributor}"/> </label>
+                                </div>
+                                <div class="radio-inline">
+	                                <label><input type="radio" class="flat" th:field="*{gpType}" th:value="5" th:text="#{label.equipment.type}"/> </label>
+                                </div>
+                                <div class="radio-inline">
+	                                <label><input type="radio" class="flat" th:field="*{gpType}" th:value="6" th:text="#{label.product}"/>  </label>
+                                </div>
+                        	</div>
+                        	                       	
+                        	<div class="form-row">
+		                        <div class="form-group col-md-4">
+	                                <input type="text" class="form-control has-feedback-left" id="startDate" th:field="*{startDate}" placeholder="Start Date" aria-describedby="inputSuccess2Status"/>
+	                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+	                                <span id="inputSuccess2Status" class="sr-only">(success)</span>
+		                        </div>
+		                        <div class="form-group col-md-4">
+		                        	<input type="text" class="form-control has-feedback-left" id="endDate" th:field="*{endDate}" placeholder="End Date" aria-describedby="inputSuccess2Status"/>
+				                    <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                	<span id="inputSuccess2Status" class="sr-only">(success)</span>
+		               	 		</div>
+		               	 		<div class="form-group col-md-4">
+		               	 			<label class="control-label">Show Work Day info</label>
+		               	 			<input type="checkbox" class="js-switch" th:field="*{workDay}" th:value="*{workDay}"  ></input> <!-- th:field="*{active}" th:value="*{active}" --> 
+		               	 		
+		               	 		</div>
+                        	</div>
+                        	
+                        	<div class="form-row">
+		                        <div class="form-group col-md-6">
+			                        <select th:field="*{equipment}" class="form-control" multiple="multiple">
+	  									<option th:each="b : ${equipmentList}" th:value="${b.id}" th:text="${b.name}"></option>
+									</select>
+		                        </div>
+
+		                        <div class="form-group col-md-6">
+			                        <select th:field="*{channel}" class="form-control" multiple="multiple">
+	  									<option th:each="c : ${channelList}" th:value="${c.id}" th:text="${c.name}"></option>
+									</select>
+		                        </div>
+                        	</div>
+                        	
+                        	<div class="form-row">
+		                        <div class="form-group col-md-6">
+			                        <select th:field="*{region}" class="form-control" multiple="multiple">
+	  									<option th:each="r : ${regionList}" th:value="${r.id}" th:text="${r.name}"></option>
+									</select>
+		                        </div>
+ 
+		                        <div class="form-group col-md-6">
+			                        <select th:field="*{equipmentType}" class="form-control" multiple="multiple">
+	  									<option th:each="t : ${typeList}" th:value="${t.id}" th:text="${t.name}"></option>
+									</select>
+		                        </div>
+                        	</div>
+	                        	
+                        	<div class="form-row">
+		                        <div class="form-group col-md-6">
+			                        <select th:field="*{product}" class="form-control" multiple="multiple">
+	  									<option th:each="r : ${productList}" th:value="${r.id}" th:text="${r.name}"></option>
+									</select>
+		                        </div>
+		                        <div class="form-group col-md-6">
+			                        <select th:field="*{operator}" class="form-control" multiple="multiple" th:if="${#authorization.expression('hasAnyRole(''ROLE_SUPERADMIN'')') or #authorization.expression('hasAnyRole(''ROLE_SUPERVISOR'')')}">
+	  									<option th:each="o : ${operatorList}" th:value="${o.id}" th:text="${o.name}"></option>
+									</select>
+		                        </div>
+                        	</div>
+                        	
+                        	<div class="row">
+                        	   <div class="form-btn col-md-12">
+	                        		<a class="btn btn-custom" onclick="submitData()">
+	                        			<i class="fa fa-search" aria-hidden="true"></i>
+	                        			<span th:text="#{label.search}"></span>
+	                        		</a>
+	                       		</div>
+                        	</div>
+                        	<input type="hidden" th:value="*{gpType}" th:field="*{gpType}"></input> 
+	                        	
+                       	</form>
+                        
+                     <!--   	<form id="form-path" action="#" th:object="${search}" th:action="@{/statistic/workDay}" method="post" class="form-horizontal form-label-left">
+                       		<input type="hidden" th:field="*{startDate}" th:value="*{startDate}"></input>
+                       		<input type="hidden" th:field="*{endDate}" th:value="*{endDate}"></input>
+                       		<input type="submit" id="path" style="display: none"/>
+                    	 </form>--> 
+                	</div>
+				</div>
+			</div>
+		
+		<!-- 	<div id="csv" th:fragment="csvList"><input id="url" type="hidden"  th:value="${url}"></input></div> -->
+ 	
+        </div>
+        <script type="text/javascript" th:src="@{/js/icheck/icheck.min.js}"></script>
+        <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+		<script type="text/javascript" th:src="@{/js/datepicker/daterangepicker.js}"></script>
+		<script type="text/javascript" th:src="@{/js/multiselect/bootstrap-multiselect.js}"></script>
+		<script type="text/javascript" th:src="@{/js/switchery/switchery.min.js}"></script> 
+		<script type="text/javascript" th:src="@{/js/stat.sales.js}"></script>
+		</div>
+
+	</body>
+
+</html>

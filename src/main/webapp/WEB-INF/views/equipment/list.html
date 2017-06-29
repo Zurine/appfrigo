@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+	</head>
+
+	<body onload="noPaginatedTable()">
+	
+		<div layout:fragment="content" class="row">
+	
+			<div class="col-md-10 col-md-offset-1 list-space">
+		
+				<h2 th:text="#{label.equipment}"></h2>
+				
+				<!-- <div th:if="${session.step != null}"><div th:replace="templates/fragments/assistant :: assistant" ></div></div> -->
+				 <!--  and session.step == 2  -->
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+		
+				<div class="action-row" th:if="${#authorization.expression('hasRole(''ROLE_SUPERADMIN'')')}">
+					<div class="action-wrapper row">
+						<div class="col-md-6" >
+							<a th:href="@{/equipment/add?operatorId=0}" title="Add" class="btn btn-action"><span class="fa fa-plus fa-btn"></span></a>
+						</div>
+						<div class="col-md-6 btn-list-state">
+					  		<a th:class="${state == 1?'btn btn-primary active':'btn btn-primary'}" th:href="@{/equipment/list(state=1)}">Active</a>
+					  		<a th:class="${state == 0?'btn btn-primary active':'btn btn-primary'}" th:href="@{/equipment/list(state=0)}">Inactive</a>
+					  		<a th:class="${state == 2?'btn btn-primary active':'btn btn-primary'}" th:href="@{/equipment/list(state=2)}">All</a>
+						</div>
+					</div>
+				</div>
+		
+				<table id="table" class="table table-hover" onload="noPaginatedTable()">
+					<thead>
+			            <tr>
+			            	<th th:text="#{label.type}" class="no-sorting"></th>
+			                <th th:text="#{label.name}"></th>
+			                <th th:text="#{label.unilever.id}"></th>
+			                <th th:text="#{label.channel}"></th>
+			                <th th:text="#{label.region}"></th>
+			                <th th:text="#{label.distributor}"></th>
+			                <th th:text="#{label.location}"></th>
+			                <th th:text="#{label.seller}"></th>
+			                <th th:text="#{label.state}" class="no-sorting"></th>
+			                <th class="no-sorting"></th>
+			            </tr>
+        			</thead>
+			        <tbody>
+			        	<tr th:each="e : ${businessList}" th:class="${e.inactive}? inactive-row">
+			        		<td>
+			        			<i th:class="'fa ' + ${e.typeIcon}" style="font-size: 22px;"></i>
+							</td>
+			        		<td><a th:href="@{/equipment/get(id=${e.id})}"><span class="strong" th:text="${e.name}"></span></a></td>
+			        		<td th:text="${e.unileverId}"></td>
+			        		<td th:text="${e.channel}"></td>
+			        		<td th:text="${e.region}"></td>
+			        		<td th:text="${e.distributor}"></td>
+			        		 <!--<td th:text="${e.equipmentType}"></td>-->  
+			        		<td th:text="${e.direccion}"></td>
+			        		<td>
+			        			<span th:if="${e.totalSeller!=0}"  th:each="i : ${#numbers.sequence( 0,e.totalSeller-1)}" >
+			        				<a th:href="@{/equipment/seller/list(id=${e.id})}"><span class="fa fa-user fa-btn"></span></a>
+			        			</span>
+			        			 <span th:if="${e.totalSeller==0}" >
+			        				-
+			        			</span>
+			        		</td>
+		    				<td>
+	    						<a th:href="@{/equipment/activate(id=${e.id},state=false)}"><span th:if="${e.active} == true" class="fa fa-toggle-on fa-btn"></span></a>
+			    				<a th:href="@{/equipment/activate(id=${e.id},state=true)}"><span th:if="${e.active} == false" class="fa fa-toggle-off fa-btn"></span></a>
+			    			</td>
+				    		<td>
+				    			<a class="btn btn-mini btn-xs btn-info" th:href="@{/equipment/get(id=${e.id})}"><span class="fa fa-list-alt fa-btn"></span><span th:text="#{label.see}"></span></a>
+			    				<a th:if="${#authorization.expression('hasRole(''ROLE_SUPERADMIN'')')}" class="btn btn-mini btn-xs btn-success" th:href="@{/equipment/edit(id=${e.id})}"><span class="fa fa-pencil fa-btn"></span><span th:text="#{label.edit}"></span></a>
+				    			<a class="btn btn-mini btn-xs btn-danger" data-toggle="modal" data-target="#confirm-delete" th:onclick="${'loadId(' + e.id  +')'}"><span class="fa fa-trash fa-btn"></span><span th:text="#{label.delete}"></span></a>
+								<a th:id="'deleteLink'+${e.id}"  id="delete" th:href="@{/equipment/delete(id=${e.id})}" style="display:none"></a>
+				    		</td>
+						</tr>
+			        </tbody>
+				</table>
+				<div><div class="color-box"></div><div style="display:inline-block" th:text="#{label.equipment.inactive}"></div></div>
+				<div th:replace="templates/fragments/mdl :: mdl" ></div> 
+			</div>
+			<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+		</div>
+	</body>
+</html>

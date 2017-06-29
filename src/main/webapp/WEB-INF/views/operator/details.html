@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head></head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="x_data col-md-10 col-md-offset-1">
+			
+				<h2 th:text="${operator.name + ' Operator'}"></h2>
+			
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+			
+				<div class="action-row">
+					<div class="action-wrapper">
+						<a th:href="@{/operator/edit(id=${operator.id})}" class="btn btn-action"><span class="fa fa-pencil fa-btn"></span></a>
+						<a data-toggle="modal" data-target="#confirm-delete" class="btn btn-action"><span class="fa fa-trash fa-btn"></span></a>
+						<a id="delete" th:href="@{/operator/delete(id=${operator.id})}" style="display:none"></a>
+					</div>
+				</div>
+				
+	        	<div class="row panel-row">
+            		
+            		<div class="col-sm-8 col-xs-12 animated fadeInDown">
+                    	<div class="profile_view">
+                    		<div class="view-header" th:text="${operator.name + ' Details'}"></div>
+                    		<div class="view-body row">	
+                    			<div class="col-md-8">
+	                    			<div class="row">
+	  							 		<div class="col-md-4 detail-label" th:text="#{label.cif}"> </div>
+	   							 		<div class="col-md-8" th:text="${operator.cif}"></div>
+	   							 	</div>
+	   							 	 <div class="row">
+	  							 		<div class="col-md-4 detail-label" th:text="#{label.timezone}">: </div>
+								 		<div class="col-md-8" th:text="${operator.zone}"></div>
+	   							 	</div>
+   							 		 <div class="row">
+	  							 		<div class="col-md-4 detail-label">Stock Management: </div>
+	  							 		<div class="col-md-8">
+								 			<span th:if="${operator.stock} == true" class="fa fa-toggle-on fa-btn"></span>
+				    						<span th:if="${operator.stock} == false" class="fa fa-toggle-off fa-btn"></span>
+				    					</div>
+	   							 	</div>
+	   							 	 <div class="row">
+	   							 	 	<div class="col-md-4 detail-label">State: </div>
+	   							 		<div class="col-md-8">
+		   							 		<a th:href="@{/operator/activate(id=${operator.id},state=false)}"><span th:if="${operator.active} == true" class="fa fa-toggle-on fa-btn"></span></a>
+				    						<a th:href="@{/operator/activate(id=${operator.id},state=true)}"><span th:if="${operator.active} == false" class="fa fa-toggle-off fa-btn"></span></a>  
+				    					</div>
+	   							 	</div>
+   							 	</div>
+	   							 <div class="col-md-4">
+		   							 <img th:if="${operator.url!=null}" th:src="${operator.url}" width="120" class="img-responsive" onclick="window.open(this.src)"></img>
+	                                <img th:if="${operator.url==null}" th:src="@{/images/SoyFrigo.png}" width="120" class="img-responsive" onclick="window.open(this.src)"></img>
+		   						</div>
+                    		</div>
+                        </div>
+                        
+                        <div class="profile_view">
+                       		<div class="view-header" th:text="#{label.equipments}"></div>
+                       		<div class="view-body">	
+
+                              	 <table class="table table-striped custab" th:if="${operator.business != null and #arrays.length(operator.business)!=0 }">
+								    <thead>
+								        <tr>
+								            <th th:text="#{label.name}"></th>
+								            <th class="text-center" th:text="#{label.actions}"></th>
+								        </tr>
+							    	</thead>
+						            <tr th:each="b : ${operator.business}">
+						                <td th:text="${b.name}"></td>
+						                <td class="text-center">
+						                	<a class="btn btn-mini btn-xs btn-info" th:href="@{/equipment/get(id=${b.id})}"><span class="fa fa-list-alt fa-btn"></span><span th:text="#{label.see}"></span></a>
+				    						<a class="btn btn-mini btn-xs btn-success" th:href="@{/equipment/edit(id=${b.id})}"><span class="fa fa-pencil fa-btn "></span><span th:text="#{label.edit}"></span></a>
+				    					</td>
+						            </tr>
+   		 						</table>
+                              	<div th:if="${operator.business == null or #arrays.length(operator.business)==0 }" th:text="#{label.oper.no.equip}"></div>
+                              	<div class="col-md-6" > 
+									<a th:href="@{/equipment/add(operatorId=${operator.id})}" title="Add" class="btn btn-action"><span class="fa fa-plus fa-btn"></span><span>Add Equipment</span></a>
+								</div>
+                       		</div>
+                        </div>
+                    </div> 
+                    <div class="col-sm-4 col-xs-12">
+                    	<div th:if="${operator.data!=null}" class="view-data">
+                    		<div class="view-block block-green" title="Equipments"><span th:text="${operator.data.equipments}"></span><i class="fa fa-bicycle"></i></div>
+                   	   		<div class="view-block block-yellow" title="MSM"><span th:text="${operator.data.sellers}"></span><i class="fa fa-user"></i></div>
+                    		<div class="view-block block-blue" title="Pieces" ><span th:text="${#numbers.formatDecimal(operator.data.sales, 1, 'COMMA', 0, 'POINT')}"></span><span class="fa fa-eur-text" th:text="${#authentication.principal.currency}"></span></div>
+                    		<div class="view-block block-pink" title="Total"><span th:text="${operator.data.amount}"></span><img th:src="@{/images/magnumBlue.png}" class="fa" width="20"></img></div>
+                    	</div>
+                    	<div th:if="${operator.data==null}" class="view-data" th:text="#{label.info.operator}">
+                    		
+                    	</div>
+                    </div>
+                    
+	             </div>
+	             <div th:replace="templates/fragments/mdl :: mdl" ></div> 
+	         </div>
+		</div>
+	</body>
+</html>

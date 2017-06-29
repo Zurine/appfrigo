@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>	
+		<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+		<script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+		<script type="text/javascript" th:src="@{/js/relationWork.js}"></script>
+		<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content">
+		
+			<div class="col-md-8 col-md-offset-2" style="margin-top:6%">
+				
+				<h2>Statistics</h2>
+		
+    			<form id="sales" action="#" th:object="${search}" th:action="@{/statistic/relWork}" method="post">
+ 				
+					<div th:if="${errormsg} !=null" class="error-wrapper col-md-6 col-md-offset-3">
+						<p th:text="${errormsg}"></p>
+					</div>
+					
+					<div th:if="${infomsg} !=null" class="info-wrapper col-md-6 col-md-offset-3">
+						<p th:text="${infomsg}"></p>
+					</div>
+ 				
+					<div class="row panel-row">
+                		<div class="col-md-8 col-md-offset-2 panel-search">
+   
+   							<div class="form-row">
+		                        <div class="form-group col-md-6">
+			                        <select th:field="*{equipment}" class="form-control">
+										<option value="0" >Select Equipment</option>
+	  									<option th:each="b : ${businessList}" th:value="${b.id}" th:text="${b.name}"></option>
+									</select>
+		                        </div>
+                        	</div>
+   
+                    		<div class="form-row">
+		                        <div class="form-group col-md-6">
+		                             <div class="input-group date" id="startDate">
+		                   				<input type="text" class="form-control"  th:field="*{startDate}" placeholder="Start Date" />  <!-- pattern="dd/MM/yyyy" -->
+					                    <span class="input-group-addon">
+					                        <span class="glyphicon glyphicon-calendar"></span>
+					                    </span>
+		                			</div>
+		                        </div>
+		                        <div class="form-group col-md-6">
+		                           <div class="input-group date" id="endDate">
+		                   				<input type="text" class="form-control" th:field="*{endDate}" placeholder="End Date" />  <!-- pattern="dd/MM/yyyy" -->
+					                    <span class="input-group-addon">
+					                        <span class="glyphicon glyphicon-calendar"></span>
+					                    </span>
+		                			</div>
+		               	 		</div>
+                        	</div>
+
+	                        <div class="form-action">
+	                        	<a onclick="submitData()"  class="btn btn-custom">Search</a>
+	                       	 <!-- <input type="submit" id="search" value="Search" class="btn btn-custom col-md-4 col-md-offset-4"/> -->
+	                        </div>
+                    	</div>
+                	</div>
+                
+ 				</form>
+ 				
+ 				<div id="module-statistics" style="margin-top:3%">
+					<div id="list-statistics" th:fragment="resultsList" style="display:none"> 	
+						<table id="table" class="table table-hover">
+							<thead>
+					            <tr>
+					            	<th>Name</th>
+					                <th>Worked Hours</th>
+					                <th>Worked Days</th>
+					                <th>Total Sales</th>
+					                <th>Sales Per Day</th>
+					                <th>Hours Per Day</th>
+					            </tr>
+		        			</thead>
+					        <tbody>
+					        	<tr th:each="wd,rowStat : ${workDayList}">
+					        		<td th:text="${wd.name}"></td>
+						    		<td th:text="${wd.hours}"></td>
+						    		<td th:text="${wd.days}"></td>
+						    		<td th:text="${wd.sales}">€</td>
+						    		<td th:text="${wd.relSales}">€</td>
+						 			<td th:text="${wd.relTime}"></td>
+								</tr>
+					        </tbody>
+						</table>
+					</div>
+				</div>
+            </div>
+		</div>
+
+	</body>
+
+</html>

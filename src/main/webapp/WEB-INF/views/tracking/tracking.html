@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>	
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+		<link th:href="@{/css/multiselect/bootstrap-multiselect.css}" rel="stylesheet" type="text/css"/>   
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="col-md-10 col-md-offset-1">
+				
+				<h2>Tracking</h2>
+				
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+		
+			  	<form id="form-path" action="#" th:object="${search}" th:action="@{/tracking/list}" method="post">
+             		<input type="hidden" th:field="*{id}" th:value="*{id}"></input>
+            		<input type="hidden" th:field="*{equipment}" th:value="*{equipment}"></input>
+
+	             	<div class="row">
+	             		<div class="col-md-3">
+	             		 	<select th:field="*{data}" th:value="*{data}" class="form-control">
+								<optgroup th:each="b : ${sellerList}" th:label="${b.name}">   
+	                      	   	  	<option th:each="s : ${b.users}" th:value="${s.id + '@' + b.id}" th:text="${s.name}"></option> 
+				                </optgroup>
+							</select>
+	             		</div>
+	             		<div class="col-md-3">
+	                     	<input type="text" class="form-control has-feedback-left" id="startDate" th:field="*{startDate}" th:value="*{startDate}" placeholder="Start Date" aria-describedby="inputSuccess2Status"/>
+	                        <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+	                    </div>
+	                   	<div class="col-md-3">
+	                      	<input type="text" class="form-control has-feedback-left" id="endDate" th:field="*{endDate}" th:value="*{endDate}" placeholder="End Date" aria-describedby="inputSuccess2Status"/>
+	                   		<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+	             	 	</div>  
+	             	 	<div class="col-md-3">
+	             	 		<a class="btn btn-custom" onclick="submitData()"><i class="fa fa-search" aria-hidden="true"></i></a>
+	             	 	</div>          
+	             	</div>
+ 				</form>  
+ 				
+ 				<div id="module-statistics" style="margin-top:3%">
+					<div id="list-statistics" th:fragment="resultsList" th:if="${wk !=null }"> 	
+						<input type="hidden" id="sellerId" th:value="${wk.user.id}"></input>
+             			<input type="hidden" id="businessId" th:value="${wk.business.id}"></input>
+						<table id="table" class="table table-hover"> 
+							<thead>
+					            <tr>
+					                <th>Start Time</th>
+					                <th>Work time</th>
+					                <th>Total User</th>
+					                <th>Total System</th>
+					                <th th:text="#{label.path}"></th>
+					                <th></th> 
+					            </tr>
+		        			</thead>
+					        <tbody>
+					        	<th:block  th:each="wd,rowStat : ${wk.workDays}">
+					        	<tr>
+									<td>
+										<span th:text="${wd.date}"></span>
+									</td>
+						    		<td><span th:text="${wd.time}"></span></td>
+					    			<td th:class="${wd.time == '-'?'color-yellow': wd.totalUser != wd.totalSystem and wd.time != '-' ? 'color-red' : 'color-green'}"><span th:text="${#numbers.formatDecimal(wd.totalUser, 1,2)}"></span><span class="fa fa-eur-text" th:text="${#authentication.principal.currency}"></span></td>
+				    				<td th:class="${wd.time == '-'?'color-yellow': wd.totalUser != wd.totalSystem and wd.time != '-' ? 'color-red' : 'color-green'}"><span th:text="${#numbers.formatDecimal(wd.totalSystem, 1,2)}"></span><span class="fa fa-eur-text" th:text="${#authentication.principal.currency}"></span></td>
+						    		<td>
+						    			<a th:if="${wd.latitud != 0.0 or wd.longitud != 0.0}" class="btn btn-mini btn-xs btn-warning" th:href="@{/tracking/getPath(id=${wd.id},userId=2)}"><span class="fa fa-map-marker fa-btn"></span><span th:text="#{label.path}"></span></a>
+						    			<a th:if="${wd.latitud == 0.0 and wd.longitud == 0.0}">-</a>
+						    		</td> 
+						     	<td>
+						    			<a class="btn btn-mini btn-xs btn-info" th:title="#{label.products}" th:onclick="'javascript:getProducts(\'' + ${wd.id}   +  '\');'"><span th:id="${'plus'+ wd.id}" class="fa fa-plus-square fa-btn"></span><span th:text="#{label.see}"></span></a>
+						    		</td> 
+						    		
+						    				
+						    		
+								</tr>
+							<tr th:id="'module-products'+ ${wd.id }" style="display: none;"  role="row" > <!-- th:class="${'detail sub'+ s.item.id}" -->
+				 	 	 	<th:block th:fragment="productsList"> <!--  th:if="${products!=nul}" -->
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td colspan="8">
+								 	<table class="table table-sub table-hover">
+										<thead>
+								            <tr>
+								                <th th:text="#{label.products}"></th>
+								                <th th:text="#{label.product.price}"></th>
+								                <th th:text="#{label.product.amount}"></th>
+								                <th th:text="#{label.total}"></th>
+								            </tr>
+        								</thead>
+										<tbody>
+											<tr th:each="p : ${products}">
+												<td th:text="${p.name}" style="font-weight: bold"></td>
+												<td class="numberTd"><span th:text="${p.price}"></span><span th:text="${#authentication.principal.currency}"></span></td>
+												<td class="numberTd"><span th:text="${p.amount}"></span></td>
+												<td class="numberTd" style="font-weight: bold"><span th:text="${#numbers.formatDecimal(p.price * p.amount, 1, 2)}"></span><span th:text="${#authentication.principal.currency}"></span></td>
+											</tr>
+										</tbody>
+									</table> 
+								</td>
+								<td style="display:none"></td>
+								<td style="display:none"></td>
+								<td style="display:none"></td>
+								<td style="display:none"></td>
+								<td style="display:none"></td>
+								</th:block>
+							</tr> 
+							</th:block>
+						
+					        </tbody>
+						</table>
+					</div>
+				</div>
+            </div>
+		<script type="text/javascript" th:src="@{/js/datepicker/daterangepicker.js}"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+			<script type="text/javascript" th:src="@{/js/multiselect/bootstrap-multiselect.js}"></script>
+			<script type="text/javascript" th:src="@{/js/tracking.js}"></script>
+		</div>
+
+	</body>
+
+</html>

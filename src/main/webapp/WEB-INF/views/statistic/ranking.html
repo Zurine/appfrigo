@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>	
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+		<link th:href="@{/css/multiselect/bootstrap-multiselect.css}" rel="stylesheet" type="text/css"/>   
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="x_data col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
+			
+				<div class="x_panel">
+       				<div class="x_panel_content">
+       		
+	           			<div class="x_title">
+	                		<h2>Ranking</h2>
+	                    	<div class="clearfix"></div>
+	                	 </div>
+		
+						<div class="x_content">
+							<form id="ranking" action="#" th:object="${search}" th:action="@{/statistic/ranking}" method="post" class="form-horizontal form-label-left">
+				
+								<div th:replace="templates/fragments/msg :: msg" ></div> 
+							
+							 	<div class="form-row" style="margin-bottom: 2%">
+							 	    <div class="radio-inline">
+		                                <label><input type="radio" class="flat" th:field="*{gpType}" th:value="0"/> Seller </label>
+	                                </div>
+	                                 <div class="radio-inline">
+	                                	<label><input type="radio" class="flat" th:field="*{gpType}" th:value="1"/> Business </label>
+	                                </div>
+	                        	 	<div class="radio-inline">
+		                                <label><input type="radio" class="flat" th:field="*{gpType}" th:value="2" /> Channel </label>
+	                                </div>
+	                                <div class="radio-inline">
+		                                <label><input type="radio" class="flat" th:field="*{gpType}" th:value="3"/> Region </label>
+	                               	</div>
+	                                <div class="radio-inline">
+		                                <label><input type="radio" class="flat" th:field="*{gpType}" th:value="4"/> Distributor </label>
+	                                </div>
+	                                <div class="radio-inline">
+		                                <label><input type="radio" class="flat" th:field="*{gpType}" th:value="5"/> Type </label>
+	                                </div>
+	                                <div class="radio-inline">
+		                                <label><input type="radio" class="flat" th:field="*{gpType}" th:value="6"/> Product </label>
+	                                </div>
+                        		</div>
+							
+								<div class="form-row" style="margin-bottom: 2%">
+			                        <div class="form-group col-md-6">
+				                        <select th:field="*{equipment}" class="form-control" multiple="multiple">
+		  									<option th:each="b : ${equipmentList}" th:value="${b.id}" th:text="${b.name}"></option>
+										</select>
+			                        </div>
+     
+			                        <div class="form-group col-md-6">
+				                        <select th:field="*{channel}" class="form-control" multiple="multiple">
+		  									<option th:each="c : ${channelList}" th:value="${c.id}" th:text="${c.name}"></option>
+										</select>
+			                        </div>
+                        		</div>
+                        	
+	                       		<div class="form-row"  style="margin-bottom: 2%">
+			                        <div class="form-group col-md-6">
+				                        <select th:field="*{region}" class="form-control" multiple="multiple">
+		  									<option th:each="r : ${regionList}" th:value="${r.id}" th:text="${r.name}"></option>
+										</select>
+			                        </div>
+	
+			                        <div class="form-group col-md-6">
+				                        <select th:field="*{equipmentType}" class="form-control" multiple="multiple">
+		  									<option th:each="t : ${typeList}" th:value="${t.id}" th:text="${t.name}"></option>
+										</select>
+			                        </div>
+	                        	</div>
+	                        	
+                       			<div class="form-row"  style="margin-bottom: 2%">
+			                        <div class="form-group col-md-12">
+				                        <select th:field="*{product}" class="form-control" multiple="multiple">
+		  									<option th:each="p : ${productList}" th:value="${p.id}" th:text="${p.name}"></option>
+										</select>
+			                        </div>
+	                        	</div>
+                        	
+                        		<div class="form-row" style="margin-bottom: 2%">
+			                        <div class="form-group col-md-6">
+		                                <input type="text" class="form-control has-feedback-left" id="startDate" th:field="*{startDate}" placeholder="Start Date" aria-describedby="inputSuccess2Status"/>
+		                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+		                                <span id="inputSuccess2Status" class="sr-only">(success)</span>
+			                        </div>
+			                        <div class="form-group col-md-6">
+			                        	<input type="text" class="form-control has-feedback-left" id="endDate" th:field="*{endDate}" placeholder="End Date" aria-describedby="inputSuccess2Status"/>
+					                    <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+	                                	<span id="inputSuccess2Status" class="sr-only">(success)</span>
+			               	 		</div>
+                        		</div>
+		                        <div class="row">
+		                        	<div class="form-btn">
+	                        			<a onclick="submitData()"  class="btn btn-custom">Search</a>
+		                        	</div>
+	                        	</div>
+                        	</form>
+                  		</div>
+					</div>
+				</div>
+				
+				<div id="csv" th:fragment="csvList"><input id="url" type="hidden"  th:value="${url}"></input></div>
+			
+			<div id="module-statistics" style="margin-top:3%">
+
+				<div id="list-statistics" th:fragment="resultsList"> 	
+					
+					<div th:replace="templates/fragments/msg :: msg" ></div> 
+					
+						<div id="fileGenerator" th:if="${salesList != '[]'}" style="text-align:center;margin-bottom: 2%;display:none">
+							<a class="btn btn-secondary"  th:href="@{/statistic/getRankingCSV}">Donwload CSV</a>	
+							<a class="btn btn-secondary"  th:href="@{/statistic/getRankingPDF}">Donwload PDF</a>
+						</div>
+					
+					<table id="table" class="table table-hover"  th:if="${ranking} !=null">
+						<thead>
+				            <tr>
+				            	<th></th>
+				           		<th><span th:text="${label}"></span></th>
+				                <th th:if="${type == 0}">Business</th>
+				                <th>Unities</th>
+				                <th>Gifts</th>
+				                <th>Value</th>
+				            </tr>
+	        			</thead>
+				        <tbody>
+				        	<tr th:each="s,rowStat : ${ranking}">
+				        		<td th:text="${rowStat.index+1}"></td>
+				        		<td th:text="${s.item.name}"></td>
+				        		<td th:if="${type == 0}" th:text="${s.business.name}"></td>
+					    		<td th:text="${s.sold}"></td>
+					    		<td th:text="${s.gift}"></td>
+					    		<td><span th:text="${s.total}"></span> &euro;</td>
+							</tr>
+				        </tbody>
+					</table>
+					</div>
+				</div>
+            </div>
+            <script type="text/javascript" th:src="@{/js/icheck/icheck.min.js}"></script>
+           	<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+			<script type="text/javascript" th:src="@{/js/datepicker/daterangepicker.js}"></script>
+			<script type="text/javascript" th:src="@{/js/multiselect/bootstrap-multiselect.js}"></script>
+			<script type="text/javascript" th:src="@{/js/ranking.js}"></script>
+		</div>
+
+	</body>
+
+</html>

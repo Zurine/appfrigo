@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+				
+			<div class="col-md-10 col-md-offset-1 list-space">
+			
+			
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+		
+		
+				<div class="div-horizontal" >
+					
+					<div class="form-group">
+	                	<h2 th:text="#{label.error.500}"></h2>
+	                 </div>
+		                 
+	                <div class="form-group">
+ 						<span class="fa fa-frown-o" style="font-size:100pt"></span>
+					</div>
+					
+					 <div class="form-group">
+					 	<div class="col-sm-12">
+ 							If the error persist, contact us 
+ 						</div>
+					</div>
+						
+					<div class="form-group">
+						<div class="col-sm-12">
+						 	<span class="fa fa-envelope"></span>Write us to <a href="mailto:support@socialmediatechnologies.es">support@socialmediatechnologies.es</a>
+						</div>
+					</div>
+							
+					<div class="form-group">
+						<div class="col-sm-12">
+							<span class="fa fa-phone"></span>Call us to <a href="tel:+34 911 285 325">+34 911 285 325</a>
+						</div>
+					</div>
+		 	</div>
+
+				
+			</div>
+
+		</div>
+	</body>
+</html>
+

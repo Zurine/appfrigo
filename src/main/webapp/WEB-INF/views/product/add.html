@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link th:href="@{/css/croppie.css}" rel="stylesheet" type="text/css"/>  
+		<link th:href="@{/css/editor/index.css}" rel="stylesheet" type="text/css"/>  
+		<link th:href="@{/css/switchery/switchery.min.css}" rel="stylesheet" type="text/css"/>  
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="x_data col-sm-10 col-sm-offset-1">
+		
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+		
+       			<div class="x_panel">
+       				<div class="x_panel_content">
+       		
+		           		<div class="x_title">
+		                	<h2 th:text="${title}"></h2>
+		                    <div class="clearfix"></div>
+		                 </div>
+		
+						<div class="x_content">
+							<form class="form-horizontal" action="#" th:object="${product}" th:action="@{/product/add}" method="post" enctype="multipart/form-data" >
+				
+								<input type="hidden" th:field="*{id}" th:value="*{id}"/>
+								
+								<!-- Name -->
+								<div class="form-group">
+    								<label class="col-sm-2 control-label" th:text="#{label.name}"></label>
+    								<div class="col-sm-4">
+										<input type="text" th:field="*{name}" th:value="*{name}" th:placeholder="#{label.name}" class="form-control" />							
+									</div>
+									<label class="col-sm-2 control-label" th:text="#{label.product.price}"></label>
+    								<div class="col-sm-4">
+										<input type="text" th:field="*{price}" th:value="*{price}" th:placeholder="#{label.product.price}" class="form-control" />				
+									</div>
+								</div>
+
+								<!-- Description -->
+								<div class="form-group">
+    								<label class="col-sm-2 control-label" th:text="#{label.description}"></label>
+    								<div class="col-sm-10">
+										<textarea th:field="*{description}" th:value="*{description}" placeholder="Description" class="form-control" ></textarea>		
+									</div>
+								</div>
+								
+								<!-- Name -->
+								<div class="form-group">
+	   								<label class="col-sm-2 control-label" th:text="#{label.category}"></label>
+	   								<div class="col-sm-10">
+										<select class="form-control" th:field="*{category.id}" th:value="*{category.id}"> 
+											<option th:each="c : ${categoryList}" th:value="${c.id}" th:text="${c.name}"></option>
+										</select>
+									</div>
+								</div>
+	
+								<!-- Image -->
+								<div class="form-group">
+									
+								   	<div class="col-sm-6">
+								   		<div class="thumbnail" id="image-basic">
+			                            	<div class="image view view-first">
+			                                    <img style="display: block;" th:src="*{image.path}"  alt="image" width="180" ></img>
+			                                    <div class="mask">
+			                                        <p th:text="*{image.path}" ></p>
+			                                    </div>
+			                                </div>
+	                             		 </div>
+				                    	<div id="demo-basic"></div>
+									</div>
+								   <div class="col-sm-6 image-file">
+								   	 	<div class="form-group">
+                    		 			 	<input type="file" id="file" th:field="*{image.file}" th:value="*{image.file}" onchange="uploadImage()" class="inputfile col-sm-2"/>
+	                    					<label id="edit-file" for="file" class="btn btn-small"><span class="fa fa-pencil"></span></label>
+		                    				<button type="submit" name="addFile" id="addFile" style="display:none"></button> 
+											<button id="save-file" type="submit" name="fileDone" class="btn btn-custom btn-small" onclick="updateFileData()"><span class="fa fa-save"></span></button> 			
+										</div>
+							   	 	</div>
+							   	 </div>
+
+				                <!-- State -->
+								<div class="form-group">
+    								<label class="col-sm-4 control-label" th:text="#{label.active.product}"></label>
+    								<div class="col-sm-8">
+										<input type="checkbox" th:field="*{active}" th:value="*{active}" class="js-switch"/>	
+									</div>
+								</div>
+								<div class="line-separation"></div>		
+
+								<!-- PRODUCT TYPE -->
+								<div class="form-group">
+	   								<label class="col-sm-2 control-label" th:text="#{label.product.simple}"></label>
+	   								<div class="col-sm-4 flat-div">
+										<input name="type" type="radio" th:field="*{type}" th:value="0" class="flat"/> 
+									</div>
+									<label class="col-sm-2 control-label" th:text="#{label.product.compound}"></label>
+	   								<div class="col-sm-4 flat-div">
+										<input name="type" type="radio" th:field="*{type}" th:value="1" class="flat"/> 
+									</div>
+								</div>
+														
+								<div class="row">
+
+									<div class="compound-data"> 
+											
+										<div th:id="module-category">
+				 	 	 					<div th:fragment="fragment-category">
+												<div id="product-panel"> 
+								                   	<div th:class="${'div-' + rowStat.index }" th:each="c,rowStat  : ${product.composition}">
+								                   		<div class="form-group">
+								                   			 <label class="col-sm-2 control-label" th:text="#{label.product}"></label>
+								                   			 <div class="col-sm-3 col-md-5">
+									                   			 <select class="form-control" name="simpleSelect" th:field="${product.composition[__${rowStat.index}__].category.id}" th:value="${product.composition[__${rowStat.index}__].category.id}"> 
+																	<option value="0" th:text="#{label.select.product}"></option>
+							  										<option th:each="c : ${categoryList}" th:value="${c.id}" th:text="${c.name}"></option>
+																 </select>
+								                   			 </div>
+								                   			 <label class="col-sm-1 col-md-2 control-label" th:text="#{label.product.amount}"></label>
+							   								 <div class="col-sm-1 col-md-2">
+																<input type="number" th:field="${product.composition[__${rowStat.index}__].amount}" th:value="${product.composition[__${rowStat.index}__].amount}" placeholder="Amount" class="form-control" />
+															 </div>
+															 <label class="col-sm-1 col-md-2 control-label" th:text="#{label.product.stock}"></label>
+							   								 <div class="col-sm-1 col-md-2">
+																<input type="number" step="0.01" th:field="${product.composition[__${rowStat.index}__].quantity}" th:value="${product.composition[__${rowStat.index}__].quantity}" placeholder="Quantity" class="form-control" />
+															 </div>
+															 <div class="col-sm-2 col-md-4">
+															  	<a class="btn btn-action" id="btn-add" onclick="addCategory()"><span class="fa fa-plus fa-btn"></span></a> 
+																<a class="btn btn-action" id="btn-remove" th:onclick="${'javascript:clickRemoveBtn(' + rowStat.index  + ')'}" ><span class="fa fa-trash fa-btn"></span></a> 
+															 </div>
+							                   			</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+			                	</div>
+	                			
+		                		<div class="line-separation"></div>	
+	                			<div class="form-group">
+									<label class="col-sm-4 control-label"  th:text="#{label.after.prodnew}"></label>
+    								<div class="col-sm-8">
+      									  <input type="checkbox" class="js-switch" th:field="*{next}"></input>
+    								</div>
+								</div>
+								
+								<div class="row">
+			                   		<div class="form-btn col-md-12">
+			                       		<a class="btn btn-custom" onclick="validate()"> <span class="fa fa-save"></span><span th:text="#{label.save.product}"></span> </a>
+			                       		<button id="submit" type="submit" class="btn btn-custom" style="display: none;">  </button>
+			                   		</div>
+		                   		</div>
+	                			
+								<input type="hidden" th:value="${crop}" id="crop"></input>
+							   	<input type="hidden" th:field="*{image.path}" th:value="*{image.path}" id="image.path"></input>
+							   	<input type="hidden" th:field="*{image.zoom}" th:value="*{image.zoom}" id="image.zoom"></input>
+							   	<input type="hidden" th:field="*{image.x}" th:value="*{image.x}" id="image.x"></input>
+							   	<input type="hidden" th:field="*{image.y}" th:value="*{image.y}" id="image.y"></input>
+							   	<input type="hidden" th:field="*{image.w}" th:value="*{image.w}" id="image.w"></input>
+							   	<input type="hidden" th:field="*{image.h}" th:value="*{image.h}" id="image.h"></input>
+                        	</form>
+                  		</div>
+					</div>
+				</div>
+			</div>
+			<script type="text/javascript" th:src="@{/js/icheck/icheck.min.js}"></script>
+			<script type="text/javascript" th:src="@{/js/switchery/switchery.min.js}"></script> 
+			<script type="text/javascript" th:src="@{/js/croppie.js}"></script>
+			<script type="text/javascript" th:src="@{/js/product.add.js}"></script>
+		</div>
+	</body>
+</html>

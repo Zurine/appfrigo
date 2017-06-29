@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head></head>
+
+	<body>
+
+		<div layout:fragment="content" >
+	
+			<h1 class="h1_title"><span th:text="#{app.dashboard}"></span><span th:text="${#dates.format(#dates.createNow(),'yyyy')}"></span>&nbsp; <span th:text="#{app.dashboard2}"></span> (<span id="dateId" style="font-size: 20px;"></span>)</h1>
+			
+			<div class="left_data">
+			<div style="width: 97%;margin-left:auto;margin-rigth:auto;">
+				<div class="title" th:text="#{label.total.equipment}"></div>
+				<div class="row tile_count dash_row"> 
+	          		<div class="animated flipInY dash_block tile_stats_count" th:each="e,rowStat : ${home.equipmentNumber}" > 
+			           	<div th:class="*{'colum_' + e.id + ' dash_box'}" th:onclick="'javascript:getRatios(\'' + *{e.id} + '\');'"> 
+			            	<div class="count"><span th:text="${#numbers.formatDecimal(e.data, 1, 'COMMA', 0, 'POINT')}"></span>
+			              		<i th:class="${'fa ' + e.icon}" style="font-size: 45px;"></i>
+			              	</div>
+			              <span class="count_top" th:text="*{e.name}" style="font-weight:bold;font-size:16px"></span>
+			            </div>
+	          		</div>
+	         		<div class="animated flipInY tile_stats_count dash_block_max">
+			           <div class="dash_box_max">
+			              <div class="count_max"><span th:text="${home.totalEquipmentNumber}"></span><img th:src="@{/images/logo.png}" alt="" class="fa" style="width:70px;"></img> </div>
+			              <span class="count_top_max" th:text="#{label.total}"></span>
+			            </div>
+	          		</div>
+	           	</div> 	
+           
+	           	<div class="title" th:text="#{label.total.sellers}"></div>
+	         	<div class="row tile_count dash_row">
+	          		<div class="animated flipInY dash_block tile_stats_count" th:each="e : ${home.sellerNumber}" >
+	                	<div th:class="*{'colum_' + e.id + ' dash_box'}" th:onclick="'javascript:getRatios(\'' + *{e.id} + '\');'"> 
+			              <div class="count"><span th:text="${#numbers.formatDecimal(e.data, 1, 'COMMA', 0, 'POINT')}"></span><i class="fa fa-user" style="font-size: 25px;"></i> </div>
+			              <span class="count_top" th:text="*{e.name}"></span>
+			            </div>
+	          		</div>
+	         		<div class="animated flipInY dash_block_max tile_stats_count">
+			           <div class="dash_box_max">
+			              <div class="count_max"><span th:text="${home.totalSellerNumber}"></span><i class="fa fa-user" style="font-size: 40px;"></i> </div>
+			              <span class="count_top_max" th:text="#{label.total}"></span>
+			            </div>
+	          		</div>
+	           </div> 	
+
+	           <div class="title"><span th:text="#{label.total.sales}"></span><span class="fa fa-eur-text" th:text="${#authentication.principal.currency}"></span> </div> 
+	           <div class="row tile_count dash_row">
+	          		<div class="animated flipInY dash_block tile_stats_count" th:each="e : ${home.salesNumber}" >
+			           <div th:class="*{'colum_' + e.id + ' dash_box'}" th:onclick="'javascript:getRatios(\'' + *{e.id} + '\');'">
+			              <div class="count"><span th:text="${#numbers.formatDecimal(e.data, 1, 'COMMA', 0, 'POINT')}"></span></div>
+			              <span class="count_top" th:text="*{e.name}"></span>
+			            </div>
+	          		</div>
+	         		<div class="animated flipInY dash_block_max tile_stats_count">
+			           <div class="dash_box_max">  
+			              <div class="count_max"><span th:text="${#numbers.formatDecimal(home.totalSalesNumber,1, 'COMMA', 0, 'POINT')}"></span><span class="fa fa-eur-text" th:text="${#authentication.principal.currency}"></span> </div>
+			              <span class="count_top_max" th:text="#{label.total}"></span>
+			            </div>
+	          		</div>
+	           </div> 
+           
+	           <div class="title" th:text="#{label.total.units}"></div>
+	           <div class="row tile_count dash_row">
+	          		<div class="animated flipInY dash_block tile_stats_count" th:each="e : ${home.unitNumber}" >
+			          <div th:class="*{'colum_' + e.id + ' dash_box'}" th:onclick="'javascript:getRatios(\'' + *{e.id} + '\');'">
+			              <div class="count"><span th:text="${#numbers.formatInteger(e.data, 1, 'COMMA')}"></span></div> 
+			              <span class="count_top" th:text="*{e.name}"></span>
+			            </div>
+	          		</div>
+	         		<div class="animated flipInY dash_block_max tile_stats_count">
+			           <div class="dash_box_max">  
+			              <div class="count_max"><span th:text="${#numbers.formatDecimal(home.totalUnitNumber,1, 'COMMA', 0, 'POINT')}"></span><img th:src="@{/images/magnumBlue.png}" alt="" class="fa" style="width:22px;"></img></div>
+			              <span class="count_top_max" th:text="#{label.total}"></span>
+			            </div>
+	          		</div>
+	           </div>
+			
+			</div>
+			</div>
+			
+				<div class="right_data">
+				<div th:fragment="ratesData">
+					<div th:text="#{label.rates}" style="text-align:center;font-size:28px;color: #fe648b;font-weight:bold"></div>
+					<div th:text="#{label.avg}" style="text-align:center;margin-bottom:15px;font-size:16px;color:#fe648b;font-weight:bold"></div>
+					<div class="rates_data">
+		       			<div class="animated flipInY dash_box_rat tile_stats_count">
+		              		<div class="dash_text">
+			              		<span class="count" th:text="${rates.units}"></span>
+			             	 	<span class="count_top" >Units Per Day</span> 
+			             	</div>
+		          		</div>
+		          		<div class="animated flipInY dash_box_rat tile_stats_count">
+		              		<div class="dash_text">
+			              		<span class="count" th:text="${#numbers.formatDecimal(rates.salesDay, 1, 'COMMA', 0, 'POINT')}"></span> 
+			              		<span class="count_top">Sales Per Day(€)</span>
+			            	</div>
+		          		</div>
+		          		<div class="animated flipInY dash_box_rat tile_stats_count">
+		               		<div class="dash_text">
+			              		<span class="count" th:text="${#numbers.formatDecimal(rates.salesEquiment, 1, 'COMMA', 0, 'POINT')}"></span> 
+			              		<span class="count_top">Sales Per Equipment(€)</span>
+			            	</div>
+		          		</div>
+		         			<div class="animated flipInY dash_box_rat tile_stats_count">
+		            		<div class="dash_text">
+			              		<span class="count" th:text=" ${rates.days}"></span>
+			              		<span class="count_top">Working hours per day</span>
+			            	</div>
+		          		</div>
+		          	</div>
+				</div>
+			</div>
+			
+			<div style="text-align:center;margin-top:3%">
+				<a th:href="@{/home}" class="btn btn-action"><span class="fa fa-undo fa-btn"></span><span style="margin-left:3px">Reload Data</span></a>
+				<a id="pdfButton" class="btn btn-action"><span class="fa fa-print fa-btn"></span><span style="margin-left:3px">Print Dashboard</span></a>
+			</div>
+	    
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.0.0/Chart.js"></script>
+			<script type="text/javascript" th:src="@{/js/home.js}"></script>
+			<script type="text/javascript" th:src="@{/js/jspdf.debug.js}"></script> 
+                <!-- /top tiles -->
+		</div>
+
+	</body>
+
+</html>

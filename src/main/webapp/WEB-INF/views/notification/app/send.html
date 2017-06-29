@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link th:href="@{/css/multiselect/bootstrap-multiselect.css}" rel="stylesheet" type="text/css"/>   
+	</head>
+
+	<body>
+	
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="x_data col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
+		
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+		
+       			<div class="x_panel">
+       				<div class="x_panel_content">
+       		
+		           		<div class="x_title">
+		                	<h2 th:text="#{label.send.Notification}"></h2>
+		                    <div class="clearfix"></div>
+		                 </div>
+		
+						<div class="x_content">
+						
+							<form action="#" th:object="${notification}" th:action="@{/notification/send}" method="post">
+							
+								<input type="hidden" th:field="*{notification.id}" th:value="*{notification.id}"></input> 
+					
+	                    		<div class="row">
+		                			<div class="form-group ">
+										<label class="label-control">Age Conditions</label>
+				                        <select th:field="*{selectedConditions}" multiple="multiple" class="form-control select_form">
+		  									<option th:each="p : *{listAge}" th:value="${p.id}" th:text="${p.name}"></option>
+										</select>
+				                    </div>
+				                </div>
+				                <div class="row">
+					                <div class="form-group">
+										<label class="label-control">Temperature Conditions</label>
+				                        <select th:field="*{selectedConditions}" multiple="multiple" class="form-control select_form">
+		  									<option th:each="p : *{listTemperature}" th:value="${p.id}" th:text="${p.name}"></option>
+										</select>
+				                    </div>
+				                </div>
+				                <div class="row">
+					                <div class="form-group">
+										<label class="label-control">Gender Conditions</label>
+				                        <select th:field="*{selectedConditions}" multiple="multiple" class="form-contro select_form">
+		  									<option th:each="p : *{listGender}" th:value="${p.id}" th:text="${p.name}"></option>
+										</select>
+				                    </div>
+				                </div>
+				                <div class="row">
+					                <div class="form-group">
+										<label class="label-control">Users</label>
+				                        <select th:field="*{users}" multiple="multiple" class="form-contro select_form">
+		  									<option th:each="u : ${users}" th:value="${u.userId}" th:text="${u.nickName}"></option>
+										</select>
+				                    </div>
+				                </div>
+				             <!-- <div class="row">
+					                <div class="form-group">
+										<a class="btn btn-custom">Choose Users</a>
+				                    </div>
+				                </div> -->   
+				                
+                				<div class="row">
+		                    		<div class="form-btn">
+		                        		<input type="submit" th:value="#{label.send.Notification}" class="btn btn-custom"/>
+		                    		</div>
+	                    		</div>
+			 				</form>
+	                  	</div>
+					</div>
+				</div>
+			</div>
+			<script type="text/javascript" th:src="@{/js/multiselect/bootstrap-multiselect.js}"></script>
+			<script type="text/javascript" th:src="@{/js/sendNotif.js}"></script>
+		</div>
+	
+
+
+	</body>
+
+</html>

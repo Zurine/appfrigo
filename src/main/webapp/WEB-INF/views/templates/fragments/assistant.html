@@ -1,0 +1,33 @@
+<html  xmlns:th="http://www.thymeleaf.org" >
+  <head>
+  </head>
+  <body>
+    <div th:fragment="assistant" id="assistant" class="row">
+    	<input type="hidden" th:value="${session.step}" id="step"></input>
+    	<input type="hidden" th:value="${session.currentBusiness}" id="currentBusiness"></input>
+    	
+		<div class="assistant col-md-7 col-md-offset-3">
+			<div class="step" id="operator" onclick="callOperator()">
+				<div><i class="fa fa-building" aria-hidden="true"></i></div>
+				<div class="step_title">Operator</div>
+			</div>
+			<i class="fa fa-arrow-right" aria-hidden="true" id="operatorRow"></i>
+			<div class="step" id="equipment" onclick="callEquipment()">
+				<div><i class="fa fa-bicycle" aria-hidden="true"></i></div>
+				<div class="step_title">Equipment</div>
+			</div>
+			<i class="fa fa-arrow-right" aria-hidden="true" id="msmRow"></i>
+			<div class="step" id="msm" onclick="callMsm()">
+				<div><i class="fa fa-user" aria-hidden="true"></i></div>
+				<div class="step_title">MSM</div>
+			</div>
+			<i class="fa fa-arrow-right" aria-hidden="true" id="productRow"></i>
+			<div class="step" id="product" onclick="callProduct()">
+				<div><i class="fa fa-product-hunt" aria-hidden="true"></i></div>
+				<div class="step_title">Products</div>
+			</div>
+		</div>
+		<script type="text/javascript" th:src="@{/js/assistant.js}"></script>
+	</div>
+  </body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<script>$('.edit-mode').hide();</script>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+	</head>
+
+	<body>
+
+		<div layout:fragment="content" class="row">
+		
+			<div class="col-md-10 col-md-offset-1 list-space">
+				<h2 th:text="#{label.products}"></h2>
+				
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+				
+				<div class="action-row" th:if="${#authorization.expression('hasRole(''ROLE_SUPERADMIN'')')}">
+					<div class="action-wrapper">
+						<a th:href="@{'/equipment/product/add'(id=${data.business})}" class="btn btn-action" title="Add Product"><span class="fa fa-plus fa-btn"></span></a>
+						<a onclick="allowEdit()" class="btn btn-action" title="Edit Products"><span class="fa fa-pencil fa-btn"></span></a>
+					</div>
+				</div>
+
+				<form class="form-horizontal" action="#" th:object="${data}" th:action="@{/equipment/product/updateProducts}" method="post">
+					<input type="hidden" th:field="*{business}" th:value="*{business}" id="*{business}"></input>
+	
+					<table id="table" class="table table-hover">
+						<thead>
+				            <tr>
+				            	<th th:text="#{label.name}"></th>
+				                <th th:text="#{label.product.price}"></th>
+				                <th th:text="#{label.product.tax}"></th>
+				                <th th:text="#{label.product.stock}"></th>
+				                <th th:text="#{label.product.minStock}"></th>
+				                <th th:text="#{label.state}" class="no-sorting"></th>
+				                <th class="no-sorting"></th>
+				            </tr>
+	        			</thead>
+				        <tbody>
+				        	<tr th:each="p,rowStat : *{products}">
+				        		<td>
+			        				<input type="hidden" th:field="${data.products[__${rowStat.index}__].product.id}" th:value="${data.products[__${rowStat.index}__].product.id}"></input>
+			        				<input type="hidden" th:field="${data.products[__${rowStat.index}__].product.name}" th:value="${data.products[__${rowStat.index}__].product.name}"></input>
+									<input type="hidden" th:field="${data.products[__${rowStat.index}__].product.photo}" th:value="${data.products[__${rowStat.index}__].product.photo}"></input>
+									<input type="hidden" th:field="${data.products[__${rowStat.index}__].stock}" th:value="${data.products[__${rowStat.index}__].stock}"></input>
+									<input type="hidden" th:field="${data.products[__${rowStat.index}__].active}" th:value="${data.products[__${rowStat.index}__].active}"></input>
+					        		
+				        			<a th:href="@{/equipment/product/get(product=${p.product.id},business=${businessId})}">
+				        				<img th:src="${p.product.photo}" width="30" class="img-circle"></img> 
+				        				<span class="strong" th:text="${p.product.name}"></span>
+				        			</a>
+				        		</td>
+					    		<td>
+					    			<span th:text="${p.price}" class="show-mode"></span>
+					    			<input type="number"  step="0.01" th:field="${data.products[__${rowStat.index}__].price}" class="edit-mode form-control" />
+					    		</td>
+				    			<td>
+				    				<span th:text="${p.tax}" class="show-mode"></span>
+				    				<input type="number"  step="0.01" th:field="${data.products[__${rowStat.index}__].tax}" class="edit-mode form-control" />
+				    			</td>
+			    				<td th:text="${p.stock}"></td>
+		    					<td>
+		    						<span th:text="${p.minStock}" class="show-mode"></span>
+		    						<input type="number" th:field="${data.products[__${rowStat.index}__].minStock}" class="edit-mode form-control" />
+		    					</td>
+			    				<td>
+		    						<a th:href="@{/equipment/product/activate(product=${p.product.id},business=${businessId},state=false)}"><span th:if="${p.active} == true" class="fa fa-toggle-on fa-btn"></span></a>
+				    				<a th:href="@{/equipment/product/activate(product=${p.product.id},business=${businessId},state=true)}"><span th:if="${p.active} == false" class="fa fa-toggle-off fa-btn"></span></a>
+				    			</td>
+				    			<td>
+				    				<a class="btn btn-mini btn-xs btn-info" th:href="@{/equipment/product/get(product=${p.product.id},business=${businessId})}"><span class="fa fa-list-alt fa-btn"></span><span th:text="#{label.see}"></span></a>
+				    				<a th:if="${#authorization.expression('hasRole(''ROLE_SUPERADMIN'')')}" class="btn btn-mini btn-xs btn-success" th:href="@{/equipment/product/edit(product=${p.product.id},business=${businessId})}"><span class="fa fa-pencil fa-btn"></span><span th:text="#{label.edit}"></span></a>
+					    		</td>
+							</tr>
+				        </tbody>
+					</table>
+					<div class="row">
+	                 	<div class="form-btn col-md-12">
+	                     	<button id="btn-prod" type="submit" class="btn btn-custom"> <span class="fa fa-save"></span><span th:text="#{label.save.products}"></span> </button>
+	                 	</div>
+	                 </div>
+				</form>
+			</div>
+			<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+			<script type="text/javascript" th:src="@{/js/product.equip.js}"></script>
+		</div>
+	</body>
+</html>

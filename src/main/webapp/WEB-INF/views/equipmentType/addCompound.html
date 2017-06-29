@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link th:href="@{/css/multiselect/bootstrap-multiselect.css}" rel="stylesheet" type="text/css"/>    
+	</head>
+
+	<body>
+		<div layout:fragment="content" class="row">
+		
+						<div class="x_data col-sm-10 col-sm-offset-1">
+		<!-- 	<div class="x_data col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1"> -->
+		
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+			
+       			<div class="x_panel">
+       				<div class="x_panel_content">
+       		
+		           		<div class="x_title">
+		                	<h2 th:text="#{label.create.product}"></h2>
+		                    <div class="clearfix"></div>
+		                </div>
+			
+						<div class="x_content">
+						
+							<form action="#" th:object="${product}" th:action="@{/equipmentType/addProduct}" method="post">
+	                    			<input type="hidden" th:field="*{business}" th:value="*{business}"/>
+	                    		<input type="hidden" id="list" th:value="${compoundList}"/>
+	                    	
+	                    		<div class="row">
+		                			<div class="form-group col-md-12">
+										<label class="label-control" th:text="#{label.product}"></label>
+				                        <select id="product-select" th:field="*{products}" onchange="getComponents(this)" class="form-control">
+										 	<option value="0" th:text="#{label.select.product}"></option>
+	  										<option th:each="p : ${compoundList}" th:value="${p.id}" th:text="${p.name}" ></option>
+										</select>
+										<button type="submit" name="getComponets" id="getComponets" style="display:none"></button>
+				                    </div>
+				                </div>
+			                    
+			                   <div th:each="c,rowStat  : *{composition}"> 
+			                   		<div class="form-group col-md-6">
+			                   			 <label class="label-control"><span th:text="${c.category.name}"></span> :</label>
+			                   			 <select class="form-control select-component" th:field="*{components[__${rowStat.index}__]}" multiple="multiple"> 
+	  										<option th:each="p : ${c.productMinis}" th:value="${p.id}" th:text="${p.name}"></option>
+										</select>
+			                   		</div>
+								</div>
+								<div id="no-products" th:if="*{composition ==  null}" style="display: none">
+									<p th:text="#{label.products.no.products}"></p>
+								</div>
+				                
+				                <div class="row">
+		                			<div class="form-group col-md-12">
+										<label class="label-control" th:text="#{label.product.price}"></label>
+				                        <input type="text" th:field="*{price}" th:placeholder="#{label.product.price}" class="form-control" />
+				                    </div>
+			                    </div>
+			                
+				              
+				                <div class="row">
+		                    		<div class="form-btn">
+		                        		<input type="submit" value="Save Product" class="btn btn-custom"/>
+		                    		</div>
+	                    		</div>
+		 					</form>
+                  		</div>
+					</div>
+				</div>
+			</div>
+			<script type="text/javascript" th:src="@{/js/multiselect/bootstrap-multiselect.js}"></script>
+			<script type="text/javascript" th:src="@{/js/productCompound.js}"></script>
+		</div>
+	</body>
+</html>

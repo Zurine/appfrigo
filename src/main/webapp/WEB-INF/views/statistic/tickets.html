@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>	
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+		<link th:href="@{/css/multiselect/bootstrap-multiselect.css}" rel="stylesheet" type="text/css"/>   
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="col-md-10 col-md-offset-1">
+				
+				<h2>Ticketing</h2>
+				
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+		
+			  	<form id="form-path" action="#" th:object="${search}" th:action="@{/statistic/getWorkDay}" method="post">
+             		<input type="hidden" th:field="*{id}" th:value="*{id}"></input>
+
+	             	<div class="row">
+	             		<div class="col-md-3">
+	             		 	<select th:field="*{equipment}" th:value="*{equipment}" class="form-control" multiple="multiple">
+                      	   	  	<option th:each="e : ${equipmentList}" th:value="${e.id}" th:text="${e.name}"></option> 
+							</select>
+	             		</div>
+	             		<div class="col-md-3">
+	                     	<input type="text" class="form-control has-feedback-left" id="startDate" th:field="*{startDate}" th:value="*{startDate}" placeholder="Start Date" aria-describedby="inputSuccess2Status"/>
+	                        <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+	                    </div>
+	                   	<div class="col-md-3">
+	                      	<input type="text" class="form-control has-feedback-left" id="endDate" th:field="*{endDate}" th:value="*{endDate}" placeholder="End Date" aria-describedby="inputSuccess2Status"/>
+	                   		<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+	             	 	</div>  
+	             	 	<div class="col-md-3">
+	             	 		<a class="btn btn-custom" onclick="submitData()"><i class="fa fa-search" aria-hidden="true"></i></a>
+	             	 	</div>          
+	             	</div>
+ 				</form>  
+				
+ 				<div id="module-statistics" style="margin-top:3%">
+					<div id="list-statistics" th:fragment="resultsList" th:if="${tickets !=null }"> 	
+					
+						<div id="fileGenerator" style="text-align:right;margin-bottom: 2%;">
+							<a class="btn btn-action" th:href="@{/statistic/getTicketCSV}"  th:title="#{label.csv}"><span class="fa fa-file-excel-o" aria-hidden="true"></span></a>	
+						</div>
+
+						<table id="table" class="table table-hover">
+							<thead>
+					            <tr>
+					                <th th:text="#{label.ticket}"></th>
+					                <th th:text="#{label.name}"></th>
+					                <th th:text="#{label.date}"></th>
+					                <th th:text="#{label.total}"></th>
+					                <th th:text="#{label.tax.base}"></th>
+					                <th th:text="#{label.pieces}"></th>
+					                <th th:text="#{label.refunded}"></th>
+					                <th th:text="#{label.mobile.app}"></th>
+					                <th th:text="#{label.temp}"></th>
+					                <th></th>
+					            </tr>
+		        			</thead>
+					        <tbody>
+					        	<th:block th:each="t,rowStat : ${tickets}">
+					        	<tr>
+									<td><span class="strong" th:text="${t.ticket}"></span></td> 
+									<td><span class="strong" th:text="${t.name}"></span></td> 
+						    		<td><span th:text="${t.date}"></span></td>
+						    		<td><span th:text="${#numbers.formatDecimal(t.total, 1, 'COMMA', 2, 'POINT')}"></span><span th:text="${#authentication.principal.currency}"></span></td>
+						    		<td><span th:text="${#numbers.formatDecimal(t.taxBase, 1, 'COMMA', 2, 'POINT')}"></span><span th:text="${#authentication.principal.currency}"></span></td>
+						    		<td><span th:text="${t.amount}"></span></td>
+						    		<td>
+						    			<span th:if="${t.refunded == true}" class="fa fa-check-square-o color-red"></span>
+						    			<span th:if="${t.refunded == false}" class="fa fa-square-o"></span>
+						    		</td>
+						    		<td>
+						    			<span th:if="${t.count == true}" class="fa fa-check-square-o"></span>
+						    			<span th:if="${t.count == false}" class="fa fa-square-o"></span>
+						    		</td>
+						    		<td><span th:text="${t.ticketTemp}"></span></td>
+						    		<td>
+						    			<a class="btn btn-mini btn-xs btn-info" th:title="#{label.products}" th:onclick="'javascript:getProducts(\'' + ${t.saleId }   +  '\');'"><span th:id="${'plus'+ t.saleId}" class="fa fa-plus-square fa-btn"></span><span th:text="#{label.see}"></span></a>
+						    			<a th:if="${t.count == false}" class="btn btn-mini btn-xs btn-danger" data-toggle="modal" data-target="#confirm-delete" th:onclick="${'loadId(' + t.saleId  +')'}"><span class="fa fa-trash fa-btn"></span><span th:text="#{label.delete}"></span></a>
+										<a th:if="${t.count == false}" th:id="'deleteLink'+${t.saleId}"  id="delete" th:href="@{/statistic/delete(id=${t.saleId})}" style="display:none"></a>
+						    		</td>
+								</tr>
+								
+								<tr th:id="'module-products'+ ${t.saleId}" style="display: none;" role="row" > 
+						 	 	 	<th:block th:fragment="productsList"> 
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td colspan="8">
+										 	<table class="table table-sub table-hover">
+												<thead>
+										            <tr>
+										                <th th:text="#{label.products}"></th>
+										                <th th:text="#{label.product.price}"></th>
+										                <th th:text="#{label.product.amount}"></th>
+										                <th th:text="#{label.total}"></th>
+										            </tr>
+		        								</thead>
+												<tbody>
+													<tr th:each="p : ${products}">
+														<td th:text="${p.name}" style="font-weight: bold"></td>
+														<td class="numberTd"><span th:text="${p.price}"></span><span th:text="${#authentication.principal.currency}"></span></td>
+														<td class="numberTd"><span th:text="${p.amount}"></span></td>
+														<td class="numberTd" style="font-weight: bold"><span th:text="${#numbers.formatDecimal(p.price * p.amount, 1, 2)}"></span><span th:text="${#authentication.principal.currency}"></span></td>
+													</tr>
+												</tbody>
+											</table> 
+										</td>
+										<td style="display:none"></td>
+										<td style="display:none"></td>
+										<td style="display:none"></td>
+										<td style="display:none"></td>
+										<td style="display:none"></td>
+										</th:block>
+									</tr> 
+								</th:block> 
+						
+					        </tbody>
+						</table>
+						<div th:replace="templates/fragments/mdl :: mdl" ></div> 
+					</div>
+				</div>
+            </div>
+			<script type="text/javascript" th:src="@{/js/datepicker/daterangepicker.js}"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+			<script type="text/javascript" th:src="@{/js/multiselect/bootstrap-multiselect.js}"></script>
+			<script type="text/javascript" th:src="@{/js/tickets.js}"></script>
+		</div>
+
+	</body>
+
+</html>

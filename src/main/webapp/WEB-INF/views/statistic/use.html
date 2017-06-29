@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>	
+	 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/> 
+	 	<link th:href="@{/css/switchery/switchery.min.css}" rel="stylesheet" type="text/css"/>   
+		<link th:href="@{/css/multiselect/bootstrap-multiselect.css}" rel="stylesheet" type="text/css"/>   
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+		<div class="x_data col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1">
+		
+			<div class="x_title">
+             	<h2 th:text="#{label.statistics}"></h2>
+                <div class="clearfix"></div>
+            </div>
+			<div th:replace="templates/fragments/msg :: msg" ></div> 
+			
+			<div id="module-statistics">
+			
+				<div id="list-statistics" >
+
+
+
+				<div id="table-data" style="margin-top: 2%;">
+					<table id="table" class="table table-hover"> <!--  table-custom -->
+						<thead>
+				            <tr>
+				               <!-- BOTH INFO -->	
+				            	<th>User</th>
+								<th>Equipment</th>
+								<th>Operator</th>
+								<th>Sales</th>
+								<th>Access</th>
+				            </tr>
+	        			</thead>
+	        			 <tbody>
+
+			        		<tr th:each="s,rowStat : ${resultList}">
+
+					    		<td><span th:text="${s.name}"></span></td>
+								<td><span th:text="${s.equipment}"></span></td>
+								<td><span th:text="${s.operatorName}"></span></td>
+								<td><span th:text="${s.sales}"></span></td>
+								<td><span th:text="${s.lastAccess}"></span></td>
+
+							</tr>
+						 </tbody>
+
+					</table>
+				</div>
+			</div>
+		</div>
+
+		 	
+        </div>
+        <script type="text/javascript" th:src="@{/js/icheck/icheck.min.js}"></script>
+        <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+		<script type="text/javascript" th:src="@{/js/datepicker/daterangepicker.js}"></script>
+		<script type="text/javascript" th:src="@{/js/multiselect/bootstrap-multiselect.js}"></script>
+		<script type="text/javascript" th:src="@{/js/switchery/switchery.min.js}"></script> 
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.0.0/Chart.js"></script>
+		<script type="text/javascript" th:src="@{/js/stat.sales.js}"></script>
+		</div>
+
+	</body>
+
+</html>

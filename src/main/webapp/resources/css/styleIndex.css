@@ -1,0 +1,425 @@
+/***Common***/
+
+@font-face {
+	font-family: 'HussarPrintA';
+	src: url('../fonts/HussarPrintA.eot');
+	src: url('../fonts/HussarPrintA.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/HussarPrintA.woff') format('woff'),
+		url('../fonts/HussarPrintA.ttf')  format('truetype');
+	font-weight: bold;
+	font-style: normal;
+}
+
+html, body, .container { 
+	height: 100%; 
+	margin: 0; 
+	padding: 0; 
+	font-family: 'HussarPrintA';
+}
+
+body > .container {
+	height: auto;
+	min-height: 100%; 
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
+/*@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300);*/
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-weight: 300;
+}
+
+body {
+ /* font-family: 'Source Sans Pro', sans-serif;*/
+  color: white;
+  font-weight: 300;
+}
+body ::-webkit-input-placeholder {
+  /* WebKit browsers */
+ /* font-family: 'Source Sans Pro', sans-serif;*/
+  color: white;
+  font-weight: 300;
+}
+body :-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  /*font-family: 'Source Sans Pro', sans-serif;*/
+  color: white;
+  opacity: 1;
+  font-weight: 300;
+}
+body ::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+ /* font-family: 'Source Sans Pro', sans-serif;*/
+  color: white;
+  opacity: 1;
+  font-weight: 300;
+}
+body :-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+ /* font-family: 'Source Sans Pro', sans-serif;*/
+  color: white;
+  font-weight: 300;
+}
+
+
+#content {
+	padding-bottom: 3em; 
+}
+
+#footer {
+	clear: both; 
+	position: relative;
+	z-index: 10; 
+	height: 3em; 
+	margin-top: -3em; 
+}
+
+#footer a{
+	text-transform: none!important;
+	text-decoration: none!important;
+}
+
+
+.centered{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
+/*******************Legal Advise**********************/
+
+
+
+
+
+/*******************Legal Advise**********************/
+
+/*************RED BUTTON*****************/
+/*.btn-custom { 
+  color: #FFFFFF; 
+  background-color: #FF3333; 
+  border-color: #FF3333; 
+  font-weight: bold;
+} 
+ 
+.btn-custom:hover, 
+.btn-custom:focus, 
+.btn-custom:active, 
+.btn-custom.active, 
+.open .dropdown-toggle.btn-custom { 
+  color: #FFFFFF; 
+  background-color: #F09096; 
+  border-color: #FF3333; 
+} 
+ 
+.btn-custom:active, 
+.btn-custom.active, 
+.open .dropdown-toggle.btn-custom { 
+  background-image: none; 
+} 
+ 
+.btn-custom.disabled, 
+.btn-custom[disabled], 
+fieldset[disabled] .btn-custom, 
+.btn-custom.disabled:hover, 
+.btn-custom[disabled]:hover, 
+fieldset[disabled] .btn-custom:hover, 
+.btn-custom.disabled:focus, 
+.btn-custom[disabled]:focus, 
+fieldset[disabled] .btn-custom:focus, 
+.btn-custom.disabled:active, 
+.btn-custom[disabled]:active, 
+fieldset[disabled] .btn-custom:active, 
+.btn-custom.disabled.active, 
+.btn-custom[disabled].active, 
+fieldset[disabled] .btn-custom.active { 
+  background-color: #FF3333; 
+  border-color: #FF3333; 
+} 
+ 
+.btn-custom .badge { 
+  color: #FF3333; 
+  background-color: #FFFFFF; 
+}
+*/
+/*************RED BUTTON*****************/
+
+.lead{
+	font-size: 14px;
+}
+
+.pull-right {
+    float: none !important;
+}
+
+
+.wrapper {
+  position: absolute;
+  top:0;
+  left: 0;
+  width: 100%;
+  height:100%;
+  overflow: hidden;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 80px 0;
+  height: 400px;
+  text-align: center;
+}
+
+.container h1 {
+  font-size: 40px;
+  -webkit-transition-duration: 1s;
+  transition-duration: 1s;
+  -webkit-transition-timing-function: ease-in-put;
+  transition-timing-function: ease-in-put;
+  font-weight: 200;
+}
+
+.action-wrapper {
+  padding: 20px 0;
+  position: relative;
+  z-index: 2;
+}
+
+.text_container{
+	width: 90%;
+	color:#ffffff;
+	font-size:24px;
+	line-height: 30pt;
+	text-align: center;
+	margin-bottom: 8%;
+}
+
+/********************BUTTONS********************/
+
+.btn-login {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: 0;
+  background-color: white;
+  border: 0;
+  padding: 10px 15px;
+  border-radius: 3px;
+  padding-left:16%;
+  padding-right:16%;
+  cursor: pointer;
+  font-size: 18px;
+  -webkit-transition-duration: 0.25s;
+  transition-duration: 0.25s;
+  text-align: center;
+}
+
+.btn-login:hover {
+  text-decoration: none;
+}
+
+/********************BUTTONS********************/
+
+
+
+/********************ANIMATION********************/
+
+.bg-bubbles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.bg-bubbles li {
+  position: absolute;
+  list-style: none;
+  display: block;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.15);
+  bottom: -160px;
+  -webkit-animation: square 25s infinite;
+  animation: square 25s infinite;
+  -webkit-transition-timing-function: linear;
+  transition-timing-function: linear;
+}
+.bg-bubbles li:nth-child(1) {
+  left: 10%;
+}
+.bg-bubbles li:nth-child(2) {
+  left: 20%;
+  width: 80px;
+  height: 80px;
+  -webkit-animation-delay: 2s;
+  animation-delay: 2s;
+  -webkit-animation-duration: 17s;
+  animation-duration: 17s;
+}
+.bg-bubbles li:nth-child(3) {
+  left: 25%;
+  -webkit-animation-delay: 4s;
+          animation-delay: 4s;
+}
+
+.bg-bubbles li:nth-child(4) {
+  left: 40%;
+  width: 60px;
+  height: 60px;
+  -webkit-animation-duration: 22s;
+  animation-duration: 22s;
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.bg-bubbles li:nth-child(5) {
+  left: 70%;
+}
+
+.bg-bubbles li:nth-child(6) {
+  left: 80%;
+  width: 120px;
+  height: 120px;
+  -webkit-animation-delay: 3s;
+   animation-delay: 3s;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.bg-bubbles li:nth-child(7) {
+  left: 32%;
+  width: 160px;
+  height: 160px;
+  -webkit-animation-delay: 7s;
+          animation-delay: 7s;
+}
+.bg-bubbles li:nth-child(8) {
+  left: 55%;
+  width: 20px;
+  height: 20px;
+  -webkit-animation-delay: 15s;
+          animation-delay: 15s;
+  -webkit-animation-duration: 40s;
+          animation-duration: 40s;
+}
+.bg-bubbles li:nth-child(9) {
+  left: 25%;
+  width: 10px;
+  height: 10px;
+  -webkit-animation-delay: 2s;
+          animation-delay: 2s;
+  -webkit-animation-duration: 40s;
+          animation-duration: 40s;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.bg-bubbles li:nth-child(10) {
+  left: 90%;
+  width: 160px;
+  height: 160px;
+  -webkit-animation-delay: 11s;
+          animation-delay: 11s;
+}
+@-webkit-keyframes square {
+  0% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(-700px) rotate(600deg);
+            transform: translateY(-700px) rotate(600deg);
+  }
+}
+@keyframes square {
+  0% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(-700px) rotate(600deg);
+            transform: translateY(-700px) rotate(600deg);
+  }
+}
+
+/********************ANIMATION********************/
+
+
+/*****************************FORM*************************/
+
+form {
+  padding: 20px 0;
+  position: relative;
+  z-index: 2;
+}
+
+form input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: 0;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.2);
+  width: 300px;
+  border-radius: 3px;
+  padding: 10px 15px;
+  margin: 0 auto 10px auto;
+  display: block;
+  text-align: center;
+  font-size: 18px;
+  color: white;
+  -webkit-transition-duration: 0.25s;
+          transition-duration: 0.25s;
+  font-weight: 300;
+}
+
+form input:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+form input:focus {
+  background-color: white;
+  width: 350px;
+}
+
+form button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: 0;
+  background-color: white;
+  border: 0;
+  padding: 10px 15px;
+  border-radius: 3px;
+  width: 250px;
+  cursor: pointer;
+  font-size: 18px;
+  -webkit-transition-duration: 0.25s;
+  transition-duration: 0.25s;
+}
+
+/*form button:hover {
+  background-color: #f5f7f9;
+  text-decoration: none;
+  color: #7878FF;
+}
+*/
+/*****************************FORM*************************/
+
+
+/************mine************/
+
+.error-wrapper{
+	font-weight:bold;
+	margin-bottom: 2%;
+	padding-top: 1%;
+	padding-bottom: 1%;
+}
+
+.link{
+	margin-top:4%;
+	color: #ffffff;
+	text-transform: none;
+	text-decoration: none;
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+				
+			<div class="col-md-10 col-md-offset-1 list-space">
+			
+				<h2 th:text="#{label.products}"></h2>
+			
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+		
+				<div class="action-row" th:if="${#authorization.expression('hasRole(''ROLE_SUPERADMIN'')')}">
+					<div class="action-wrapper">
+						<a th:href="@{/equipmentType/addProduct(id=${id})}" title="Add" class="btn btn-action"><span class="fa fa-plus fa-btn"></span></a>
+					</div>
+				</div>
+		
+				<table id="table" class="table table-hover">
+					<thead>
+            			<tr>
+            				<th class="no-sorting"></th>
+                			<th th:text="#{label.name}"></th>
+                			<th th:text="#{label.product.price}"></th>
+                			<th th:text="#{label.delete}"></th> 
+           				</tr>
+        			</thead>
+       				<tbody>
+        				<tr th:each="p : ${productList}">
+        					<td><img class="img-circle" th:src="${p.photo}" width="30"/></td>
+	    					<td th:text="${p.name}"></td>
+	    					<td th:text="${p.price}"></td>
+    						<td><a  class="btn btn-mini btn-xs btn-danger" th:href="@{/equipmentType/deleteProduct(id=${p.id},type=${id})}"><span class="fa fa-trash fa-btn"></span><span th:text="#{label.delete}"></span></a></td>
+						</tr>
+        			</tbody>
+				</table>
+			</div>
+			
+	  	   <div th:replace="templates/fragments/mdlCustom :: mdlCustom" ></div> 
+			
+			<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+			<script type="text/javascript" th:src="@{/js/channel.js}"></script>
+		</div>
+	</body>
+</html>

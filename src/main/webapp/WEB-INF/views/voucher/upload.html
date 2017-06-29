@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link th:href="@{/css/croppie.css}" rel="stylesheet" type="text/css"/>  
+		<link th:href="@{/css/switchery/switchery.min.css}" rel="stylesheet" type="text/css"/>   
+		<link th:href="@{/css/multiselect/bootstrap-multiselect.css}" rel="stylesheet" type="text/css"/>  
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="x_data col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
+		
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+		
+       			<div class="x_panel">
+       				<div class="x_panel_content">
+       		
+		           		<div class="x_title">
+		                	<h2 th:text="#{label.create.voucher}"></h2>
+		                    <div class="clearfix"></div>
+		                 </div>
+		
+						<div class="x_content">
+						
+							<form action="#" th:object="${voucher}" th:action="@{/voucher/code/add}" method="post" enctype="multipart/form-data" > <!--  -->
+								<input type="hidden" th:field="*{id}" th:value="*{id}"></input> 
+					         
+				              	<!-- Image -->
+								<div class="row">
+		                    	
+			                    	<div class="form-group col-md-6">
+		                    		  	<div class="row" style="margin-top:8%">
+		                    		 		<input type="file" id="file" th:field="*{file}" />  <!-- onchange="uploadImage()" -->
+		                    			<!-- 	<button type="submit" name="addFile" id="addFile" style="display:none"></button>  -->
+		                    		  	</div>
+		                    	<!-- 		<div class="row" style="margin-top:3%">
+			                    			<button type="submit" name="fileDone" id="fileDone" class="btn btn-custom btn-small" onclick="updateFileData()">Save File</button> 
+			                    		</div> -->
+			                    	</div>
+						   		</div>
+				              	
+                				<div class="row">
+		                    		<div class="form-btn">
+		                    		<button type="submit" ></button>
+		                        		<input type="submit" th:value="#{label.save.voucher}" class="btn btn-custom"/>
+		                    		</div>
+	                    		</div>
+
+			 				</form>
+	                  	</div>
+					</div>
+				</div>
+			</div>
+			<script type="text/javascript" th:src="@{/js/croppie.js}"></script>
+			<script type="text/javascript" th:src="@{/js/datepicker/moment.min.js}"></script>
+			<script type="text/javascript" th:src="@{/js/datepicker/daterangepicker.js}"></script>
+			<script type="text/javascript" th:src="@{/js/switchery/switchery.min.js}"></script> 
+			<script type="text/javascript" th:src="@{/js/multiselect/bootstrap-multiselect.js}"></script>
+			<script type="text/javascript" th:src="@{/js/voucher.add.js}"></script>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBI2heIIbKpb6w9_1JjTDHcok5zsrVwhwM"></script>
+		<link th:href="@{/css/switchery/switchery.min.css}" rel="stylesheet" type="text/css"/>   
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="x_data col-md-10 col-md-offset-1">
+
+				<h2> <span th:text="${equipment.name + ' Equipment'}"></span></h2>
+				
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+				
+				<div class="action-row">
+					<div class="action-wrapper">
+						<a th:if="${#authorization.expression('hasRole(''ROLE_SUPERADMIN'')')}" th:href="@{/equipment/edit(id=${equipment.id})}" class="btn btn-action"><span class="fa fa-pencil fa-btn"></span></a>
+						<a th:href="@{/equipment/seller/list(id=${equipment.id})}" class="btn btn-action"><span class="fa fa-user fa-btn"></span></a>
+						<!-- <a th:href="@{/equipment/promotion/list(id=${equipment.id})}" class="btn btn-action"><span class="fa fa-bullhorn fa-btn"></span></a>
+						<a th:href="@{/equipment/beacon/list(id=${equipment.id})}" class="btn btn-action"><span class="fa fa-circle fa-btn"></span></a>
+						 --><a th:href="@{/equipment/product/list(id=${equipment.id})}" class="btn btn-action"><span class="fa fa-product-hunt fa-btn"></span></a>
+						<a data-toggle="modal" data-target="#confirm-delete" class="btn btn-action"><span class="fa fa-trash fa-btn"></span></a>
+						<a id="delete" th:href="@{/equipment/delete(id=${equipment.id})}" style="display:none"></a>
+					</div>
+				</div>
+				
+				<div class=" row panel-row">
+					<input type="hidden" th:value="${equipment.latitud}" id="lat"></input>
+					<input type="hidden" th:value="${equipment.longitud}" id="lon"></input>
+            		
+            		<div class="col-sm-8 col-xs-12 animated fadeInDown">
+                    	<div class="profile_view">
+                    		<div class="view-header" th:text="${equipment.name + ' Details'}"></div>
+                    		<div class="view-body row">	
+                    			<div class="col-md-8">
+                    				<div class="row">
+	   							 		<div class="col-md-4 detail-label" th:text="#{label.unilever.id}"></div>
+	   							 		<div class="col-md-8" th:text="${equipment.unileverId}"></div>
+	   							 	</div>
+   							 		<div class="row">
+	   							 		<div class="col-md-4 detail-label" th:text="#{label.operator}"></div>
+	   							 		<div class="col-md-8"><a th:href="@{/operator/get(id=${equipment.operator.id})}"><span th:text="${equipment.operator.name}"></span></a></div>
+	   							 	</div>
+	   							 	<div class="row">
+	   							 		<div class="col-md-4 detail-label" th:text="#{label.equipment.type}"></div>
+	   							 		<div class="col-md-8" th:text="${equipment.type.name}"></div>
+	   							 	</div>
+	   							 	<div class="row">
+	   							 		<div class="col-md-4 detail-label" th:text="#{label.numberPlate}"> </div>
+	   							 		<div class="col-md-8" th:text="${equipment.numberPlate}"></div>
+	
+	   							 	</div>
+	 							 	<div class="row">
+	   							 		<div class="col-md-4 detail-label" th:text="#{label.description}"></div>
+	   							 		<div class="col-md-8" th:text="${equipment.desc}"></div>
+	   							 	</div>
+	  							 	<div class="row">
+	   							 		<div class="col-md-4 detail-label" th:text="#{label.address}"> </div>
+	   							 		<div class="col-md-8" th:text="${equipment.direccion}"></div>
+	   							 	</div>
+	  						 	 	<div class="row">
+	   							 		<div class="col-md-4 detail-label" th:text="#{label.channel}"></div>
+	   							 		<div class="col-md-8" th:text="${equipment.channel.name}"></div>
+	   							 	</div> 
+								    <div class="row">
+	   							 		<div class="col-md-4 detail-label" th:text="#{label.region}"></div>
+	   							 		<div class="col-md-8" th:text="${equipment.region.name}"></div>
+	   							 	</div>
+	   							 	<div class="row">
+	   							 		<div class="col-md-4 detail-label" th:text="#{label.distributor}"></div>
+	   							 		<div class="col-md-8" th:text="${equipment.distributor.concession}"></div>
+	   							 	</div>
+	   							 	<div class="row">
+	   							 		<div class="col-md-4 detail-label" th:text="${equipment.tax.name}"></div>
+	   							 		<div class="col-md-8" th:text="${equipment.iva}"></div>
+	   							 	</div>
+	   							 	<div class="row">
+	   							 		<div class="col-md-4 detail-label" th:text="#{inactive.time}"></div>
+	   							 		<div class="col-md-8" th:text="${equipment.inactiveTime}"></div>
+	   							 	</div>
+	   							 	 <div class="row">
+	   							 	 	<div class="col-md-4 detail-label" th:text="#{label.state}"></div>
+	   							 		<div class="col-md-8">
+		   							 		<a th:href="@{/equipment/activate(id=${equipment.id},state=false)}"><span th:if="${equipment.active == true}" class="fa fa-toggle-on fa-btn"></span></a>
+				    						<a th:href="@{/equipment/activate(id=${equipment.id},state=true)}"><span th:if="${equipment.active == false}" class="fa fa-toggle-off fa-btn"></span></a>  
+				    					</div>
+	   							 	</div>
+	   							 </div>
+	   							 <div class="col-md-4">
+   							 		<img th:if="${equipment.photo!=null}" th:src="${equipment.photo}" width="100" class="img-circle" onclick="window.open(this.src)"></img>
+                                	<img th:if="${equipment.photo==null}" th:src="@{/images/SoyFrigo.png}" width="100" class="img-circle" onclick="window.open(this.src)"></img>
+	   							 </div>
+                  				</div>
+                     		</div>
+                     		<div class="profile_view">
+	                    		<div class="view-header">
+	                               	<span style="vertical-align: middle" th:text="#{label.location}"></span>
+	                            </div>
+                    			<div class="view-body">	
+                   					<div id="map" style="height:200px;width:100%"></div>
+                  				</div>
+                     		</div>
+                     	<!-- 	<div class="profile_view">
+                       			<div class="view-header">Equipment Beacons</div>
+	                       		<div class="view-body">	
+	                       			 <div th:if="${equipment.beacon != null}" th:each="b : ${equipment.beacon}" class="row">
+	                              	 	<div class="col-md-8" th:text="${b.name}"></div>
+	                              	 	<div class="col-md-4">
+	                              	 		<a th:href="@{/beacon/get(id=${b.beaconId})}"><span class="fa fa-list-alt fa-btn"></span></a>
+					    					<a th:href="@{/beacon/edit(id=${b.beaconId})}"><span class="fa fa-pencil fa-btn"></span></a>
+	                              	 	</div>
+	                              	 </div>
+	                              	 <div th:if="${equipment.beacon == null}">
+	                              	 	This equipment has not any beacon associated
+	                              	 </div>
+	                       		</div> -->
+         					</div>
+                  	     <div class="col-sm-4 col-xs-12">
+                    	
+	                    	<div th:if="${equipment.data!=null}" class="view-data">
+	                    		<div class="view-block block-green" title="MSM"><span th:text="${equipment.data.sellers}"></span><i class="fa fa-user"></i></div>
+	                    		<div class="view-block block-yellow" title="Pieces" ><span th:text="${#numbers.formatDecimal(equipment.data.sales, 1, 'COMMA', 0, 'POINT')}"></span><span class="fa fa-eur-text" th:text="${#authentication.principal.currency}"></span></div>
+	                    		<div class="view-block block-blue" title="Total"><span th:text="${equipment.data.amount}"></span><img th:src="@{/images/magnumBlue.png}" class="fa" width="20"></img></div>
+	                    		
+	                    	</div>
+	                    	<div th:if="${equipment.data==null}" class="view-data" th:text="#{label.info.equip}">
+	                    		
+	                    	</div>
+                    	</div>
+	             	</div>
+                	<div th:replace="templates/fragments/mdl :: mdl" ></div> 
+        		</div>
+				<script type="text/javascript" th:src="@{/js/switchery/switchery.min.js}"></script> 
+				<script type="text/javascript" th:src="@{/js/business.detail.js}"></script>
+		</div>
+	</body>
+</html>

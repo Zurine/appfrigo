@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+		
+		<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+		<script type="text/javascript" th:src="@{/js/channel.js}"></script>
+
+	
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="col-md-8 col-md-offset-2" style="margin-top:6%">
+		
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+			
+       			<div class="x_panel">
+       				<div class="col-md-10 col-md-offset-1">
+       		
+		           		<div class="x_title">
+		                	<h2>Add Stock</h2>
+		                    <div class="clearfix"></div>
+		                 </div>
+			
+						<div class="x_content">
+						
+							<form action="#" th:object="${stock}" th:action="@{/equipment/product/addStock}" method="post">
+							
+								<div th:replace="templates/fragments/msg :: msg" ></div> 
+							
+	                    		<input type="hidden" th:field="*{product.id}" th:value="*{product.id}"></input> 
+								<input type="hidden" th:field="*{business.id}" th:value="*{business.id}"></input> 
+	                    		<div class="row">
+	                    			<label class="label-control">Business</label>
+									<p th:text="*{business.name}" ></p>
+	                    		</div>
+	                    		
+	                    		<div class="row">
+		                			<div class="form-group col-md-6">
+										<label class="label-control">Type </label>
+				                       <select id="product-select" th:field="*{type}" class="form-control">
+											<option value="0" >Output</option>
+	  										<option value="1" >Input</option>
+										</select>
+				                    </div>
+				                   <div class="form-group col-md-6">
+										<label class="label-control">Amount</label>
+				                        <input type="number" th:field="*{stock}" placeholder="Amount" class="form-control" />
+				                    </div>
+				                </div>
+				                
+                  
+	                    		<div class="row">
+	                    			<input type="submit" value="Update Stock" class="btn btn-custom"/>
+	                    		</div>
+	                    		
+		 					</form>
+		 					
+
+		 					
+                  		</div>
+					</div>
+				</div>
+				
+						 					<table id="table" class="table table-hover">
+								<thead>
+						            <tr>
+						                <th>Product</th>
+						                <th>Stock</th>
+						                <th>Date</th>
+						            </tr>
+			        			</thead>
+						        <tbody>
+						        	<tr th:each="s : ${stockList}">
+						        		<td th:text="${s.product.name}"></td>
+						        		<td>
+						        			<span th:if="${s.type} == 0">-</span>
+						        			<span th:if="${s.type} == 1">+</span>
+						        			<span th:text="${s.stock}"></span>
+						        		</td>
+							    		<td th:text="${s.date}"></td>
+									</tr>
+						        </tbody>
+							</table>
+				
+				
+			</div>
+		</div>
+
+	</body>
+
+</html>

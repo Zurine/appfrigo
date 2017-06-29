@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link th:href="@{/css/croppie.css}" rel="stylesheet" type="text/css"/>  
+		<link th:href="@{/css/switchery/switchery.min.css}" rel="stylesheet" type="text/css"/>
+		<link th:href="@{/css/multiselect/bootstrap-multiselect.css}" rel="stylesheet" type="text/css"/>     
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="x_data col-sm-10 col-sm-offset-1">
+			
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+       			<div class="x_panel">
+       				<div class="x_panel_content">
+       		
+		           		<div class="x_title">
+		                	<h2 th:text="#{label.create.promotion}"></h2>
+		                    <div class="clearfix"></div>
+		                 </div>
+		
+						<div class="x_content">
+
+							<form class="form-horizontal" id="promotion" action="#" th:object="${promotion}" th:action="@{/promotion/add}" method="post" enctype="multipart/form-data">
+								<input type="hidden" th:value="${compound}" id="compound"></input>
+								<input type="hidden" th:value="*{selected}" th:field="*{selected}" id="selectedProduct"></input>
+								
+								<div class="form-group">
+    								<label class="col-sm-2 control-label"  th:text="#{label.name}"></label>
+    								<div class="col-sm-4">
+      									 <input type="text" th:field="*{name}" placeholder="Name" class="form-control"/>
+    								</div>
+    								<label class="col-sm-2 control-label"  th:text="#{label.product.price}"></label>
+    								<div class="col-sm-4">
+      									 <input type="text" th:field="*{price}" placeholder="Price" class="form-control"/>
+    								</div>
+								</div>
+								
+								<div class="form-group">
+    								<label class="col-sm-2 control-label"  th:text="#{label.description}"></label>
+    								<div class="col-sm-10">
+      									 <input type="text" th:field="*{description}" placeholder="Name" class="form-control"/>
+    								</div>
+								</div>
+
+
+
+							  	<div class="form-group">
+							  		<label class="col-sm-2 control-label"  th:text="#{label.products}"></label>
+							  		<div class="col-sm-10">
+							  			<select th:field="*{productIds}"  multiple="multiple" >  <!--  th:value="*{products.id}" -->
+			                      	   	 	<optgroup th:each="c : ${categories}" th:label="${c.name}">   
+			                      	   	  		<option th:each="p : ${c.products}" th:value="${p.id}" th:text="${p.name}"> <!--  th:onclick="${'javascript:callComposed(this)'}"  -->
+			                      	   	  		</option> 
+			                      	   	  	</optgroup>
+										</select>
+						  			</div>
+			                    </div>
+		                      	<button type="submit" name="getComposed" id="getComposed" style="display:none"></button>
+		                      	
+		                      	<div class="form-group">
+    								<label class="col-sm-2 control-label">Age Condition</label>
+    								<div class="col-sm-4">
+      									  <select th:field="*{selectedConditions}" multiple="multiple" class="form-control" >
+		  									<option th:each="p : ${listAge}" th:value="${p.id}" th:text="${p.name}"></option>
+										</select>
+    								</div>
+    								<label class="col-sm-2 control-label">Temperature Conditions</label>
+    								<div class="col-sm-4">
+      									  <select th:field="*{selectedConditions}" multiple="multiple" class="form-control" >
+		  									<option th:each="p : ${listAge}" th:value="${p.id}" th:text="${p.name}"></option>
+										</select>
+    								</div>
+								</div>
+								
+								<div class="form-group">
+    								<label class="col-sm-2 control-label">Gender Conditions</label>
+    								<div class="col-sm-4">
+     									<select th:field="*{selectedConditions}" multiple="multiple" class="form-control">
+	  										<option th:each="p : ${listGender}" th:value="${p.id}" th:text="${p.name}"></option>
+										</select>
+    								</div>
+								</div>
+								
+								<div class="form-group">
+    								<label class="col-sm-2 control-label" th:text="#{label.type}"></label>
+    								<div class="col-sm-4">
+     									<select th:field="*{type}" class="form-control" onchange="loadImage()">
+		  									<option th:each="t : ${typeList}" th:value="${t.id}" th:text="${t.name}"></option>
+										</select>
+    								</div>
+    								<div class="form-url">
+	    								<label class="col-sm-2 control-label">URL</label>
+	    								<div class="col-sm-4">
+	     									<input type="text" th:field="*{url}" th:value="*{url}" placeholder="Url" class="form-control" />
+	    								</div>
+	    							</div>
+								</div>
+		                      	
+		                      	
+			              <!--  	<div th:each="c : ${composition}" th:if="${composition != null}">  
+		          				 	<div class="form-group col-md-4">
+		                    			 <label class="label-control"><span th:text="${c.category.name}"></span> :</label> 
+		                   		     	 <select class="form-control select-component" multiple="multiple" > 
+  											<option th:each="p : ${c.products}" th:value="${p.id}" th:text="${p.name}"></option>
+										</select> 
+		                   			</div>	
+								</div> --> 	
+			                    
+			                   
+			                 <!-- 
+			                    <div class="row">
+			                    			<div class="form-group col-md-6">
+									<label class="label-control">Name</label>
+			                        <input type="text" th:field="*{name}" placeholder="Name" class="form-control"/>
+			                    </div>
+							       		<div class="form-group col-md-6">
+									<label class="label-control">Price</label>
+			                        <input type="text" th:field="*{price}" placeholder="Price" class="form-control"/>
+			                    </div>		  
+							   
+			       				   </div>	
+			                    
+			                    <div class="row">
+							   		<div class="form-group col-md-12">
+									<label class="label-control">Description</label>
+			                        <textarea th:field="*{description}" placeholder="Description" class="form-control" ></textarea>
+			                    </div>
+			                       </div>	 -->   
+			                    
+			                <!-- <div class="row">
+							   		<div class="form-group col-md-6">
+										<label class="label-control" >Age Conditions</label>
+				                        <select th:field="*{selectedConditions}" multiple="multiple" class="form-control" >
+		  									<option th:each="p : ${listAge}" th:value="${p.id}" th:text="${p.name}"></option>
+										</select>
+			                    	</div>
+	
+							   		<div class="form-group col-md-6">
+										<label class="label-control">Temperature Conditions</label>
+				                         <select th:field="*{selectedConditions}" multiple="multiple" class="form-control" >
+		  									<option th:each="p : ${listAge}" th:value="${p.id}" th:text="${p.name}"></option>
+										</select>
+			                    	</div>
+			                     </div>	 -->    
+			                    
+			                   <!-- <div class="row">
+							   		<div class="form-group col-md-12">
+									<label class="label-control">Gender Conditions</label>
+			                        <select th:field="*{selectedConditions}" multiple="multiple" class="form-control">
+	  									<option th:each="p : ${listGender}" th:value="${p.id}" th:text="${p.name}"></option>
+									</select>
+			                    </div>
+			                    
+			                    </div>	  
+			                    
+			                    <div class="row">
+							   		<div class="form-group col-md-6">
+										<label class="label-control">Type</label>
+				                        <select th:field="*{type}" class="form-control" onchange="loadImage()"> --> 
+											<!-- <option value="0" >Select Type</option> -->
+		  						 <!-- 			<option th:each="t : ${typeList}" th:value="${t.id}" th:text="${t.name}"></option>
+										</select>
+			                   	 	</div>
+
+							   		<div class="form-group col-md-6 form-url">
+										<label class="label-control">Url</label>
+			                        	<input type="text" th:field="*{url}" th:value="*{url}" placeholder="Url" class="form-control" />
+			                    	</div>
+			                     </div>	
+			                    
+	                 			<div id="module-statistics">
+									<div id="list-statistics" th:fragment="resultsList"> 	
+										<input type="hidden" th:value="${imageUrl}" id="imageUrl"></input>
+		
+									</div>
+								</div>-->    
+												                  
+								<!-- Image -->
+								<!-- Image -->
+								<div class="form-group form-image" style="display: none">
+								   	<div class="col-sm-6">
+								   		<div class="thumbnail" id="image-basic">
+			                            	<div class="image view view-first">
+			                                    <img style="display: block;" th:src="*{image.path}"  alt="image" width="180" ></img>
+			                                    <div class="mask">
+			                                        <p th:text="*{image.path}" ></p>
+			                                    </div>
+			                                </div>
+	                             		 </div>
+				                    	<div id="demo-basic"></div>
+									</div>
+								   <div class="col-sm-6 image-file">
+								   	 	<div class="form-group">
+                    		 			 	<input type="file" id="file" th:field="*{image.file}" th:value="*{image.file}" onchange="uploadImage()" class="inputfile col-sm-2"/>
+		                    				<label id="edit-file" for="file" class="btn btn-small"><span class="fa fa-pencil"></span></label>
+		                    				<button type="submit" name="addFile" id="addFile" style="display:none"></button> 
+			                    			<button id="save-file" type="submit" name="fileDone" class="btn btn-custom btn-small" onclick="updateFileData()"><span class="fa fa-save"></span></button> 
+			                    		</div>
+							   	 	</div>
+							   	 </div>
+								
+								
+						<!-- 	<div class="row form-image"  style="display: none">
+								   <div class="form-group col-md-6">
+									   	<label class="label-control">Image :</label>
+			                    		<div class="thumbnail"  id="productImage">
+			                               <div class="image view view-first">
+			                                    <img style="display: block;" th:src="*{image.path}"  alt="image" width="250" ></img>
+			                                    <div class="mask">
+			                                        <p th:text="*{image.path}" ></p>
+			                                    </div>
+			                                </div>
+                              		 	</div>
+			                    		<div id="demo-basic"></div>
+			                    	</div>
+		                    	
+			                    	 <div class="form-group col-md-6">
+		                    		  	<div class="row" style="margin-top:8%">
+		                    		 		<input type="file" id="file" th:field="*{image.file}" onchange="uploadImage()" class="inputfile"/>
+		                    				<label for="file" class="btn btn-small">Change Image</label>
+		                    				<button type="submit" name="addFile" id="addFile" style="display:none"></button> 
+		                    		  	</div>
+		                    			<div class="row" style="margin-top:3%">
+		                    				<a onclick="fileDone()" class="btn btn-custom ">Save File</a>
+			                    		</div>
+			                    	</div>
+						   		</div>    -->
+						   		
+						   		<div class="form-group">
+    								<label class="col-sm-2 control-label">Redimible</label>
+    								<div class="col-sm-4">
+     									<input type="checkbox" th:field="*{redimible}" class="js-switch"/>
+    								</div>
+    								<label class="col-sm-2 control-label" th:text="#{active}"></label>
+    								<div class="col-sm-4">
+										<input type="checkbox" th:field="*{active}" th:value="*{active}" class="js-switch"/>    		
+									</div>
+								</div>
+		                      	
+			                    
+			          		<!--  	<div class="row">
+							   		<div class="form-group col-md-6">
+										<label class="label-control">Redimible</label>
+			                       		<input type="checkbox" th:field="*{redimible}" class="js-switch"/>
+			                    	</div> 
+			                    
+	                				<div class="form-group col-md-6">
+										<label class="label-control" th:text="#{active}"></label>
+			                       		<input type="checkbox" th:field="*{active}" th:value="*{active}" class="js-switch"/>
+			                   	 	</div>
+								</div>-->
+								
+					<!-- 			<div class="row">
+		                    		<div class="form-btn">
+               				            <button type="submit" class="btn btn-custom" onclick="validate()"> <span class="fa fa-save"></span><span th:text="#{label.save.promotion}"></span> </button>
+		                    		
+		                    		</div>
+	                    		</div> -->
+								
+								<div class="row">
+	                   				<div class="form-btn col-md-12">
+			                       		<a class="btn btn-custom" onclick="validate()"> <span class="fa fa-save"></span><span th:text="#{label.save.promotion}"></span> </a>
+			                       		<button id="submitForm" type="submit" class="btn btn-custom" style="display: none;">  </button>
+			                   		</div>
+		                   		</div>
+	                			
+					 		 	<input type="hidden" th:value="${crop}" id="crop"></input>
+							   	<input type="hidden" th:field="*{image.path}" th:value="*{image.path}" id="image.path"></input>
+							   	<input type="hidden" th:field="*{image.zoom}" th:value="*{image.zoom}" id="image.zoom"></input>
+							   	<input type="hidden" th:field="*{image.x}" th:value="*{image.x}" id="image.x"></input>
+							   	<input type="hidden" th:field="*{image.y}" th:value="*{image.y}" id="image.y"></input>
+							   	<input type="hidden" th:field="*{image.w}" th:value="*{image.w}" id="image.w"></input>
+							   	<input type="hidden" th:field="*{image.h}" th:value="*{image.h}" id="image.h"></input> 
+                        	</form>
+                  		</div>
+					</div>
+				</div>
+			</div>
+			<script type="text/javascript" th:src="@{/js/icheck/icheck.min.js}"></script>
+			<script type="text/javascript" th:src="@{/js/switchery/switchery.min.js}"></script> 
+			<script type="text/javascript" th:src="@{/js/croppie.js}"></script>
+			<script type="text/javascript" th:src="@{/js/multiselect/bootstrap-multiselect.js}"></script>
+			<script type="text/javascript" th:src="@{/js/promotion.add.js}"></script>
+		</div>
+	</body>
+
+
+
+
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+	</head>
+
+	<body onload="noPaginatedTable()">
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="col-md-10 col-md-offset-1 list-space">
+			
+				<h2 th:text="#{label.products}"></h2>
+				
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+					<a th:href="@{/operator/stock/manage(id=${operatorId})}" class="btn btn-action" title="Manage Stock"><span class="fa fa-plus fa-btn"></span><span th:text="#{label.stock.manage}"></span></a>
+					<a onclick="getContacts()" class="btn btn-action" th:title="#{label.distributor.contact}"><span class="fa fa-address-book fa-btn"></span><span th:text="#{label.distributor.contact}"></span></a>
+
+					<form class="form-horizontal" action="#" th:object="${updateProduct}" th:action="@{/operator/stock/updateProduct}" method="post">
+						<input type="hidden" id="prodId" th:field="${updateProduct.id}"></input>
+			        	<input type="hidden" id="stock" th:field="${updateProduct.stock}"></input>
+			        	<input type="hidden" id="min-stock" th:field="${updateProduct.minStock}"></input>
+			        	<input type="hidden" id="operatorId" th:field="${updateProduct.operatorId}"></input>
+			        	
+			        	<div class="row">
+			        		<label class="col-md-2 control-label" th:text="#{label.operator}"></label>
+	             			<div class="col-md-3">
+	             		 		<select id="operator" class="form-control" onchange="getProducts()">
+	                      	   	  	<option th:each="o : ${operatorList}" th:value="${o.id}" th:text="${o.name}"></option> 
+								</select>
+	             			</div>
+	             		</div>
+		        	
+		        	<div id="module-products"  class="row">
+				<table id="table" class="table table-hover"  th:fragment="fragment-products">
+					<thead>
+			            <tr>
+			            	<th th:text="#{label.name}"></th>
+			                <th th:text="#{label.product.stock}" class="no-sorting"></th>
+			                <th th:text="#{label.product.minStock}" class="no-sorting"></th>
+			                <th th:text="#{label.equipment.stock}" class="no-sorting"></th>
+			                <th class="no-sorting"></th>
+			            </tr>
+        			</thead>
+			        <tbody>
+			        <th:block th:each="p,rowStat : ${products}">
+			        	<tr>
+			        		<td>
+			        			<a th:href="@{/product/get(id=${p.id})}">
+			        				<img th:src="${p.photo}" width="30" class="img-circle"></img> 
+			        				<span class="strong" th:text="${p.name}"></span>
+			        			</a>
+			        		</td>
+				    		<td>
+				    			<span th:text="${p.stock}" class="stock show-mode"></span>
+				    		 	<input type="number" step="1"  class="edit-stock edit-mode form-control" /> 
+				    		</td>
+				    		<td>
+		    					<span th:text="${p.minStock}" class="min-stock show-mode"></span>
+				    			<input type="number" step="1" class="edit-min-stock edit-mode form-control" />
+		    				</td>
+		    				<td>
+		    					<span th:text="${p.businessTotal}"></span>
+		    				</td>
+    						<td>
+    							<a class="btn btn-mini btn-xs btn-info" th:title="#{label.products}" th:onclick="'javascript:getEquipments(\'' + ${p.id }   +  '\');'"><span th:id="${'plus'+ p.id}" class="fa fa-plus-square fa-btn"></span><span th:text="#{label.see}"></span></a>
+			    				<a class="btn btn-mini btn-xs btn-success show-mode" onclick="editRow(this)"><span class="fa fa-pencil fa-btn"></span><span th:text="#{label.edit}"></span></a>
+			    				<a class="btn btn-mini btn-xs btn-danger edit-mode" th:onclick="'javascript:saveRow(this,\'' + ${p.id}   +  '\');'"><span class="fa fa-save fa-btn"></span><span th:text="#{label.save}"></span></a>
+ 							</td>
+						</tr>
+						<tr th:id="'module-equipment'+ ${p.id}" style="display: none;" role="row" > 
+				 	 	 	<th:block th:fragment="equipmentList"> 
+								<td></td>
+								<td></td>
+								<td></td>
+								<td  colspan="2"> <!--  colspan="4" -->
+								 	<table class="table table-sub table-hover">
+										<thead>
+								            <tr>
+								                <th th:text="#{label.products}"></th>
+								                <th th:text="#{label.product.stock}"></th>
+								            </tr>
+        								</thead>
+										<tbody>
+											<tr th:each="e : ${equipments}">
+												<td th:text="${e.name}" style="font-weight: bold"></td>
+												<td class="numberTd"><span th:text="${e.stock}"></span></td>
+											</tr>
+										</tbody>
+									</table> 
+								</td>
+								<td></td>
+								<td style="display: none"></td>
+							</th:block>
+						</tr> 
+					</th:block>
+			        </tbody>
+				</table>
+				</div>
+				
+				<button id="submit" type="submit" class="btn btn-custom" style="display: none"></button>
+				
+								
+				<div id="module-distributor">
+					<div th:fragment="distributor-list">
+					 	<div class="modal fade" id="distributor-mdl" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		     				<div class="modal-dialog">
+		          				<div class="modal-content">
+				                	<div class="modal-header">
+				                    	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				                    	<h4 class="modal-title" id="myModalLabel" th:text="#{label.distributor.contact}"></h4>
+				                	</div>
+				              		<div class="modal-body">
+					                	<div class="row" th:each="d : ${distributorList}">
+					                		<div th:text="${d.distributor}" class="col-md-4" style="font-weight: bold;text-transform: uppercase;"></div>
+					                		<div th:each="c : ${d.contacts}" class="col-md-8">
+					                			<div class="row">
+					                				<div class="col-md-12">
+					                					<span th:if="${c.type == 0}" class="fa fa-envelope"></span>
+														<a th:if="${c.type == 0}" th:href="${'mailto:'+c.contact}"><span th:text="${c.contact}"></span></a>
+														<span th:if="${c.type == 1}" class="fa fa-phone"></span>											
+														<a th:if="${c.type == 1}" th:href="${'tel:'+c.contact}"><span th:text="${c.contact}"></span></a>
+					                				</div>
+					                			</div>
+					                		</div>
+					                		<div th:if="${d.contacts == null or #arrays.length(d.contacts) == 0 }" class="col-md-8">
+					                		There is not distributor information
+					                		</div>
+					                	</div>
+				                	</div>
+					                <div class="modal-footer">
+					                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					                </div>
+		          				</div>
+		      				</div>
+						</div>
+					</div>
+				</div> 
+				
+				</form>
+				
+				
+				<div th:replace="templates/fragments/mdl :: mdl" ></div> 
+			</div>
+			<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+			<script type="text/javascript" th:src="@{/js/stock.product.js}"></script>
+		</div>
+	</body>
+
+</html>

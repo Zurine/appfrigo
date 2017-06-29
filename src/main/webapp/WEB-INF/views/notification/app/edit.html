@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head></head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+		<div class="x_data col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
+
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+		
+       			<div class="x_panel">
+       				<div class="x_panel_content">
+       		
+		           		<div class="x_title">
+		                	<h2 th:text="#{label.edit.notification}"></h2>
+		                    <div class="clearfix"></div>
+		                </div>
+		
+						<div class="x_content">
+					
+		    				<form action="#" th:object="${notification}" th:action="@{/notification/edit}" method="post">
+    							<input type="hidden" th:field="*{id}" th:value="*{id}"></input> 
+ 				
+			                    <div class="row">
+		                			<div class="form-group">
+										<label class="label-control" th:text="#{label.type}"></label>
+										<p th:if="*{promotion.id} != 0" th:text="#{label.promotion}"></p>
+										<p th:if="*{promotion.id} == 0" th:text="#{label.nopromotion}"></p>
+				                    </div>
+	                            </div>
+	                            
+	                            <div class="row">
+	                				<div class="form-group">
+										<label class="label-control" th:text="#{label.title}"></label>
+			                        	<textarea th:field="*{title}" th:placeholder="#{label.title}" class="form-control" ></textarea>
+			                   	 	</div>
+	                			</div> 
+	                			
+	                			<div class="row">
+	                				<div class="form-group">
+										<label class="label-control" th:text="#{label.message}"></label>
+			                        	<input type="text" th:field="*{message}" th:placeholder="#{label.message}" class="form-control" />
+			                   	 	</div>
+	                			</div>
+	                			
+	                			<div class="row">
+	                				<div class="form-group">
+										<label class="label-control" th:text="#{label.image}"></label>
+			                        	<input type="text" th:field="*{photo}" th:placeholder="#{label.image}" class="form-control" />
+			                   	 	</div>
+	                			</div>
+	                			
+	                			<div class="row">
+				                  <div class="note">If you want to send a notification with user nickname write XXXXXX pattern in the Title or Message</div>
+				                </div>
+			                	
+				                <div class="row">
+		                			<div class="form-btn">
+		                        		<input type="submit" th:value="#{label.save.notification}" class="btn btn-custom"/>
+		                    		</div>
+	            				</div>
+		 					</form>
+                  		</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</body>
+
+</html>

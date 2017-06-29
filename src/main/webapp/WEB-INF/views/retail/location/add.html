@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link th:href="@{/css/switchery/switchery.min.css}" rel="stylesheet" type="text/css"/>   
+	</head>
+
+	<body>
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="x_data col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
+		
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+		
+       			<div class="x_panel">
+       				<div class="x_panel_content">
+       		
+		           		<div class="x_title">
+		                	<h2 th:text="#{label.create.retail}"></h2>
+		                    <div class="clearfix"></div>
+		                 </div>
+		
+						<div class="x_content">
+						
+							<form action="#" th:object="${retail}" th:action="@{/retail/location/add}" method="post" enctype="multipart/form-data" >
+								<input id="latitud" type="hidden" th:field="*{lat}"></input> 
+	           					<input id="longitud" type="hidden" th:field="*{lon}"></input> 
+	           					<input type="hidden" th:field="*{retail.id}"></input> 
+	           					<input id="ciudad" type="hidden"></input> 
+	                    		
+	                    		<div class="row">
+		                			<div class="form-group col-md-12">
+										<label class="label-control" th:text="#{label.name}"></label>
+				                        <input type="text" th:field="*{name}" th:placeholder="#{label.name}" class="form-control" />
+				                    </div>
+				                </div>
+				                
+				                 <div class="row">
+	                				<div class="form-group col-md-12">
+										<label class="label-control" th:text="#{label.address}"></label>
+			                        	<input type="text" id="direccion" th:field="*{address}" name="direccion" th:placeholder="#{label.address}" class="form-control" onfocus="geolocate()" />
+			                    	</div>
+	                			</div>
+	                			
+	                				<div class="row">
+	                				<div class="form-group col-md-6">
+										<label class="label-control" th:text="#{active}"></label>
+										<input type="checkbox" class="js-switch" th:field="*{active}"></input>
+			                       		<!-- <input type="checkbox" th:field="*{active}" class="form-control"/> -->
+			                   	 	</div>
+	                			</div>
+
+                				<div class="row">
+		                    		<div class="form-btn">
+		                        		<input type="submit" th:value="#{label.save.retail}" class="btn btn-custom"/>
+		                    		</div>
+	                    		</div>
+
+			 				</form>
+	                  	</div>
+					</div>
+				</div>
+			</div>
+			<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;signed_in=true&amp;libraries=places"></script>
+			<script type="text/javascript" th:src="@{/js/googleMaps.js}"></script> 
+			<script type="text/javascript" th:src="@{/js/switchery/switchery.min.js}"></script> 
+			
+		</div>
+	</body>
+</html>

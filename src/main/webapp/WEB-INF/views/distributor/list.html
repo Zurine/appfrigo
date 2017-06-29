@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"/>
+	</head>
+
+	<body onload="noPaginatedTable()">
+	
+		<div layout:fragment="content" class="row">
+		
+			<div class="col-md-10 col-md-offset-1 list-space">
+			
+				<h2 th:text="#{label.distributor}"></h2>
+				
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+		
+				<div class="action-row">
+					<div class="action-wrapper">
+						<a th:href="@{/distributor/add}" title="Add" class="btn btn-action"><span class="fa fa-plus fa-btn"></span></a>
+					</div>
+				</div>
+
+				<table id="table" class="table table-hover">
+					<thead>
+			            <tr>
+			            	<th th:text="#{label.concesion}"></th>
+			                <th th:text="#{label.concesion.number}"></th>
+			                <th th:text="#{label.region}"></th>
+			                <th th:text="#{label.state}"></th>
+			                <th class="no-sorting"></th>
+			            </tr>
+        			</thead>
+			        <tbody>
+			        	 <th:block th:each="d : ${distributorList}">
+			        	<tr >
+			        		<td th:text="${d.concession}"></td>
+			        		<td th:text="${d.numConcession}"></td>
+				    		<td th:text="${d.region.name}"></td>
+			    			<td>
+	    						<a th:href="@{/distributor/activate(id=${d.id},state=false)}"><span th:if="${d.active} == true" class="fa fa-toggle-on fa-btn"></span></a>
+			    				<a th:href="@{/distributor/activate(id=${d.id},state=true)}"><span th:if="${d.active} == false" class="fa fa-toggle-off fa-btn"></span></a>
+			    			</td>
+			    			<td>
+			    				<a class="btn btn-mini btn-xs btn-success" th:href="@{/distributor/edit(id=${d.id})}"><span class="fa fa-pencil fa-btn"></span><span th:text="#{label.edit}"></span></a>
+			    				<a class="btn btn-mini btn-xs btn-danger" data-toggle="modal" data-target="#confirm-delete" th:onclick="${'loadId(' + d.id  +')'}"><span class="fa fa-trash fa-btn"></span><span th:text="#{label.delete}"></span></a>
+								<a th:id="'deleteLink'+${d.id}"  id="delete" th:href="@{/distributor/delete(id=${d.id})}" style="display:none"></a>
+								<a class="btn btn-mini btn-xs btn-info" th:if="${d.contacts != null and #arrays.length(d.contacts)>0 }" th:title="#{label.contacts}" th:onclick="'javascript:getContacts(\'' + ${d.id }   +  '\');'"><span th:id="${'plus'+ d.id}" class="fa fa-address-book fa-btn"></span><span th:text="#{label.contacts}"></span></a>
+								
+			    			</td> 
+						</tr>
+						<tr th:id="'module-contact'+ ${d.id}" style="display: none;" role="row" >  <!--  -->
+							<td></td>
+							<td></td>
+							<td></td>
+							<td colspan="2"> <!--  colspan="4" -->
+							 	<table style="width: 100%"> 
+									<tbody>
+										<tr th:each="c : ${d.contacts}" >
+											<td class="numberTd">
+												<span th:if="${c.type == 0}" class="fa fa-envelope"></span>
+												<a th:if="${c.type == 0}" th:href="${'mailto:'+c.contact}"><span th:text="${c.contact}"></span></a>
+												<span th:if="${c.type == 1}" class="fa fa-phone"></span>											
+												<a th:if="${c.type == 1}" th:href="${'tel:'+c.contact}"><span th:text="${c.contact}"></span></a>
+											</td>
+										</tr>
+									</tbody>
+								</table> 
+							</td>
+							<td style="display: none"></td>
+						</tr> 
+						</th:block>
+			        </tbody>
+				</table>
+			</div>
+			 <div th:replace="templates/fragments/mdlCustom :: mdlCustom" ></div> 
+			<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+			<script type="text/javascript" th:src="@{/js/distributor.list.js}"></script> 
+		</div>
+	</body>
+</html>

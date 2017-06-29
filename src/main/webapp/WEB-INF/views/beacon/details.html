@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	layout:decorator="templates/home">
+
+	<head></head>
+
+	<body>
+		<div layout:fragment="content" class="row">
+		
+			<div class="col-md-8 col-md-offset-2" style="margin-top:6%">
+			
+				<div th:replace="templates/fragments/msg :: msg" ></div> 
+			
+				<div class="action-row">
+					<div class="action-wrapper">
+						<a th:href="@{/beacon/edit(id=${beacon.id})}" class="btn btn-action" th:alt="#{label.edit.beacon}"><span class="fa fa-pencil fa-btn"></span></a>
+					</div>
+				</div>
+				
+	        	<div class=" row panel-row">
+            		
+            		<div class="col-md-6 col-sm-6 col-xs-12 animated fadeInDown col-md-offset-3">
+                    	<div class="well profile_view">
+                        	<div class="col-sm-12">
+                            	<h4 class="brief"><i th:text="#{label.beacon}"></i></h4>
+                                <div class="left col-xs-7">
+                                	<h2 th:text="${beacon.name}"></h2>
+							 		<div class="row">
+							 			<div class="col-md-4 detail-label" th:text="#{label.description}">: </div>
+							 			<div class="col-md-8" th:text="${beacon.description}"></div>
+   							 		</div>
+   								
+	 								<div class="row">
+   							 			<div class="col-md-4 detail-label" th:text="#{label.beacon.major}">: </div>
+							 			<div class="col-md-8" th:text="${beacon.major}"></div>
+	   							 	</div>
+	   							 	
+	   							 	 <div class="row">
+   							 			<div class="col-md-4 detail-label" th:text="#{label.beacon.minor}">: </div>
+							 			<div class="col-md-8" th:text="${beacon.minor}"></div>
+	   							 	</div>
+	   							 	
+	   							 	 <div class="row">
+   							 			<div class="col-md-4 detail-label" th:text="#{label.beacon.uid}">: </div>
+							 			<div class="col-md-8" th:text="${beacon.uid}"></div>
+	   							 	</div>
+	   							 	
+   							 	 	 <div class="row">
+   							 			<div class="col-md-4 detail-label" th:text="#{label.location}">: </div>
+							 			<div class="col-md-8" th:text="${beacon.localizacion}"></div>
+	   							 	</div>
+	   							 	
+	   							 	
+                              	 </div>
+                           <!-- <div class="right col-xs-5 text-center">
+                                   <img th:src="@{/images/user.png}" alt="" class="img-responsive"></img>
+                               </div> -->    
+                           </div>
+                           <div class="col-xs-12 bottom text-center">
+                               <div class="col-xs-12 col-sm-6 emphasis">
+                              	 <p>Equipment 
+                              		<span th:if="${beacon.business!=null and beacon.business!=''}"   th:text="${beacon.business.name}"></span>
+							 		<span th:if="${beacon.business == null or beacon.business == ''}">-</span>  
+							 		<a th:href="@{/equipment/beacon/remove(id=${beacon.id},business=*{beacon.business.id})}"><span class="fa fa-trash fa-btn"></span></a>
+							 	
+							 	
+                              	 </p>
+                               </div>
+                           </div>
+                        </div>
+                    </div> 
+	             </div>
+	         </div>
+		</div>
+	</body>
+</html>
