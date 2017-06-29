@@ -167,12 +167,12 @@ public class AuthenticationController {
 				if(user.getAuthorities().get(0).getName().equals("ROLE_UNI"))
 				{
 					Dashboard2 d = new Dashboard2();
-		
+
 					r = authService.getDashboard2(user.getToken());
 					if(r.getError().getCode() == Constants.codeOK)
 					{
 						d = BeanManager.getInstance().getDashboard2(r.getResponse());
-						
+
 						model.addAttribute("voucherById", d.getVoucherById());
 						model.addAttribute("voucherByRetail", d.getVoucherByRetail());
 						model.addAttribute("voucherByRange", d.getVoucherByRange());
@@ -188,12 +188,12 @@ public class AuthenticationController {
 						model.addAttribute("promotionByGender", d.getPromotionByGender());
 						model.addAttribute("promotionByStudy", d.getPromotionByStudy());
 						model.addAttribute("promotionByBuyer", d.getPromotionByBuyer());
-						
+
 						model.addAttribute("home", d);
-						
+
 						return "home2";
 					}
-					
+
 				}
 				else
 				{
