@@ -212,7 +212,7 @@ public class AuthenticationController {
 						long B = new Date().getTime();
 						System.out.println("THE TIME - " + (B-A));
 						
-						model.addAttribute("messages",new ArrayList<MessageMini>());	
+					//	model.addAttribute("messages",new ArrayList<MessageMini>());
 						
 						long timeb = new Date().getTime();
 						logger.info("Time total -> " + (timeb - timeA));
